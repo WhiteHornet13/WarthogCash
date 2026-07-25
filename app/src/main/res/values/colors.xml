@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Paleta principal (Especificación de pantallas, secciones 3.2/3.4) -->
+    <color name="verde_principal">#1B4332</color>
+    <color name="fondo_pantalla">#F7F5F0</color>
+    <color name="texto_secundario">#5C6B63</color>
+
+    <color name="progreso_normal">#2D6A4F</color>
+    <color name="acento_ambar">#E8A33D</color>
+    <color name="rojo_limite">#C4453B</color>
+
+    <color name="blanco">#FFFFFF</color>
+    <color name="negro">#000000</color>
+
+    <color name="texto_principal">#16261F</color>
+    <color name="borde_chip">#E7E3D9</color>
+
+    <!-- Tono apagado para mes cerrado (spec "Detalle de mes cerrado", 3.1) -->
+    <color name="gris_cerrado">#5C6B63</color>
+
+    <color name="sombra_tarjeta">#1A000000</color>
+</resources>

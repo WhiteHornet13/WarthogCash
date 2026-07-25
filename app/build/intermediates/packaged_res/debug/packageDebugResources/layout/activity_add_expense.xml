@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/fondo_pantalla">
+
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_header_rounded"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/espaciado_l"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/btnVolver"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/accion_volver"
+            android:src="@drawable/ic_back" />
+
+        <TextView
+            style="@style/TextoTituloHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/espaciado_s"
+            android:text="@string/anadir_gasto_titulo" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/header">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/espaciado_l">
+
+            <TextView
+                style="@style/EtiquetaCampo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/anadir_gasto_importe" />
+
+            <EditText
+                android:id="@+id/etImporte"
+                style="@style/TextoImporteGrande"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:hint="0,00 €"
+                android:inputType="numberDecimal"
+                android:paddingTop="@dimen/espaciado_s"
+                android:paddingBottom="@dimen/espaciado_m" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="@dimen/espaciado_l"
+                android:background="@color/borde_chip" />
+
+            <TextView
+                style="@style/EtiquetaCampo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/espaciado_s"
+                android:text="@string/anadir_gasto_categoria" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/grupoChipsCategoria"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:singleSelection="true" />
+
+            <TextView
+                style="@style/EtiquetaCampo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/espaciado_l"
+                android:layout_marginBottom="@dimen/espaciado_s"
+                android:text="@string/anadir_gasto_descripcion" />
+
+            <EditText
+                android:id="@+id/etDescripcion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_card_borde_suave"
+                android:hint="@string/anadir_gasto_descripcion_hint"
+                android:inputType="text"
+                android:padding="@dimen/espaciado_m" />
+
+            <FrameLayout
+                android:id="@+id/contenedorVistaPrevia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/espaciado_l"
+                android:background="@drawable/bg_card_acento_izquierdo"
+                android:padding="@dimen/espaciado_m"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/tvVistaPrevia"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/texto_principal"
+                    android:textSize="@dimen/texto_cuerpo" />
+            </FrameLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnGuardarGasto"
+                style="@style/BotonPrimario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/espaciado_l"
+                android:enabled="false"
+                android:text="@string/anadir_gasto_boton" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

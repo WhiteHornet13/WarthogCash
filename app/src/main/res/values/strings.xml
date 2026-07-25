@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Warthog Cash</string>
+
+    <!-- Bienvenida -->
+    <string name="bienvenida_titulo">Controla tu presupuesto mes a mes</string>
+    <string name="bienvenida_descripcion">Reparte tu dinero disponible entre categorías, registra tus gastos y cierra cada mes sin sorpresas.</string>
+    <string name="bienvenida_boton">Empezar</string>
+
+    <!-- Pantalla principal -->
+    <string name="principal_disponible">Disponible</string>
+    <string name="principal_ingreso">Ingreso</string>
+    <string name="principal_gastado">Gastado</string>
+
+    <!-- Mis meses -->
+    <string name="mis_meses_titulo">Mis meses</string>
+    <string name="mis_meses_badge_actual">Actual</string>
+    <string name="mis_meses_boton_nuevo">+ Nuevo mes</string>
+    <string name="mis_meses_subtitulo_formato">Gastado %1$s de %2$s</string>
+
+    <!-- Detalle de mes -->
+    <string name="detalle_estado_abierto">● Mes abierto</string>
+    <string name="detalle_estado_cerrado">● Mes cerrado</string>
+    <string name="detalle_banner_cerrado">Este mes está cerrado y no admite traspasos ni edición.</string>
+    <string name="detalle_boton_cerrar_mes">Cerrar mes</string>
+
+    <!-- Crear mes nuevo -->
+    <string name="crear_mes_titulo">Nuevo mes</string>
+    <string name="crear_mes_dinero_disponible">Dinero disponible</string>
+    <string name="crear_mes_porcentaje_categorias">Porcentaje por categoría</string>
+    <string name="crear_mes_aviso_mes_abierto">El mes anterior más reciente sigue abierto. Ciérralo desde su propio detalle si quieres traspasar su sobrante.</string>
+    <string name="crear_mes_boton">Crear mes</string>
+    <string name="crear_mes_error_porcentaje">Los porcentajes deben sumar 100&#37; (actual: %1$s&#37;)</string>
+    <string name="crear_mes_error_dinero">Introduce el dinero disponible</string>
+    <string name="crear_mes_selector_mes">Mes</string>
+    <string name="crear_mes_selector_anio">Año</string>
+
+    <!-- Añadir gasto -->
+    <string name="anadir_gasto_titulo">Nuevo gasto</string>
+    <string name="anadir_gasto_importe">IMPORTE</string>
+    <string name="anadir_gasto_categoria">CATEGORÍA</string>
+    <string name="anadir_gasto_descripcion">DESCRIPCIÓN</string>
+    <string name="anadir_gasto_descripcion_hint">Añade una nota (opcional)</string>
+    <string name="anadir_gasto_vista_previa_formato">Saldo resultante en %1$s: %2$s</string>
+    <string name="anadir_gasto_boton">Guardar gasto</string>
+
+    <!-- Historial de gastos -->
+    <string name="historial_titulo_generico_formato">Historial · %1$s</string>
+    <string name="historial_titulo_filtrado_formato">%1$s · %2$s</string>
+    <string name="historial_vacio">Todavía no hay gastos registrados aquí.</string>
+
+    <!-- Cerrar mes -->
+    <string name="cerrar_mes_titulo">Cerrar mes</string>
+    <string name="cerrar_mes_resumen">Al cerrar este mes ya no podrás añadir gastos ni editarlo.</string>
+    <string name="cerrar_mes_sobrante_formato">Sobrante total del mes: %1$s</string>
+    <string name="cerrar_mes_boton_confirmar">Confirmar cierre</string>
+    <string name="cerrar_mes_nota_traspasos">La lógica detallada de traspaso de sobrante entre meses no forma parte todavía de la especificación de pantallas disponible; esta pantalla deja el mes cerrado de forma definitiva sin mover fondos.</string>
+
+    <!-- Genéricos -->
+    <string name="accion_volver">Volver</string>
+    <string name="accion_anadir_gasto">Añadir gasto</string>
+    <string name="cargando">Cargando…</string>
+</resources>

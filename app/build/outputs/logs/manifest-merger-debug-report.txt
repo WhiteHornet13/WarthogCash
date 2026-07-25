@@ -1,0 +1,389 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml:2:1-59:12
+INJECTED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml:2:1-59:12
+INJECTED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml:2:1-59:12
+INJECTED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml:2:1-59:12
+MERGED from [androidx.databinding:viewbinding:8.3.2] /home/whitehornet/.gradle/caches/transforms-4/9015e99d8b927fc846023e091181ca40/transformed/viewbinding-8.3.2/AndroidManifest.xml:2:1-7:12
+MERGED from [com.google.android.material:material:1.12.0] /home/whitehornet/.gradle/caches/transforms-4/03ec7c68e71ddb7a8103fe23086c04d1/transformed/material-1.12.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] /home/whitehornet/.gradle/caches/transforms-4/b5f36088d95dd34d063453fba4a15edc/transformed/constraintlayout-2.1.4/AndroidManifest.xml:2:1-11:12
+MERGED from [androidx.appcompat:appcompat-resources:1.7.0] /home/whitehornet/.gradle/caches/transforms-4/5d4e53522431545451cf73c1c782e46f/transformed/appcompat-resources-1.7.0/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.appcompat:appcompat:1.7.0] /home/whitehornet/.gradle/caches/transforms-4/ccb47b11a6c15d538da74863c97dc093/transformed/appcompat-1.7.0/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.recyclerview:recyclerview:1.3.2] /home/whitehornet/.gradle/caches/transforms-4/ea9bcfa105e625070e6ca000cbf2c403/transformed/recyclerview-1.3.2/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.viewpager2:viewpager2:1.1.0-beta02] /home/whitehornet/.gradle/caches/transforms-4/cdec934b9b19d3f8265bff8f160fb333/transformed/viewpager2-1.1.0-beta02/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.fragment:fragment:1.5.4] /home/whitehornet/.gradle/caches/transforms-4/6b28b037806bbcbedbc8dcb99962fbef/transformed/fragment-1.5.4/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.activity:activity:1.9.1] /home/whitehornet/.gradle/caches/transforms-4/9f7fd057521eecc34a85a1af8cc5b360/transformed/activity-1.9.1/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.activity:activity-ktx:1.9.1] /home/whitehornet/.gradle/caches/transforms-4/6289d9d09ab21b30300305557e790457/transformed/activity-ktx-1.9.1/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.1.0] /home/whitehornet/.gradle/caches/transforms-4/7dbeab08bbbafb7aea80383aad0265fe/transformed/swiperefreshlayout-1.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.emoji2:emoji2-views-helper:1.3.0] /home/whitehornet/.gradle/caches/transforms-4/008d0feb1b30b943897d863dfa7bbe5b/transformed/emoji2-views-helper-1.3.0/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.emoji2:emoji2:1.3.0] /home/whitehornet/.gradle/caches/transforms-4/4fc9fd2700c94c9abff287fd1cb6bfac/transformed/emoji2-1.3.0/AndroidManifest.xml:17:1-35:12
+MERGED from [androidx.drawerlayout:drawerlayout:1.1.1] /home/whitehornet/.gradle/caches/transforms-4/fcbd2751487ee4af86fd2a6d02f99774/transformed/drawerlayout-1.1.1/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.1.0] /home/whitehornet/.gradle/caches/transforms-4/b6a953b7d3873918a661fba5b80ec4c6/transformed/coordinatorlayout-1.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.transition:transition:1.5.0] /home/whitehornet/.gradle/caches/transforms-4/0acc28ffb2a4b8efc1face6edee5c0b5/transformed/transition-1.5.0/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.dynamicanimation:dynamicanimation:1.0.0] /home/whitehornet/.gradle/caches/transforms-4/c35238ec2f8d8eb8e6432fe153af2f7e/transformed/dynamicanimation-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /home/whitehornet/.gradle/caches/transforms-4/ffd762b3c83fd172f30707588997e5d4/transformed/vectordrawable-animated-1.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /home/whitehornet/.gradle/caches/transforms-4/e60335c5a908e859490b8f864f9d2bbf/transformed/vectordrawable-1.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] /home/whitehornet/.gradle/caches/transforms-4/999d8bd50491aee5bcbab9b34714224f/transformed/legacy-support-core-utils-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.loader:loader:1.0.0] /home/whitehornet/.gradle/caches/transforms-4/98fcecb886864a0bf8838d3a01b032a1/transformed/loader-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.viewpager:viewpager:1.0.0] /home/whitehornet/.gradle/caches/transforms-4/84e213ea9aadd6b8ed3125cd4aacceed/transformed/viewpager-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.customview:customview:1.1.0] /home/whitehornet/.gradle/caches/transforms-4/f09de8c93e2ef06762026e9597436358/transformed/customview-1.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.core:core:1.13.1] /home/whitehornet/.gradle/caches/transforms-4/efaa70db7a676ea97bf9a712e105b382/transformed/core-1.13.1/AndroidManifest.xml:17:1-30:12
+MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] /home/whitehornet/.gradle/caches/transforms-4/bee0c4a260f8b3353d166abeb40c1ab3/transformed/customview-poolingcontainer-1.0.0/AndroidManifest.xml:17:1-23:12
+MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] /home/whitehornet/.gradle/caches/transforms-4/9602d57adf84a19235531d1af7ce7ae5/transformed/savedstate-ktx-1.2.1/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.savedstate:savedstate:1.2.1] /home/whitehornet/.gradle/caches/transforms-4/146c28cba8837d7ad18f9a4bed299b56/transformed/savedstate-1.2.1/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.8.4] /home/whitehornet/.gradle/caches/transforms-4/4eb6fce19d8c3d0649f76070d62428d9/transformed/lifecycle-livedata-core-ktx-2.8.4/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.8.4] /home/whitehornet/.gradle/caches/transforms-4/f49c502567873877d415c58d06c3023e/transformed/lifecycle-livedata-2.8.4/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.4] /home/whitehornet/.gradle/caches/transforms-4/b03efa5e7341ef7b29619148f130243e/transformed/lifecycle-process-2.8.4/AndroidManifest.xml:17:1-35:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.8.4] /home/whitehornet/.gradle/caches/transforms-4/49d5396d769815b86d97e66805a7062e/transformed/lifecycle-livedata-core-2.8.4/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-runtime-android:2.8.4] /home/whitehornet/.gradle/caches/transforms-4/d46834171d3b642eb3e084255b2ad7f8/transformed/lifecycle-runtime-release/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.8.4] /home/whitehornet/.gradle/caches/transforms-4/de6b46a56bd8adc9b2a263ebe0888716/transformed/lifecycle-viewmodel-2.8.4/AndroidManifest.xml:2:1-5:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-android:2.8.4] /home/whitehornet/.gradle/caches/transforms-4/e41282d491711ac545fbbc173c2fd2ee/transformed/lifecycle-viewmodel-release/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.4] /home/whitehornet/.gradle/caches/transforms-4/a8564cfd06ac8ad57c50e76cb9b37cc5/transformed/lifecycle-viewmodel-ktx-2.8.4/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-runtime-ktx-android:2.8.4] /home/whitehornet/.gradle/caches/transforms-4/82f90c5eca09ce4a385c2460e5445f55/transformed/lifecycle-runtime-ktx-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.4] /home/whitehornet/.gradle/caches/transforms-4/70d3c4e8de7b9a7dbc4bdd97bfbbe657/transformed/lifecycle-viewmodel-savedstate-2.8.4/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.core:core-ktx:1.13.1] /home/whitehornet/.gradle/caches/transforms-4/f656209d673ad957fba76a00e2a5db66/transformed/core-ktx-1.13.1/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.room:room-runtime:2.6.1] /home/whitehornet/.gradle/caches/transforms-4/8db3148243567cacc771ebd26cdbb6be/transformed/room-runtime-2.6.1/AndroidManifest.xml:17:1-31:12
+MERGED from [androidx.room:room-ktx:2.6.1] /home/whitehornet/.gradle/caches/transforms-4/c201b9cbc13e5df2e27fcad765013f7c/transformed/room-ktx-2.6.1/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.sqlite:sqlite-framework:2.4.0] /home/whitehornet/.gradle/caches/transforms-4/ee585c470e034bd24adfc1c5bfccbe31/transformed/sqlite-framework-2.4.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.sqlite:sqlite:2.4.0] /home/whitehornet/.gradle/caches/transforms-4/8232ad6958b604d1af243408d42add95/transformed/sqlite-2.4.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.annotation:annotation-experimental:1.4.0] /home/whitehornet/.gradle/caches/transforms-4/b42acd9399927e4ea84bf074de7745e7/transformed/annotation-experimental-1.4.0/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /home/whitehornet/.gradle/caches/transforms-4/50ba14569063b8973a665a230a25242f/transformed/cursoradapter-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /home/whitehornet/.gradle/caches/transforms-4/ee05e975f03bd241ed19a6d4975517dc/transformed/profileinstaller-1.3.1/AndroidManifest.xml:17:1-55:12
+MERGED from [androidx.cardview:cardview:1.0.0] /home/whitehornet/.gradle/caches/transforms-4/d7ba6b9ef9fb06bfdce11e3319abe41e/transformed/cardview-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.interpolator:interpolator:1.0.0] /home/whitehornet/.gradle/caches/transforms-4/b654135fa38e290b6451b36e05112799/transformed/interpolator-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.arch.core:core-runtime:2.2.0] /home/whitehornet/.gradle/caches/transforms-4/cdee3977d28858b607d28a9de5376c3e/transformed/core-runtime-2.2.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /home/whitehornet/.gradle/caches/transforms-4/efb05164f1e12476972c3e1eace44ff1/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:17:1-27:12
+MERGED from [androidx.startup:startup-runtime:1.1.1] /home/whitehornet/.gradle/caches/transforms-4/d3b22b74754f540c8d8a498b0e0c97b5/transformed/startup-runtime-1.1.1/AndroidManifest.xml:17:1-33:12
+MERGED from [androidx.tracing:tracing:1.0.0] /home/whitehornet/.gradle/caches/transforms-4/7d3f8bc3647b016c03cd64863f586c00/transformed/tracing-1.0.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.documentfile:documentfile:1.0.0] /home/whitehornet/.gradle/caches/transforms-4/076446b10f458384adcc5581d83d6ed9/transformed/documentfile-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] /home/whitehornet/.gradle/caches/transforms-4/760b8a716184bedd62ae52ead38c49b7/transformed/localbroadcastmanager-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.print:print:1.0.0] /home/whitehornet/.gradle/caches/transforms-4/8521da37fe98452ddd69b0db7642cd39/transformed/print-1.0.0/AndroidManifest.xml:17:1-22:12
+	package
+		INJECTED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml
+	android:versionName
+		INJECTED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml
+	android:versionCode
+		INJECTED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml:2:11-69
+application
+ADDED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml:4:5-57:19
+INJECTED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml:4:5-57:19
+MERGED from [com.google.android.material:material:1.12.0] /home/whitehornet/.gradle/caches/transforms-4/03ec7c68e71ddb7a8103fe23086c04d1/transformed/material-1.12.0/AndroidManifest.xml:22:5-20
+MERGED from [com.google.android.material:material:1.12.0] /home/whitehornet/.gradle/caches/transforms-4/03ec7c68e71ddb7a8103fe23086c04d1/transformed/material-1.12.0/AndroidManifest.xml:22:5-20
+MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] /home/whitehornet/.gradle/caches/transforms-4/b5f36088d95dd34d063453fba4a15edc/transformed/constraintlayout-2.1.4/AndroidManifest.xml:9:5-20
+MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] /home/whitehornet/.gradle/caches/transforms-4/b5f36088d95dd34d063453fba4a15edc/transformed/constraintlayout-2.1.4/AndroidManifest.xml:9:5-20
+MERGED from [androidx.emoji2:emoji2:1.3.0] /home/whitehornet/.gradle/caches/transforms-4/4fc9fd2700c94c9abff287fd1cb6bfac/transformed/emoji2-1.3.0/AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.emoji2:emoji2:1.3.0] /home/whitehornet/.gradle/caches/transforms-4/4fc9fd2700c94c9abff287fd1cb6bfac/transformed/emoji2-1.3.0/AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.core:core:1.13.1] /home/whitehornet/.gradle/caches/transforms-4/efaa70db7a676ea97bf9a712e105b382/transformed/core-1.13.1/AndroidManifest.xml:28:5-89
+MERGED from [androidx.core:core:1.13.1] /home/whitehornet/.gradle/caches/transforms-4/efaa70db7a676ea97bf9a712e105b382/transformed/core-1.13.1/AndroidManifest.xml:28:5-89
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.4] /home/whitehornet/.gradle/caches/transforms-4/b03efa5e7341ef7b29619148f130243e/transformed/lifecycle-process-2.8.4/AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.4] /home/whitehornet/.gradle/caches/transforms-4/b03efa5e7341ef7b29619148f130243e/transformed/lifecycle-process-2.8.4/AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.room:room-runtime:2.6.1] /home/whitehornet/.gradle/caches/transforms-4/8db3148243567cacc771ebd26cdbb6be/transformed/room-runtime-2.6.1/AndroidManifest.xml:23:5-29:19
+MERGED from [androidx.room:room-runtime:2.6.1] /home/whitehornet/.gradle/caches/transforms-4/8db3148243567cacc771ebd26cdbb6be/transformed/room-runtime-2.6.1/AndroidManifest.xml:23:5-29:19
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /home/whitehornet/.gradle/caches/transforms-4/ee05e975f03bd241ed19a6d4975517dc/transformed/profileinstaller-1.3.1/AndroidManifest.xml:23:5-53:19
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /home/whitehornet/.gradle/caches/transforms-4/ee05e975f03bd241ed19a6d4975517dc/transformed/profileinstaller-1.3.1/AndroidManifest.xml:23:5-53:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /home/whitehornet/.gradle/caches/transforms-4/efb05164f1e12476972c3e1eace44ff1/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /home/whitehornet/.gradle/caches/transforms-4/efb05164f1e12476972c3e1eace44ff1/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.startup:startup-runtime:1.1.1] /home/whitehornet/.gradle/caches/transforms-4/d3b22b74754f540c8d8a498b0e0c97b5/transformed/startup-runtime-1.1.1/AndroidManifest.xml:25:5-31:19
+MERGED from [androidx.startup:startup-runtime:1.1.1] /home/whitehornet/.gradle/caches/transforms-4/d3b22b74754f540c8d8a498b0e0c97b5/transformed/startup-runtime-1.1.1/AndroidManifest.xml:25:5-31:19
+	android:extractNativeLibs
+		INJECTED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml
+	android:appComponentFactory
+		ADDED from [androidx.core:core:1.13.1] /home/whitehornet/.gradle/caches/transforms-4/efaa70db7a676ea97bf9a712e105b382/transformed/core-1.13.1/AndroidManifest.xml:28:18-86
+	android:supportsRtl
+		ADDED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml:10:9-35
+	android:label
+		ADDED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml:8:9-41
+	android:roundIcon
+		ADDED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml:9:9-54
+	android:icon
+		ADDED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml:7:9-43
+	android:allowBackup
+		ADDED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml:6:9-35
+	android:theme
+		ADDED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml:11:9-49
+	android:name
+		ADDED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml:5:9-28
+activity#com.warthogcash.presupuesto.ui.welcome.LauncherActivity
+ADDED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml:15:9-23:20
+	android:exported
+		ADDED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml:17:13-36
+	android:theme
+		ADDED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml:18:13-60
+	android:name
+		ADDED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml:16:13-56
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml:19:13-22:29
+action#android.intent.action.MAIN
+ADDED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml:20:17-69
+	android:name
+		ADDED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml:20:25-66
+category#android.intent.category.LAUNCHER
+ADDED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml:21:17-77
+	android:name
+		ADDED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml:21:27-74
+activity#com.warthogcash.presupuesto.ui.welcome.WelcomeActivity
+ADDED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml:25:9-27:40
+	android:exported
+		ADDED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml:27:13-37
+	android:name
+		ADDED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml:26:13-55
+activity#com.warthogcash.presupuesto.ui.main.MainActivity
+ADDED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml:29:9-31:40
+	android:exported
+		ADDED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml:31:13-37
+	android:name
+		ADDED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml:30:13-49
+activity#com.warthogcash.presupuesto.ui.mymonths.MyMonthsActivity
+ADDED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml:33:9-35:40
+	android:exported
+		ADDED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml:35:13-37
+	android:name
+		ADDED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml:34:13-57
+activity#com.warthogcash.presupuesto.ui.monthdetail.MonthDetailActivity
+ADDED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml:37:9-39:40
+	android:exported
+		ADDED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml:39:13-37
+	android:name
+		ADDED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml:38:13-63
+activity#com.warthogcash.presupuesto.ui.createmonth.CreateMonthActivity
+ADDED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml:41:9-43:40
+	android:exported
+		ADDED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml:43:13-37
+	android:name
+		ADDED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml:42:13-63
+activity#com.warthogcash.presupuesto.ui.addexpense.AddExpenseActivity
+ADDED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml:45:9-47:40
+	android:exported
+		ADDED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml:47:13-37
+	android:name
+		ADDED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml:46:13-61
+activity#com.warthogcash.presupuesto.ui.history.ExpenseHistoryActivity
+ADDED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml:49:9-51:40
+	android:exported
+		ADDED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml:51:13-37
+	android:name
+		ADDED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml:50:13-62
+activity#com.warthogcash.presupuesto.ui.closemonth.CloseMonthActivity
+ADDED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml:53:9-55:40
+	android:exported
+		ADDED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml:55:13-37
+	android:name
+		ADDED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml:54:13-61
+uses-sdk
+INJECTED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml
+INJECTED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml
+MERGED from [androidx.databinding:viewbinding:8.3.2] /home/whitehornet/.gradle/caches/transforms-4/9015e99d8b927fc846023e091181ca40/transformed/viewbinding-8.3.2/AndroidManifest.xml:5:5-44
+MERGED from [androidx.databinding:viewbinding:8.3.2] /home/whitehornet/.gradle/caches/transforms-4/9015e99d8b927fc846023e091181ca40/transformed/viewbinding-8.3.2/AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.material:material:1.12.0] /home/whitehornet/.gradle/caches/transforms-4/03ec7c68e71ddb7a8103fe23086c04d1/transformed/material-1.12.0/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.material:material:1.12.0] /home/whitehornet/.gradle/caches/transforms-4/03ec7c68e71ddb7a8103fe23086c04d1/transformed/material-1.12.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] /home/whitehornet/.gradle/caches/transforms-4/b5f36088d95dd34d063453fba4a15edc/transformed/constraintlayout-2.1.4/AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] /home/whitehornet/.gradle/caches/transforms-4/b5f36088d95dd34d063453fba4a15edc/transformed/constraintlayout-2.1.4/AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.appcompat:appcompat-resources:1.7.0] /home/whitehornet/.gradle/caches/transforms-4/5d4e53522431545451cf73c1c782e46f/transformed/appcompat-resources-1.7.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.appcompat:appcompat-resources:1.7.0] /home/whitehornet/.gradle/caches/transforms-4/5d4e53522431545451cf73c1c782e46f/transformed/appcompat-resources-1.7.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.appcompat:appcompat:1.7.0] /home/whitehornet/.gradle/caches/transforms-4/ccb47b11a6c15d538da74863c97dc093/transformed/appcompat-1.7.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.appcompat:appcompat:1.7.0] /home/whitehornet/.gradle/caches/transforms-4/ccb47b11a6c15d538da74863c97dc093/transformed/appcompat-1.7.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.recyclerview:recyclerview:1.3.2] /home/whitehornet/.gradle/caches/transforms-4/ea9bcfa105e625070e6ca000cbf2c403/transformed/recyclerview-1.3.2/AndroidManifest.xml:20:5-44
+MERGED from [androidx.recyclerview:recyclerview:1.3.2] /home/whitehornet/.gradle/caches/transforms-4/ea9bcfa105e625070e6ca000cbf2c403/transformed/recyclerview-1.3.2/AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager2:viewpager2:1.1.0-beta02] /home/whitehornet/.gradle/caches/transforms-4/cdec934b9b19d3f8265bff8f160fb333/transformed/viewpager2-1.1.0-beta02/AndroidManifest.xml:5:5-44
+MERGED from [androidx.viewpager2:viewpager2:1.1.0-beta02] /home/whitehornet/.gradle/caches/transforms-4/cdec934b9b19d3f8265bff8f160fb333/transformed/viewpager2-1.1.0-beta02/AndroidManifest.xml:5:5-44
+MERGED from [androidx.fragment:fragment:1.5.4] /home/whitehornet/.gradle/caches/transforms-4/6b28b037806bbcbedbc8dcb99962fbef/transformed/fragment-1.5.4/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.fragment:fragment:1.5.4] /home/whitehornet/.gradle/caches/transforms-4/6b28b037806bbcbedbc8dcb99962fbef/transformed/fragment-1.5.4/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.activity:activity:1.9.1] /home/whitehornet/.gradle/caches/transforms-4/9f7fd057521eecc34a85a1af8cc5b360/transformed/activity-1.9.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.activity:activity:1.9.1] /home/whitehornet/.gradle/caches/transforms-4/9f7fd057521eecc34a85a1af8cc5b360/transformed/activity-1.9.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.activity:activity-ktx:1.9.1] /home/whitehornet/.gradle/caches/transforms-4/6289d9d09ab21b30300305557e790457/transformed/activity-ktx-1.9.1/AndroidManifest.xml:5:5-44
+MERGED from [androidx.activity:activity-ktx:1.9.1] /home/whitehornet/.gradle/caches/transforms-4/6289d9d09ab21b30300305557e790457/transformed/activity-ktx-1.9.1/AndroidManifest.xml:5:5-44
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.1.0] /home/whitehornet/.gradle/caches/transforms-4/7dbeab08bbbafb7aea80383aad0265fe/transformed/swiperefreshlayout-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.1.0] /home/whitehornet/.gradle/caches/transforms-4/7dbeab08bbbafb7aea80383aad0265fe/transformed/swiperefreshlayout-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.emoji2:emoji2-views-helper:1.3.0] /home/whitehornet/.gradle/caches/transforms-4/008d0feb1b30b943897d863dfa7bbe5b/transformed/emoji2-views-helper-1.3.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.emoji2:emoji2-views-helper:1.3.0] /home/whitehornet/.gradle/caches/transforms-4/008d0feb1b30b943897d863dfa7bbe5b/transformed/emoji2-views-helper-1.3.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.emoji2:emoji2:1.3.0] /home/whitehornet/.gradle/caches/transforms-4/4fc9fd2700c94c9abff287fd1cb6bfac/transformed/emoji2-1.3.0/AndroidManifest.xml:21:5-44
+MERGED from [androidx.emoji2:emoji2:1.3.0] /home/whitehornet/.gradle/caches/transforms-4/4fc9fd2700c94c9abff287fd1cb6bfac/transformed/emoji2-1.3.0/AndroidManifest.xml:21:5-44
+MERGED from [androidx.drawerlayout:drawerlayout:1.1.1] /home/whitehornet/.gradle/caches/transforms-4/fcbd2751487ee4af86fd2a6d02f99774/transformed/drawerlayout-1.1.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.drawerlayout:drawerlayout:1.1.1] /home/whitehornet/.gradle/caches/transforms-4/fcbd2751487ee4af86fd2a6d02f99774/transformed/drawerlayout-1.1.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.1.0] /home/whitehornet/.gradle/caches/transforms-4/b6a953b7d3873918a661fba5b80ec4c6/transformed/coordinatorlayout-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.1.0] /home/whitehornet/.gradle/caches/transforms-4/b6a953b7d3873918a661fba5b80ec4c6/transformed/coordinatorlayout-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.transition:transition:1.5.0] /home/whitehornet/.gradle/caches/transforms-4/0acc28ffb2a4b8efc1face6edee5c0b5/transformed/transition-1.5.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.transition:transition:1.5.0] /home/whitehornet/.gradle/caches/transforms-4/0acc28ffb2a4b8efc1face6edee5c0b5/transformed/transition-1.5.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.dynamicanimation:dynamicanimation:1.0.0] /home/whitehornet/.gradle/caches/transforms-4/c35238ec2f8d8eb8e6432fe153af2f7e/transformed/dynamicanimation-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.dynamicanimation:dynamicanimation:1.0.0] /home/whitehornet/.gradle/caches/transforms-4/c35238ec2f8d8eb8e6432fe153af2f7e/transformed/dynamicanimation-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /home/whitehornet/.gradle/caches/transforms-4/ffd762b3c83fd172f30707588997e5d4/transformed/vectordrawable-animated-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /home/whitehornet/.gradle/caches/transforms-4/ffd762b3c83fd172f30707588997e5d4/transformed/vectordrawable-animated-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /home/whitehornet/.gradle/caches/transforms-4/e60335c5a908e859490b8f864f9d2bbf/transformed/vectordrawable-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /home/whitehornet/.gradle/caches/transforms-4/e60335c5a908e859490b8f864f9d2bbf/transformed/vectordrawable-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] /home/whitehornet/.gradle/caches/transforms-4/999d8bd50491aee5bcbab9b34714224f/transformed/legacy-support-core-utils-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] /home/whitehornet/.gradle/caches/transforms-4/999d8bd50491aee5bcbab9b34714224f/transformed/legacy-support-core-utils-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] /home/whitehornet/.gradle/caches/transforms-4/98fcecb886864a0bf8838d3a01b032a1/transformed/loader-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] /home/whitehornet/.gradle/caches/transforms-4/98fcecb886864a0bf8838d3a01b032a1/transformed/loader-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] /home/whitehornet/.gradle/caches/transforms-4/84e213ea9aadd6b8ed3125cd4aacceed/transformed/viewpager-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] /home/whitehornet/.gradle/caches/transforms-4/84e213ea9aadd6b8ed3125cd4aacceed/transformed/viewpager-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.1.0] /home/whitehornet/.gradle/caches/transforms-4/f09de8c93e2ef06762026e9597436358/transformed/customview-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.customview:customview:1.1.0] /home/whitehornet/.gradle/caches/transforms-4/f09de8c93e2ef06762026e9597436358/transformed/customview-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.core:core:1.13.1] /home/whitehornet/.gradle/caches/transforms-4/efaa70db7a676ea97bf9a712e105b382/transformed/core-1.13.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core:1.13.1] /home/whitehornet/.gradle/caches/transforms-4/efaa70db7a676ea97bf9a712e105b382/transformed/core-1.13.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] /home/whitehornet/.gradle/caches/transforms-4/bee0c4a260f8b3353d166abeb40c1ab3/transformed/customview-poolingcontainer-1.0.0/AndroidManifest.xml:20:5-21:38
+MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] /home/whitehornet/.gradle/caches/transforms-4/bee0c4a260f8b3353d166abeb40c1ab3/transformed/customview-poolingcontainer-1.0.0/AndroidManifest.xml:20:5-21:38
+MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] /home/whitehornet/.gradle/caches/transforms-4/9602d57adf84a19235531d1af7ce7ae5/transformed/savedstate-ktx-1.2.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] /home/whitehornet/.gradle/caches/transforms-4/9602d57adf84a19235531d1af7ce7ae5/transformed/savedstate-ktx-1.2.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate:1.2.1] /home/whitehornet/.gradle/caches/transforms-4/146c28cba8837d7ad18f9a4bed299b56/transformed/savedstate-1.2.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate:1.2.1] /home/whitehornet/.gradle/caches/transforms-4/146c28cba8837d7ad18f9a4bed299b56/transformed/savedstate-1.2.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.8.4] /home/whitehornet/.gradle/caches/transforms-4/4eb6fce19d8c3d0649f76070d62428d9/transformed/lifecycle-livedata-core-ktx-2.8.4/AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.8.4] /home/whitehornet/.gradle/caches/transforms-4/4eb6fce19d8c3d0649f76070d62428d9/transformed/lifecycle-livedata-core-ktx-2.8.4/AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.8.4] /home/whitehornet/.gradle/caches/transforms-4/f49c502567873877d415c58d06c3023e/transformed/lifecycle-livedata-2.8.4/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.8.4] /home/whitehornet/.gradle/caches/transforms-4/f49c502567873877d415c58d06c3023e/transformed/lifecycle-livedata-2.8.4/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.4] /home/whitehornet/.gradle/caches/transforms-4/b03efa5e7341ef7b29619148f130243e/transformed/lifecycle-process-2.8.4/AndroidManifest.xml:21:5-44
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.4] /home/whitehornet/.gradle/caches/transforms-4/b03efa5e7341ef7b29619148f130243e/transformed/lifecycle-process-2.8.4/AndroidManifest.xml:21:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.8.4] /home/whitehornet/.gradle/caches/transforms-4/49d5396d769815b86d97e66805a7062e/transformed/lifecycle-livedata-core-2.8.4/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.8.4] /home/whitehornet/.gradle/caches/transforms-4/49d5396d769815b86d97e66805a7062e/transformed/lifecycle-livedata-core-2.8.4/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-android:2.8.4] /home/whitehornet/.gradle/caches/transforms-4/d46834171d3b642eb3e084255b2ad7f8/transformed/lifecycle-runtime-release/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-android:2.8.4] /home/whitehornet/.gradle/caches/transforms-4/d46834171d3b642eb3e084255b2ad7f8/transformed/lifecycle-runtime-release/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.8.4] /home/whitehornet/.gradle/caches/transforms-4/de6b46a56bd8adc9b2a263ebe0888716/transformed/lifecycle-viewmodel-2.8.4/AndroidManifest.xml:4:5-43
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.8.4] /home/whitehornet/.gradle/caches/transforms-4/de6b46a56bd8adc9b2a263ebe0888716/transformed/lifecycle-viewmodel-2.8.4/AndroidManifest.xml:4:5-43
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-android:2.8.4] /home/whitehornet/.gradle/caches/transforms-4/e41282d491711ac545fbbc173c2fd2ee/transformed/lifecycle-viewmodel-release/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-android:2.8.4] /home/whitehornet/.gradle/caches/transforms-4/e41282d491711ac545fbbc173c2fd2ee/transformed/lifecycle-viewmodel-release/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.4] /home/whitehornet/.gradle/caches/transforms-4/a8564cfd06ac8ad57c50e76cb9b37cc5/transformed/lifecycle-viewmodel-ktx-2.8.4/AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.4] /home/whitehornet/.gradle/caches/transforms-4/a8564cfd06ac8ad57c50e76cb9b37cc5/transformed/lifecycle-viewmodel-ktx-2.8.4/AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-ktx-android:2.8.4] /home/whitehornet/.gradle/caches/transforms-4/82f90c5eca09ce4a385c2460e5445f55/transformed/lifecycle-runtime-ktx-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-ktx-android:2.8.4] /home/whitehornet/.gradle/caches/transforms-4/82f90c5eca09ce4a385c2460e5445f55/transformed/lifecycle-runtime-ktx-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.4] /home/whitehornet/.gradle/caches/transforms-4/70d3c4e8de7b9a7dbc4bdd97bfbbe657/transformed/lifecycle-viewmodel-savedstate-2.8.4/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.4] /home/whitehornet/.gradle/caches/transforms-4/70d3c4e8de7b9a7dbc4bdd97bfbbe657/transformed/lifecycle-viewmodel-savedstate-2.8.4/AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core-ktx:1.13.1] /home/whitehornet/.gradle/caches/transforms-4/f656209d673ad957fba76a00e2a5db66/transformed/core-ktx-1.13.1/AndroidManifest.xml:5:5-44
+MERGED from [androidx.core:core-ktx:1.13.1] /home/whitehornet/.gradle/caches/transforms-4/f656209d673ad957fba76a00e2a5db66/transformed/core-ktx-1.13.1/AndroidManifest.xml:5:5-44
+MERGED from [androidx.room:room-runtime:2.6.1] /home/whitehornet/.gradle/caches/transforms-4/8db3148243567cacc771ebd26cdbb6be/transformed/room-runtime-2.6.1/AndroidManifest.xml:21:5-44
+MERGED from [androidx.room:room-runtime:2.6.1] /home/whitehornet/.gradle/caches/transforms-4/8db3148243567cacc771ebd26cdbb6be/transformed/room-runtime-2.6.1/AndroidManifest.xml:21:5-44
+MERGED from [androidx.room:room-ktx:2.6.1] /home/whitehornet/.gradle/caches/transforms-4/c201b9cbc13e5df2e27fcad765013f7c/transformed/room-ktx-2.6.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.room:room-ktx:2.6.1] /home/whitehornet/.gradle/caches/transforms-4/c201b9cbc13e5df2e27fcad765013f7c/transformed/room-ktx-2.6.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.sqlite:sqlite-framework:2.4.0] /home/whitehornet/.gradle/caches/transforms-4/ee585c470e034bd24adfc1c5bfccbe31/transformed/sqlite-framework-2.4.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.sqlite:sqlite-framework:2.4.0] /home/whitehornet/.gradle/caches/transforms-4/ee585c470e034bd24adfc1c5bfccbe31/transformed/sqlite-framework-2.4.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.sqlite:sqlite:2.4.0] /home/whitehornet/.gradle/caches/transforms-4/8232ad6958b604d1af243408d42add95/transformed/sqlite-2.4.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.sqlite:sqlite:2.4.0] /home/whitehornet/.gradle/caches/transforms-4/8232ad6958b604d1af243408d42add95/transformed/sqlite-2.4.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.annotation:annotation-experimental:1.4.0] /home/whitehornet/.gradle/caches/transforms-4/b42acd9399927e4ea84bf074de7745e7/transformed/annotation-experimental-1.4.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.annotation:annotation-experimental:1.4.0] /home/whitehornet/.gradle/caches/transforms-4/b42acd9399927e4ea84bf074de7745e7/transformed/annotation-experimental-1.4.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /home/whitehornet/.gradle/caches/transforms-4/50ba14569063b8973a665a230a25242f/transformed/cursoradapter-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /home/whitehornet/.gradle/caches/transforms-4/50ba14569063b8973a665a230a25242f/transformed/cursoradapter-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /home/whitehornet/.gradle/caches/transforms-4/ee05e975f03bd241ed19a6d4975517dc/transformed/profileinstaller-1.3.1/AndroidManifest.xml:21:5-44
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /home/whitehornet/.gradle/caches/transforms-4/ee05e975f03bd241ed19a6d4975517dc/transformed/profileinstaller-1.3.1/AndroidManifest.xml:21:5-44
+MERGED from [androidx.cardview:cardview:1.0.0] /home/whitehornet/.gradle/caches/transforms-4/d7ba6b9ef9fb06bfdce11e3319abe41e/transformed/cardview-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.cardview:cardview:1.0.0] /home/whitehornet/.gradle/caches/transforms-4/d7ba6b9ef9fb06bfdce11e3319abe41e/transformed/cardview-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] /home/whitehornet/.gradle/caches/transforms-4/b654135fa38e290b6451b36e05112799/transformed/interpolator-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] /home/whitehornet/.gradle/caches/transforms-4/b654135fa38e290b6451b36e05112799/transformed/interpolator-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.2.0] /home/whitehornet/.gradle/caches/transforms-4/cdee3977d28858b607d28a9de5376c3e/transformed/core-runtime-2.2.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.2.0] /home/whitehornet/.gradle/caches/transforms-4/cdee3977d28858b607d28a9de5376c3e/transformed/core-runtime-2.2.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /home/whitehornet/.gradle/caches/transforms-4/efb05164f1e12476972c3e1eace44ff1/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /home/whitehornet/.gradle/caches/transforms-4/efb05164f1e12476972c3e1eace44ff1/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.startup:startup-runtime:1.1.1] /home/whitehornet/.gradle/caches/transforms-4/d3b22b74754f540c8d8a498b0e0c97b5/transformed/startup-runtime-1.1.1/AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.startup:startup-runtime:1.1.1] /home/whitehornet/.gradle/caches/transforms-4/d3b22b74754f540c8d8a498b0e0c97b5/transformed/startup-runtime-1.1.1/AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.tracing:tracing:1.0.0] /home/whitehornet/.gradle/caches/transforms-4/7d3f8bc3647b016c03cd64863f586c00/transformed/tracing-1.0.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.tracing:tracing:1.0.0] /home/whitehornet/.gradle/caches/transforms-4/7d3f8bc3647b016c03cd64863f586c00/transformed/tracing-1.0.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.documentfile:documentfile:1.0.0] /home/whitehornet/.gradle/caches/transforms-4/076446b10f458384adcc5581d83d6ed9/transformed/documentfile-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.documentfile:documentfile:1.0.0] /home/whitehornet/.gradle/caches/transforms-4/076446b10f458384adcc5581d83d6ed9/transformed/documentfile-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] /home/whitehornet/.gradle/caches/transforms-4/760b8a716184bedd62ae52ead38c49b7/transformed/localbroadcastmanager-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] /home/whitehornet/.gradle/caches/transforms-4/760b8a716184bedd62ae52ead38c49b7/transformed/localbroadcastmanager-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.print:print:1.0.0] /home/whitehornet/.gradle/caches/transforms-4/8521da37fe98452ddd69b0db7642cd39/transformed/print-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.print:print:1.0.0] /home/whitehornet/.gradle/caches/transforms-4/8521da37fe98452ddd69b0db7642cd39/transformed/print-1.0.0/AndroidManifest.xml:20:5-44
+	android:targetSdkVersion
+		INJECTED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/src/main/AndroidManifest.xml
+provider#androidx.startup.InitializationProvider
+ADDED from [androidx.emoji2:emoji2:1.3.0] /home/whitehornet/.gradle/caches/transforms-4/4fc9fd2700c94c9abff287fd1cb6bfac/transformed/emoji2-1.3.0/AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.4] /home/whitehornet/.gradle/caches/transforms-4/b03efa5e7341ef7b29619148f130243e/transformed/lifecycle-process-2.8.4/AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.4] /home/whitehornet/.gradle/caches/transforms-4/b03efa5e7341ef7b29619148f130243e/transformed/lifecycle-process-2.8.4/AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /home/whitehornet/.gradle/caches/transforms-4/ee05e975f03bd241ed19a6d4975517dc/transformed/profileinstaller-1.3.1/AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /home/whitehornet/.gradle/caches/transforms-4/ee05e975f03bd241ed19a6d4975517dc/transformed/profileinstaller-1.3.1/AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.startup:startup-runtime:1.1.1] /home/whitehornet/.gradle/caches/transforms-4/d3b22b74754f540c8d8a498b0e0c97b5/transformed/startup-runtime-1.1.1/AndroidManifest.xml:26:9-30:34
+MERGED from [androidx.startup:startup-runtime:1.1.1] /home/whitehornet/.gradle/caches/transforms-4/d3b22b74754f540c8d8a498b0e0c97b5/transformed/startup-runtime-1.1.1/AndroidManifest.xml:26:9-30:34
+	tools:node
+		ADDED from [androidx.emoji2:emoji2:1.3.0] /home/whitehornet/.gradle/caches/transforms-4/4fc9fd2700c94c9abff287fd1cb6bfac/transformed/emoji2-1.3.0/AndroidManifest.xml:28:13-31
+	android:authorities
+		ADDED from [androidx.emoji2:emoji2:1.3.0] /home/whitehornet/.gradle/caches/transforms-4/4fc9fd2700c94c9abff287fd1cb6bfac/transformed/emoji2-1.3.0/AndroidManifest.xml:26:13-68
+	android:exported
+		ADDED from [androidx.emoji2:emoji2:1.3.0] /home/whitehornet/.gradle/caches/transforms-4/4fc9fd2700c94c9abff287fd1cb6bfac/transformed/emoji2-1.3.0/AndroidManifest.xml:27:13-37
+	android:name
+		ADDED from [androidx.emoji2:emoji2:1.3.0] /home/whitehornet/.gradle/caches/transforms-4/4fc9fd2700c94c9abff287fd1cb6bfac/transformed/emoji2-1.3.0/AndroidManifest.xml:25:13-67
+meta-data#androidx.emoji2.text.EmojiCompatInitializer
+ADDED from [androidx.emoji2:emoji2:1.3.0] /home/whitehornet/.gradle/caches/transforms-4/4fc9fd2700c94c9abff287fd1cb6bfac/transformed/emoji2-1.3.0/AndroidManifest.xml:29:13-31:52
+	android:value
+		ADDED from [androidx.emoji2:emoji2:1.3.0] /home/whitehornet/.gradle/caches/transforms-4/4fc9fd2700c94c9abff287fd1cb6bfac/transformed/emoji2-1.3.0/AndroidManifest.xml:31:17-49
+	android:name
+		ADDED from [androidx.emoji2:emoji2:1.3.0] /home/whitehornet/.gradle/caches/transforms-4/4fc9fd2700c94c9abff287fd1cb6bfac/transformed/emoji2-1.3.0/AndroidManifest.xml:30:17-75
+permission#${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.13.1] /home/whitehornet/.gradle/caches/transforms-4/efaa70db7a676ea97bf9a712e105b382/transformed/core-1.13.1/AndroidManifest.xml:22:5-24:47
+	android:protectionLevel
+		ADDED from [androidx.core:core:1.13.1] /home/whitehornet/.gradle/caches/transforms-4/efaa70db7a676ea97bf9a712e105b382/transformed/core-1.13.1/AndroidManifest.xml:24:9-44
+	android:name
+		ADDED from [androidx.core:core:1.13.1] /home/whitehornet/.gradle/caches/transforms-4/efaa70db7a676ea97bf9a712e105b382/transformed/core-1.13.1/AndroidManifest.xml:23:9-81
+permission#com.warthogcash.presupuesto.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.13.1] /home/whitehornet/.gradle/caches/transforms-4/efaa70db7a676ea97bf9a712e105b382/transformed/core-1.13.1/AndroidManifest.xml:22:5-24:47
+	android:protectionLevel
+		ADDED from [androidx.core:core:1.13.1] /home/whitehornet/.gradle/caches/transforms-4/efaa70db7a676ea97bf9a712e105b382/transformed/core-1.13.1/AndroidManifest.xml:24:9-44
+	android:name
+		ADDED from [androidx.core:core:1.13.1] /home/whitehornet/.gradle/caches/transforms-4/efaa70db7a676ea97bf9a712e105b382/transformed/core-1.13.1/AndroidManifest.xml:23:9-81
+uses-permission#${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.13.1] /home/whitehornet/.gradle/caches/transforms-4/efaa70db7a676ea97bf9a712e105b382/transformed/core-1.13.1/AndroidManifest.xml:26:5-97
+	android:name
+		ADDED from [androidx.core:core:1.13.1] /home/whitehornet/.gradle/caches/transforms-4/efaa70db7a676ea97bf9a712e105b382/transformed/core-1.13.1/AndroidManifest.xml:26:22-94
+uses-permission#com.warthogcash.presupuesto.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.13.1] /home/whitehornet/.gradle/caches/transforms-4/efaa70db7a676ea97bf9a712e105b382/transformed/core-1.13.1/AndroidManifest.xml:26:5-97
+	android:name
+		ADDED from [androidx.core:core:1.13.1] /home/whitehornet/.gradle/caches/transforms-4/efaa70db7a676ea97bf9a712e105b382/transformed/core-1.13.1/AndroidManifest.xml:26:22-94
+meta-data#androidx.lifecycle.ProcessLifecycleInitializer
+ADDED from [androidx.lifecycle:lifecycle-process:2.8.4] /home/whitehornet/.gradle/caches/transforms-4/b03efa5e7341ef7b29619148f130243e/transformed/lifecycle-process-2.8.4/AndroidManifest.xml:29:13-31:52
+	android:value
+		ADDED from [androidx.lifecycle:lifecycle-process:2.8.4] /home/whitehornet/.gradle/caches/transforms-4/b03efa5e7341ef7b29619148f130243e/transformed/lifecycle-process-2.8.4/AndroidManifest.xml:31:17-49
+	android:name
+		ADDED from [androidx.lifecycle:lifecycle-process:2.8.4] /home/whitehornet/.gradle/caches/transforms-4/b03efa5e7341ef7b29619148f130243e/transformed/lifecycle-process-2.8.4/AndroidManifest.xml:30:17-78
+service#androidx.room.MultiInstanceInvalidationService
+ADDED from [androidx.room:room-runtime:2.6.1] /home/whitehornet/.gradle/caches/transforms-4/8db3148243567cacc771ebd26cdbb6be/transformed/room-runtime-2.6.1/AndroidManifest.xml:24:9-28:63
+	android:exported
+		ADDED from [androidx.room:room-runtime:2.6.1] /home/whitehornet/.gradle/caches/transforms-4/8db3148243567cacc771ebd26cdbb6be/transformed/room-runtime-2.6.1/AndroidManifest.xml:27:13-37
+	tools:ignore
+		ADDED from [androidx.room:room-runtime:2.6.1] /home/whitehornet/.gradle/caches/transforms-4/8db3148243567cacc771ebd26cdbb6be/transformed/room-runtime-2.6.1/AndroidManifest.xml:28:13-60
+	android:directBootAware
+		ADDED from [androidx.room:room-runtime:2.6.1] /home/whitehornet/.gradle/caches/transforms-4/8db3148243567cacc771ebd26cdbb6be/transformed/room-runtime-2.6.1/AndroidManifest.xml:26:13-43
+	android:name
+		ADDED from [androidx.room:room-runtime:2.6.1] /home/whitehornet/.gradle/caches/transforms-4/8db3148243567cacc771ebd26cdbb6be/transformed/room-runtime-2.6.1/AndroidManifest.xml:25:13-74
+meta-data#androidx.profileinstaller.ProfileInstallerInitializer
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /home/whitehornet/.gradle/caches/transforms-4/ee05e975f03bd241ed19a6d4975517dc/transformed/profileinstaller-1.3.1/AndroidManifest.xml:29:13-31:52
+	android:value
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /home/whitehornet/.gradle/caches/transforms-4/ee05e975f03bd241ed19a6d4975517dc/transformed/profileinstaller-1.3.1/AndroidManifest.xml:31:17-49
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /home/whitehornet/.gradle/caches/transforms-4/ee05e975f03bd241ed19a6d4975517dc/transformed/profileinstaller-1.3.1/AndroidManifest.xml:30:17-85
+receiver#androidx.profileinstaller.ProfileInstallReceiver
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /home/whitehornet/.gradle/caches/transforms-4/ee05e975f03bd241ed19a6d4975517dc/transformed/profileinstaller-1.3.1/AndroidManifest.xml:34:9-52:20
+	android:enabled
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /home/whitehornet/.gradle/caches/transforms-4/ee05e975f03bd241ed19a6d4975517dc/transformed/profileinstaller-1.3.1/AndroidManifest.xml:37:13-35
+	android:exported
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /home/whitehornet/.gradle/caches/transforms-4/ee05e975f03bd241ed19a6d4975517dc/transformed/profileinstaller-1.3.1/AndroidManifest.xml:38:13-36
+	android:permission
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /home/whitehornet/.gradle/caches/transforms-4/ee05e975f03bd241ed19a6d4975517dc/transformed/profileinstaller-1.3.1/AndroidManifest.xml:39:13-57
+	android:directBootAware
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /home/whitehornet/.gradle/caches/transforms-4/ee05e975f03bd241ed19a6d4975517dc/transformed/profileinstaller-1.3.1/AndroidManifest.xml:36:13-44
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /home/whitehornet/.gradle/caches/transforms-4/ee05e975f03bd241ed19a6d4975517dc/transformed/profileinstaller-1.3.1/AndroidManifest.xml:35:13-76
+intent-filter#action:name:androidx.profileinstaller.action.INSTALL_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /home/whitehornet/.gradle/caches/transforms-4/ee05e975f03bd241ed19a6d4975517dc/transformed/profileinstaller-1.3.1/AndroidManifest.xml:40:13-42:29
+action#androidx.profileinstaller.action.INSTALL_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /home/whitehornet/.gradle/caches/transforms-4/ee05e975f03bd241ed19a6d4975517dc/transformed/profileinstaller-1.3.1/AndroidManifest.xml:41:17-91
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /home/whitehornet/.gradle/caches/transforms-4/ee05e975f03bd241ed19a6d4975517dc/transformed/profileinstaller-1.3.1/AndroidManifest.xml:41:25-88
+intent-filter#action:name:androidx.profileinstaller.action.SKIP_FILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /home/whitehornet/.gradle/caches/transforms-4/ee05e975f03bd241ed19a6d4975517dc/transformed/profileinstaller-1.3.1/AndroidManifest.xml:43:13-45:29
+action#androidx.profileinstaller.action.SKIP_FILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /home/whitehornet/.gradle/caches/transforms-4/ee05e975f03bd241ed19a6d4975517dc/transformed/profileinstaller-1.3.1/AndroidManifest.xml:44:17-85
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /home/whitehornet/.gradle/caches/transforms-4/ee05e975f03bd241ed19a6d4975517dc/transformed/profileinstaller-1.3.1/AndroidManifest.xml:44:25-82
+intent-filter#action:name:androidx.profileinstaller.action.SAVE_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /home/whitehornet/.gradle/caches/transforms-4/ee05e975f03bd241ed19a6d4975517dc/transformed/profileinstaller-1.3.1/AndroidManifest.xml:46:13-48:29
+action#androidx.profileinstaller.action.SAVE_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /home/whitehornet/.gradle/caches/transforms-4/ee05e975f03bd241ed19a6d4975517dc/transformed/profileinstaller-1.3.1/AndroidManifest.xml:47:17-88
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /home/whitehornet/.gradle/caches/transforms-4/ee05e975f03bd241ed19a6d4975517dc/transformed/profileinstaller-1.3.1/AndroidManifest.xml:47:25-85
+intent-filter#action:name:androidx.profileinstaller.action.BENCHMARK_OPERATION
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /home/whitehornet/.gradle/caches/transforms-4/ee05e975f03bd241ed19a6d4975517dc/transformed/profileinstaller-1.3.1/AndroidManifest.xml:49:13-51:29
+action#androidx.profileinstaller.action.BENCHMARK_OPERATION
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /home/whitehornet/.gradle/caches/transforms-4/ee05e975f03bd241ed19a6d4975517dc/transformed/profileinstaller-1.3.1/AndroidManifest.xml:50:17-95
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /home/whitehornet/.gradle/caches/transforms-4/ee05e975f03bd241ed19a6d4975517dc/transformed/profileinstaller-1.3.1/AndroidManifest.xml:50:25-92

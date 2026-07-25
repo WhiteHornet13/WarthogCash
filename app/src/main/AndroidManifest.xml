@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application
+        android:name=".App"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.WarthogCash">
+
+        <!-- Decide de forma centralizada si procede Bienvenida o Pantalla principal,
+             según exista o no algún mes creado (ver spec "Bienvenida", punto 2). -->
+        <activity
+            android:name=".ui.welcome.LauncherActivity"
+            android:exported="true"
+            android:theme="@style/Theme.WarthogCash.Splash">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ui.welcome.WelcomeActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.main.MainActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.mymonths.MyMonthsActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.monthdetail.MonthDetailActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.createmonth.CreateMonthActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.addexpense.AddExpenseActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.history.ExpenseHistoryActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.closemonth.CloseMonthActivity"
+            android:exported="false" />
+
+    </application>
+
+</manifest>

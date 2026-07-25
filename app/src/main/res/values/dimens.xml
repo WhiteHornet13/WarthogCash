@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="espaciado_xs">4dp</dimen>
+    <dimen name="espaciado_s">8dp</dimen>
+    <dimen name="espaciado_m">16dp</dimen>
+    <dimen name="espaciado_l">24dp</dimen>
+    <dimen name="espaciado_xl">32dp</dimen>
+
+    <dimen name="radio_esquina_header">28dp</dimen>
+    <dimen name="radio_esquina_tarjeta">16dp</dimen>
+
+    <dimen name="texto_importe_grande">36sp</dimen>
+    <dimen name="texto_disponible_header">32sp</dimen>
+    <dimen name="texto_titulo">20sp</dimen>
+    <dimen name="texto_cuerpo">15sp</dimen>
+    <dimen name="texto_pequeno">13sp</dimen>
+</resources>
