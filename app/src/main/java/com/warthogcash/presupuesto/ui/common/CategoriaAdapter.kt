@@ -60,7 +60,7 @@ class CategoriaAdapter(
             val textoNombre = "●  ${categoria.tipo.etiqueta}"
             binding.tvNombreCategoria.text = SpannableString(textoNombre).apply {
                 setSpan(
-                    ForegroundColorSpan(ContextCompat.getColor(contexto, colorEstado)),
+                    ForegroundColorSpan(ContextCompat.getColor(contexto, categoria.tipo.colorResId)),
                     0, 1, android.text.Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                 )
             }
@@ -79,7 +79,7 @@ class CategoriaAdapter(
             val progressDrawable = binding.barraProgreso.progressDrawable
             if (progressDrawable is LayerDrawable) {
                 val capaProgreso = progressDrawable.findDrawableByLayerId(android.R.id.progress)
-                capaProgreso?.setTint(ContextCompat.getColor(contexto, colorEstado))
+                capaProgreso?.mutate()?.setTint(ContextCompat.getColor(contexto, colorEstado))
             }
 
             binding.tarjetaCategoria.setOnClickListener { alPulsarCategoria(categoria) }

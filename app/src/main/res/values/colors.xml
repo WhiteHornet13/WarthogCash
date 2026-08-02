@@ -5,6 +5,10 @@
     <color name="fondo_pantalla">#F7F5F0</color>
     <color name="texto_secundario">#5C6B63</color>
 
+    <color name="verde_ahorro">#52B788</color>
+    <color name="azul_ocio">#3D7EA6</color>
+    <color name="naranja_cultura">#D97B3D</color>
+
     <color name="progreso_normal">#2D6A4F</color>
     <color name="acento_ambar">#E8A33D</color>
     <color name="rojo_limite">#C4453B</color>

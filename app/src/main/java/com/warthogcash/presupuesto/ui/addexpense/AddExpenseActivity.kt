@@ -72,7 +72,9 @@ class AddExpenseActivity : AppCompatActivity() {
                 isClickable = true
                 chipBackgroundColor = ContextCompat.getColorStateList(context, R.color.chip_background_selector)
                 setTextColor(ContextCompat.getColorStateList(context, R.color.chip_text_selector))
-                chipStrokeColor = ContextCompat.getColorStateList(context, R.color.chip_stroke_selector)
+                chipStrokeColor = android.content.res.ColorStateList.valueOf(
+                    ContextCompat.getColor(context, categoria.tipo.colorResId)
+                )
                 chipStrokeWidth = resources.getDisplayMetrics().density
                 setOnClickListener {
                     categoriaSeleccionada = categoria

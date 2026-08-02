@@ -102,7 +102,7 @@ class MonthListAdapter(
             val drawable = binding.barraEstadoMes.progressDrawable
             if (drawable is android.graphics.drawable.LayerDrawable) {
                 drawable.findDrawableByLayerId(android.R.id.progress)
-                    ?.setTint(androidx.core.content.ContextCompat.getColor(contexto, colorEstado))
+                    ?.mutate()?.setTint(androidx.core.content.ContextCompat.getColor(contexto, colorEstado))
             }
 
             binding.root.setBackgroundResource(
