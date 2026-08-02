@@ -1,2 +1,0 @@
-com.warthogcash.presupuesto.test:style/WhiteBackgroundTheme = 0x7f010001
-com.warthogcash.presupuesto.test:style/WhiteBackgroundDialogTheme = 0x7f010000
