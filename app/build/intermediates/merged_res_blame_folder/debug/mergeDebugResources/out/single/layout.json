@@ -1,0 +1,74 @@
+[
+    {
+        "merged": "/home/whitehornet/.gradle/daemon/8.6/com.warthogcash.presupuesto.app-mergeDebugResources-41:/layout/activity_expense_history.xml",
+        "source": "/home/whitehornet/.gradle/daemon/8.6/com.warthogcash.presupuesto.app-main-44:/layout/activity_expense_history.xml"
+    },
+    {
+        "merged": "/home/whitehornet/.gradle/daemon/8.6/com.warthogcash.presupuesto.app-mergeDebugResources-41:/layout/item_month_card.xml",
+        "source": "/home/whitehornet/.gradle/daemon/8.6/com.warthogcash.presupuesto.app-main-44:/layout/item_month_card.xml"
+    },
+    {
+        "merged": "/home/whitehornet/.gradle/daemon/8.6/com.warthogcash.presupuesto.app-mergeDebugResources-41:/layout/view_month_summary_header.xml",
+        "source": "/home/whitehornet/.gradle/daemon/8.6/com.warthogcash.presupuesto.app-main-44:/layout/view_month_summary_header.xml"
+    },
+    {
+        "merged": "/home/whitehornet/.gradle/daemon/8.6/com.warthogcash.presupuesto.app-mergeDebugResources-41:/layout/activity_close_month.xml",
+        "source": "/home/whitehornet/.gradle/daemon/8.6/com.warthogcash.presupuesto.app-main-44:/layout/activity_close_month.xml"
+    },
+    {
+        "merged": "/home/whitehornet/.gradle/daemon/8.6/com.warthogcash.presupuesto.app-mergeDebugResources-41:/layout/activity_create_month.xml",
+        "source": "/home/whitehornet/.gradle/daemon/8.6/com.warthogcash.presupuesto.app-main-44:/layout/activity_create_month.xml"
+    },
+    {
+        "merged": "/home/whitehornet/.gradle/daemon/8.6/com.warthogcash.presupuesto.app-mergeDebugResources-41:/layout/item_category_percent_input.xml",
+        "source": "/home/whitehornet/.gradle/daemon/8.6/com.warthogcash.presupuesto.app-main-44:/layout/item_category_percent_input.xml"
+    },
+    {
+        "merged": "com.warthogcash.presupuesto.app-mergeDebugResources-41:/layout/activity_add_expense.xml",
+        "source": "com.warthogcash.presupuesto.app-main-44:/layout/activity_add_expense.xml"
+    },
+    {
+        "merged": "/home/whitehornet/.gradle/daemon/8.6/com.warthogcash.presupuesto.app-mergeDebugResources-41:/layout/activity_main.xml",
+        "source": "/home/whitehornet/.gradle/daemon/8.6/com.warthogcash.presupuesto.app-main-44:/layout/activity_main.xml"
+    },
+    {
+        "merged": "/home/whitehornet/.gradle/daemon/8.6/com.warthogcash.presupuesto.app-mergeDebugResources-41:/layout/activity_month_detail.xml",
+        "source": "/home/whitehornet/.gradle/daemon/8.6/com.warthogcash.presupuesto.app-main-44:/layout/activity_month_detail.xml"
+    },
+    {
+        "merged": "/home/whitehornet/.gradle/daemon/8.6/com.warthogcash.presupuesto.app-mergeDebugResources-41:/layout/item_year_header.xml",
+        "source": "/home/whitehornet/.gradle/daemon/8.6/com.warthogcash.presupuesto.app-main-44:/layout/item_year_header.xml"
+    },
+    {
+        "merged": "/home/whitehornet/.gradle/daemon/8.6/com.warthogcash.presupuesto.app-mergeDebugResources-41:/layout/item_spinner_text.xml",
+        "source": "/home/whitehornet/.gradle/daemon/8.6/com.warthogcash.presupuesto.app-main-44:/layout/item_spinner_text.xml"
+    },
+    {
+        "merged": "/home/whitehornet/.gradle/daemon/8.6/com.warthogcash.presupuesto.app-mergeDebugResources-41:/layout/activity_welcome.xml",
+        "source": "/home/whitehornet/.gradle/daemon/8.6/com.warthogcash.presupuesto.app-main-44:/layout/activity_welcome.xml"
+    },
+    {
+        "merged": "/home/whitehornet/.gradle/daemon/8.6/com.warthogcash.presupuesto.app-mergeDebugResources-41:/layout/view_warning_banner.xml",
+        "source": "/home/whitehornet/.gradle/daemon/8.6/com.warthogcash.presupuesto.app-main-44:/layout/view_warning_banner.xml"
+    },
+    {
+        "merged": "/home/whitehornet/.gradle/daemon/8.6/com.warthogcash.presupuesto.app-mergeDebugResources-41:/layout/activity_my_months.xml",
+        "source": "/home/whitehornet/.gradle/daemon/8.6/com.warthogcash.presupuesto.app-main-44:/layout/activity_my_months.xml"
+    },
+    {
+        "merged": "/home/whitehornet/.gradle/daemon/8.6/com.warthogcash.presupuesto.app-mergeDebugResources-41:/layout/item_expense_row.xml",
+        "source": "/home/whitehornet/.gradle/daemon/8.6/com.warthogcash.presupuesto.app-main-44:/layout/item_expense_row.xml"
+    },
+    {
+        "merged": "/home/whitehornet/.gradle/daemon/8.6/com.warthogcash.presupuesto.app-mergeDebugResources-41:/layout/activity_add_expense.xml",
+        "source": "/home/whitehornet/.gradle/daemon/8.6/com.warthogcash.presupuesto.app-main-44:/layout/activity_add_expense.xml"
+    },
+    {
+        "merged": "/home/whitehornet/.gradle/daemon/8.6/com.warthogcash.presupuesto.app-mergeDebugResources-41:/layout/item_categoria_card.xml",
+        "source": "/home/whitehornet/.gradle/daemon/8.6/com.warthogcash.presupuesto.app-main-44:/layout/item_categoria_card.xml"
+    },
+    {
+        "merged": "/home/whitehornet/.gradle/daemon/8.6/com.warthogcash.presupuesto.app-mergeDebugResources-41:/layout/item_loading_footer.xml",
+        "source": "/home/whitehornet/.gradle/daemon/8.6/com.warthogcash.presupuesto.app-main-44:/layout/item_loading_footer.xml"
+    }
+]

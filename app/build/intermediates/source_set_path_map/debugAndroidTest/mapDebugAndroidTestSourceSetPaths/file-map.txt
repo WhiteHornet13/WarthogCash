@@ -1,0 +1,5 @@
+com.warthogcash.presupuesto.test.app-core-1.6.1-0 /home/whitehornet/.gradle/caches/transforms-4/fa7e988b97751ec9c39186b81677ab58/transformed/core-1.6.1/res
+com.warthogcash.presupuesto.test.app-androidTest-1 /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/build/generated/res/resValues/androidTest/debug
+com.warthogcash.presupuesto.test.app-mergeDebugAndroidTestResources-2 /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/build/intermediates/incremental/debugAndroidTest/mergeDebugAndroidTestResources/merged.dir
+com.warthogcash.presupuesto.test.app-mergeDebugAndroidTestResources-3 /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/build/intermediates/incremental/debugAndroidTest/mergeDebugAndroidTestResources/stripped.dir
+com.warthogcash.presupuesto.test.app-debugAndroidTest-4 /home/whitehornet/Proyectos/WarthotCashAndroid/WarthogCash/app/build/intermediates/merged_res/debugAndroidTest/mergeDebugAndroidTestResources

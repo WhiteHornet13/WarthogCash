@@ -52,6 +52,15 @@ class AddExpenseActivity : AppCompatActivity() {
 
         binding.etImporte.addTextChangedListener(alCambiarTexto = { actualizarVistaPreviaYBoton() })
         binding.etDescripcion.addTextChangedListener(alCambiarTexto = { })
+        binding.etImporte.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_DONE) {
+                ocultarTeclado(binding.etImporte)
+                binding.etImporte.clearFocus()
+                true
+            } else {
+                false
+            }
+        }
 
         binding.btnGuardarGasto.setOnClickListener { guardarGasto() }
 
@@ -105,6 +114,11 @@ class AddExpenseActivity : AppCompatActivity() {
 
         // 4.1/4.2/4.6: importe > 0 y categoría seleccionada son obligatorios.
         binding.btnGuardarGasto.isEnabled = categoria != null && importe != null && importe > 0.0
+    }
+
+    private fun ocultarTeclado(vista: android.view.View) {
+        val imm = getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager
+        imm.hideSoftInputFromWindow(vista.windowToken, 0)
     }
 
     private fun importeIngresado(): Double? =

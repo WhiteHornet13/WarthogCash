@@ -56,11 +56,15 @@ class CreateMonthActivity : AppCompatActivity() {
 
     private fun configurarSelectoresMesAnio() {
         val nombresMes = Presupuesto.NOMBRES_MES
-        binding.spinnerMes.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, nombresMes)
+        binding.spinnerMes.adapter = ArrayAdapter(this, R.layout.item_spinner_text, nombresMes).apply {
+            setDropDownViewResource(R.layout.item_spinner_text)
+        }
 
         val anioActual = Calendar.getInstance().get(Calendar.YEAR)
         val anios = (anioActual - 5..anioActual + 5).map { it.toString() }
-        binding.spinnerAnio.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, anios)
+        binding.spinnerAnio.adapter = ArrayAdapter(this, R.layout.item_spinner_text, anios).apply {
+            setDropDownViewResource(R.layout.item_spinner_text)
+        }
 
         // Selección por defecto: mes/año actuales (el usuario puede cambiarlos
         // libremente; la selección sigue siendo 100% manual, spec 4.1).
