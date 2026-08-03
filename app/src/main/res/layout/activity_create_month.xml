@@ -94,6 +94,10 @@
                 android:textColorHint="@color/texto_secundario"
                 android:inputType="numberDecimal"
                 android:digits="0123456789,"
+                android:imeOptions="actionDone"
+                android:imeActionLabel="@string/accion_hecho"
+                android:imeActionId="6"
+                android:maxLines="1"
                 android:paddingTop="@dimen/espaciado_s"
                 android:paddingBottom="@dimen/espaciado_m" />
 

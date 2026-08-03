@@ -57,6 +57,10 @@ class MyMonthsActivity : AppCompatActivity() {
             }
         })
 
+        binding.btnAjustes.setOnClickListener {
+            startActivity(Intent(this, com.warthogcash.presupuesto.ui.settings.SettingsActivity::class.java))
+        }
+
         binding.fabNuevoMes.setOnClickListener {
             startActivity(Intent(this, CreateMonthActivity::class.java))
         }

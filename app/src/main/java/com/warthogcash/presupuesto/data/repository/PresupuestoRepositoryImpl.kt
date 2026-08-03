@@ -60,9 +60,21 @@ class PresupuestoRepositoryImpl(
         dineroDisponible: Double,
         porcentajes: Map<TipoCategoria, Double>
     ): Long {
-        // El mes recién creado pasa a ser el actual; el anterior permanece
-        // abierto (spec "Pantalla principal", 4.6). No se cierra nada aquí.
-        presupuestoDao.limpiarActual()
+        val calendarioReal = java.util.Calendar.getInstance()
+        val mesReal = calendarioReal.get(java.util.Calendar.MONTH) + 1
+        val anioReal = calendarioReal.get(java.util.Calendar.YEAR)
+
+        // Índice absoluto de mes (para comparar fácilmente año+mes)
+        fun indiceAbsoluto(a: Int, m: Int) = a * 12 + m
+        val indiceNuevo = indiceAbsoluto(anio, mes)
+        val indiceReal = indiceAbsoluto(anioReal, mesReal)
+
+        // Solo pasa a ser "actual" si es el mes real o el siguiente al real.
+        val debeSerActual = indiceNuevo == indiceReal || indiceNuevo == indiceReal + 1
+
+        if (debeSerActual) {
+            presupuestoDao.limpiarActual()
+        }
 
         val nuevoId = presupuestoDao.insertar(
             PresupuestoEntity(
@@ -70,7 +82,7 @@ class PresupuestoRepositoryImpl(
                 anio = anio,
                 dineroDisponible = dineroDisponible,
                 estado = EstadoPresupuesto.ABIERTO.name,
-                esActual = true
+                esActual = debeSerActual
             )
         )
 

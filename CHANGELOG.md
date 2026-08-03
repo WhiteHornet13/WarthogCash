@@ -1,5 +1,44 @@
 # Changelog
 
+## [1.1.0] - 2026-08-03
+### Added
+- Nueva pantalla "Ajustes", accesible desde un icono de engranaje en el
+  header de "Mis meses". De momento contiene los porcentajes
+  predefinidos por categoría, pensada para acoger más opciones en el
+  futuro.
+- Porcentajes predefinidos por categoría: el usuario puede fijarlos
+  desde "Ajustes" (persistidos en `SharedPreferences`, clase
+  `PorcentajesPredefinidos`) y se precargan automáticamente al abrir
+  "Crear mes nuevo", pudiendo modificarse libremente para ese mes en
+  concreto.
+- "Crear mes nuevo" ya no marca automáticamente como "mes actual" a
+  cualquier mes creado: si el mes/año seleccionado es anterior al mes
+  real del calendario del dispositivo, se crea correctamente pero el
+  mes actual existente se mantiene sin cambios. Solo pasa a ser
+  "actual" si coincide con el mes real o es el siguiente a este.
+
+### Fixed
+- La lista desplegable de los `Spinner` de mes y año en "Crear mes
+  nuevo" mostraba texto ilegible (letras claras sobre fondo oscuro
+  heredado del tema). Corregido fijando fondo claro explícito en
+  `item_spinner_text.xml`.
+- Los campos de importe (`Añadir gasto`, `Crear mes nuevo`) no
+  aceptaban el `.` del teclado numérico como separador decimal,
+  solo `,`, aunque el teclado del dispositivo mostrara el punto.
+  Ahora se acepta cualquiera de los dos y se normaliza a `,`
+  automáticamente mientras se escribe.
+- En "Crear mes nuevo", pulsar Enter en el teclado numérico del campo
+  "Dinero disponible" no ocultaba el teclado ni confirmaba el valor,
+  a diferencia de "Añadir gasto". Corregido añadiendo
+  `imeOptions="actionDone"`, `imeActionLabel`/`imeActionId` explícitos
+  y gestión del evento de tecla Enter además del `actionId`, igual que
+  en `AddExpenseActivity`.
+- El botón "Crear mes" podía quedar oculto tras el teclado en algunos
+  dispositivos. Corregido con `windowSoftInputMode="adjustResize"` en
+  el manifest y `fillViewport="true"` en el `ScrollView`.
+- El botón "+ Nuevo mes" de "Mis meses" mostraba un "+" duplicado (uno
+  del texto y otro del icono del botón). Corregido quitando el "+" del
+  string, dejando solo el icono nativo del componente.
 
 ## [1.0.2] - 2026-08-02
 ### Fixed

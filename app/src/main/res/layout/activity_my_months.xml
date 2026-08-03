@@ -29,6 +29,19 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/espaciado_s"
             android:text="@string/mis_meses_titulo" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:id="@+id/btnAjustes"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/ajustes_titulo"
+            android:src="@drawable/ic_settings" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

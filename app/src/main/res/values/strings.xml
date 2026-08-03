@@ -15,7 +15,7 @@
     <!-- Mis meses -->
     <string name="mis_meses_titulo">Mis meses</string>
     <string name="mis_meses_badge_actual">Actual</string>
-    <string name="mis_meses_boton_nuevo">+ Nuevo mes</string>
+    <string name="mis_meses_boton_nuevo">Añadir nuevo mes</string>
     <string name="mis_meses_subtitulo_formato">Gastado %1$s de %2$s</string>
 
     <!-- Detalle de mes -->
@@ -40,7 +40,7 @@
     <string name="anadir_gasto_importe">IMPORTE</string>
     <string name="anadir_gasto_categoria">CATEGORÍA</string>
     <string name="anadir_gasto_descripcion">DESCRIPCIÓN</string>
-    <string name="anadir_gasto_descripcion_hint">Añade una nota (opcional)</string>
+    <string name="anadir_gasto_descripcion_hint">Añade una descripcion(opcional)</string>
     <string name="anadir_gasto_vista_previa_formato">Saldo resultante en %1$s: %2$s</string>
     <string name="anadir_gasto_boton">Guardar gasto</string>
 
@@ -60,4 +60,12 @@
     <string name="accion_volver">Volver</string>
     <string name="accion_anadir_gasto">Añadir gasto</string>
     <string name="cargando">Cargando…</string>
+    <string name="accion_hecho">Hecho</string>
+
+    <!-- Ajustes -->
+    <string name="ajustes_titulo">Ajustes</string>
+    <string name="ajustes_porcentajes_titulo">Porcentajes predefinidos</string>
+    <string name="ajustes_porcentajes_descripcion">Se usarán como valores de partida al crear un mes nuevo. Podrás cambiarlos en cada mes si lo necesitas.</string>
+    <string name="ajustes_boton_guardar">Guardar</string>
+    <string name="ajustes_guardado_confirmacion">Ajustes guardados</string>
 </resources>

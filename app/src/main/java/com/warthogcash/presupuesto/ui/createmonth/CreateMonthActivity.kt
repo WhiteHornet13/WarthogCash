@@ -18,6 +18,7 @@ import com.warthogcash.presupuesto.ui.main.MainActivity
 import com.warthogcash.presupuesto.util.FabricaViewModel
 import kotlinx.coroutines.launch
 import java.util.Calendar
+import com.warthogcash.presupuesto.util.PorcentajesPredefinidos
 
 /**
  * Especificación de pantalla "Crear mes nuevo". Se accede desde el botón
@@ -41,6 +42,20 @@ class CreateMonthActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.btnVolver.setOnClickListener { finish() }
+
+        binding.etDineroDisponible.setOnEditorActionListener { _, actionId, event ->
+            val esEnter = actionId == android.view.inputmethod.EditorInfo.IME_ACTION_DONE ||
+                    (event != null &&
+                            event.action == android.view.KeyEvent.ACTION_DOWN &&
+                            event.keyCode == android.view.KeyEvent.KEYCODE_ENTER)
+            if (esEnter) {
+                ocultarTeclado(binding.etDineroDisponible)
+                binding.etDineroDisponible.clearFocus()
+                true
+            } else {
+                false
+            }
+        }
 
         configurarSelectoresMesAnio()
         configurarFilasCategoria()
@@ -80,7 +95,20 @@ class CreateMonthActivity : AppCompatActivity() {
             TipoCategoria.OCIO to binding.filaOcio,
             TipoCategoria.CULTURA to binding.filaCultura
         )
-        filas.forEach { (tipo, filaBinding) -> filaBinding.tvNombreCategoria.text = tipo.etiqueta }
+
+        val predefinidos = PorcentajesPredefinidos(this)
+        filas.forEach { (tipo, filaBinding) ->
+            filaBinding.tvNombreCategoria.text = tipo.etiqueta
+            val valor = predefinidos.obtener(tipo)
+            if (valor > 0.0) {
+                filaBinding.etPorcentaje.setText(formatearSuma(valor))
+            }
+        }
+    }
+
+    private fun ocultarTeclado(vista: android.view.View) {
+        val imm = getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager
+        imm.hideSoftInputFromWindow(vista.windowToken, 0)
     }
 
     private fun actualizarBannerAviso(mesAnterior: Presupuesto?) {
