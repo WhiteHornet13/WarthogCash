@@ -19,6 +19,18 @@
     <color name="texto_principal">#16261F</color>
     <color name="borde_chip">#E7E3D9</color>
 
+    <color name="fondo_mes_abierto">#A9D2F5</color>
+    <color name="texto_mes_abierto">#0C3A5E</color>
+    <color name="texto_mes_abierto_secundario">#2C5A7D</color>
+
+    <color name="fondo_mes_cerrado">#D9B3AF</color>
+    <color name="texto_mes_cerrado">#5A2E29</color>
+    <color name="texto_mes_cerrado_secundario">#7A4B45</color>
+
+    <color name="fondo_mes_actual">#F7C377</color>
+    <color name="texto_mes_actual">#4A2E06</color>
+    <color name="texto_mes_actual_secundario">#6B4C1E</color>
+
     <!-- Tono apagado para mes cerrado (spec "Detalle de mes cerrado", 3.1) -->
     <color name="gris_cerrado">#5C6B63</color>
 

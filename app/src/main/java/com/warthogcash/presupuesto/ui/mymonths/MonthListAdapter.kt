@@ -8,6 +8,7 @@ import com.warthogcash.presupuesto.databinding.ItemMonthCardBinding
 import com.warthogcash.presupuesto.databinding.ItemYearHeaderBinding
 import com.warthogcash.presupuesto.domain.model.Presupuesto
 import com.warthogcash.presupuesto.util.Formato
+import com.warthogcash.presupuesto.domain.model.EstadoPresupuesto
 
 private const val TIPO_CABECERA_ANIO = 0
 private const val TIPO_TARJETA_MES = 1
@@ -105,10 +106,30 @@ class MonthListAdapter(
                     ?.mutate()?.setTint(androidx.core.content.ContextCompat.getColor(contexto, colorEstado))
             }
 
-            binding.root.setBackgroundResource(
-                if (mes.esActual) com.warthogcash.presupuesto.R.drawable.bg_card_actual_borde
-                else com.warthogcash.presupuesto.R.drawable.bg_card_rounded
-            )
+            val esCerrado = mes.estado == EstadoPresupuesto.CERRADO
+
+            val (fondoRes, colorTexto, colorTextoSecundario) = when {
+                mes.esActual -> Triple(
+                    com.warthogcash.presupuesto.R.drawable.bg_card_mes_actual,
+                    com.warthogcash.presupuesto.R.color.texto_mes_actual,
+                    com.warthogcash.presupuesto.R.color.texto_mes_actual_secundario
+                )
+                esCerrado -> Triple(
+                    com.warthogcash.presupuesto.R.drawable.bg_card_mes_cerrado,
+                    com.warthogcash.presupuesto.R.color.texto_mes_cerrado,
+                    com.warthogcash.presupuesto.R.color.texto_mes_cerrado_secundario
+                )
+                else -> Triple(
+                    com.warthogcash.presupuesto.R.drawable.bg_card_mes_abierto,
+                    com.warthogcash.presupuesto.R.color.texto_mes_abierto,
+                    com.warthogcash.presupuesto.R.color.texto_mes_abierto_secundario
+                )
+            }
+
+            binding.root.setBackgroundResource(fondoRes)
+            binding.tvNombreMes.setTextColor(androidx.core.content.ContextCompat.getColor(contexto, colorTexto))
+            binding.tvRestanteMes.setTextColor(androidx.core.content.ContextCompat.getColor(contexto, colorTexto))
+            binding.tvSubtituloMes.setTextColor(androidx.core.content.ContextCompat.getColor(contexto, colorTextoSecundario))
 
             binding.root.setOnClickListener { alPulsarMes(mes) }
         }

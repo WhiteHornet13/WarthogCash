@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.2.0] - 2026-08-04
+### Changed
+- "Mis meses": las tarjetas de cada mes ahora usan un color de fondo
+  según su estado, en lugar de depender solo del badge "Actual" y el
+  borde verde. Azul claro intenso para meses abiertos, rojo apagado
+  para meses cerrados y naranja pastel intenso (con borde verde) para
+  el mes actual. El color del texto de cada tarjeta (nombre, importe
+  restante y subtítulo de gasto) se ajusta también por legibilidad
+  sobre cada fondo.
+- El badge "Actual" pasa a fondo verde con texto blanco para
+  mantenerse legible sobre el nuevo fondo naranja de la tarjeta.
+
+### Removed
+- Drawables `bg_card_actual_borde.xml`, `bg_card_rounded_cerrado.xml`
+  y `bg_card_actual_destacado.xml`, sustituidos por
+  `bg_card_mes_abierto.xml`, `bg_card_mes_cerrado.xml` y
+  `bg_card_mes_actual.xml`.
+
 ## [1.1.0] - 2026-08-03
 ### Added
 - Nueva pantalla "Ajustes", accesible desde un icono de engranaje en el
