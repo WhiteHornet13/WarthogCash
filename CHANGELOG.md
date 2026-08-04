@@ -1,5 +1,39 @@
 # Changelog
 
+## [1.3.0] - 2026-08-04
+### Added
+- "Crear mes nuevo": cuando se accede desde "Bienvenida" (primer uso,
+  sin ningún mes creado todavía), los selectores de mes y año quedan
+  fijados y deshabilitados en el mes actual del calendario del
+  dispositivo. Evita crear el primer mes de la app con una fecha
+  distinta a la actual, lo que dejaba la app sin ningún mes marcado
+  como "actual" y la Pantalla principal en blanco sin botones
+  funcionales.
+
+### Fixed
+- `crearMes()` (`PresupuestoRepositoryImpl`): si no existía todavía
+  ningún mes marcado como "actual" en la base de datos (típicamente el
+  primer mes de la app), el nuevo mes podía crearse sin marcarse como
+  actual si su fecha no coincidía con el mes real o el siguiente,
+  dejando la app sin ningún mes navegable. Ahora, si no existe un mes
+  actual previo, el nuevo mes se marca como actual sin importar su
+  fecha.
+- "Crear mes nuevo": el mes seleccionado se calculaba a partir de la
+  posición del `Spinner` (`selectedItemPosition + 1`) en lugar de su
+  valor real. Al restringir el selector de mes a una sola opción en el
+  flujo de primer uso, esto producía siempre "Enero" salvo que el mes
+  real fuera enero, reintroduciendo el bug de mes sin marcar como
+  actual. Corregido leyendo el mes por el texto seleccionado
+  (`spinnerMes.selectedItem`), igual que ya se hacía con el año.
+- "Mis meses": los meses aparecían duplicados al entrar en la
+  pantalla. `MyMonthsViewModel` disparaba una carga de la primera
+  página en su `init {}` y `MyMonthsActivity.onResume()` disparaba
+  otra `recargar()` completa casi al mismo tiempo; al ser ambas
+  corrutinas asíncronas sobre el mismo `StateFlow`, la primera página
+  podía quedar añadida dos veces según el orden de finalización.
+  Eliminado el `init {}` del ViewModel: la carga inicial ya queda
+  cubierta por `onResume()`.
+
 ## [1.2.2] - 2026-08-04
 ### Fixed
 - "Mis meses": al volver de cerrar un mes (o de cualquier detalle), la

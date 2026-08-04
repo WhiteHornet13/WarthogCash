@@ -21,7 +21,10 @@ class WelcomeActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.btnEmpezar.setOnClickListener {
-            startActivity(Intent(this, CreateMonthActivity::class.java))
+            startActivity(
+                Intent(this, CreateMonthActivity::class.java)
+                    .putExtra(CreateMonthActivity.EXTRA_ES_PRIMERA_VEZ, true)
+            )
             finish()
         }
     }

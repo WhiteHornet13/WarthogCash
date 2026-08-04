@@ -26,7 +26,17 @@ import com.warthogcash.presupuesto.util.PorcentajesPredefinidos
  */
 class CreateMonthActivity : AppCompatActivity() {
 
+    companion object {
+        const val EXTRA_ES_PRIMERA_VEZ = "extra_es_primera_vez"
+    }
+
     private lateinit var binding: ActivityCreateMonthBinding
+
+    // true si se llega desde "Bienvenida" (primer uso, sin ningún mes creado).
+    private val esPrimeraVez: Boolean by lazy {
+        intent.getBooleanExtra(EXTRA_ES_PRIMERA_VEZ, false)
+    }
+
 
     private val viewModel: CreateMonthViewModel by lazy {
         val repo = (application as App).repository
@@ -71,19 +81,41 @@ class CreateMonthActivity : AppCompatActivity() {
 
     private fun configurarSelectoresMesAnio() {
         val nombresMes = Presupuesto.NOMBRES_MES
+        val anioActual = Calendar.getInstance().get(Calendar.YEAR)
+        val mesActual = Calendar.getInstance().get(Calendar.MONTH) // 0-indexado
+
+        if (esPrimeraVez) {
+            // Primer uso de la app (sin ningún mes creado todavía): el único
+            // punto de partida con sentido es el mes actual del calendario del
+            // dispositivo, para evitar que quede un mes creado que nunca se
+            // marca como "actual" y deja la app sin ningún mes navegable.
+            binding.spinnerMes.adapter = ArrayAdapter(
+                this, R.layout.item_spinner_text, listOf(nombresMes[mesActual])
+            ).apply { setDropDownViewResource(R.layout.item_spinner_text) }
+
+            binding.spinnerAnio.adapter = ArrayAdapter(
+                this, R.layout.item_spinner_text, listOf(anioActual.toString())
+            ).apply { setDropDownViewResource(R.layout.item_spinner_text) }
+
+            binding.spinnerMes.setSelection(0)
+            binding.spinnerAnio.setSelection(0)
+            binding.spinnerMes.isEnabled = false
+            binding.spinnerAnio.isEnabled = false
+            return
+        }
+
         binding.spinnerMes.adapter = ArrayAdapter(this, R.layout.item_spinner_text, nombresMes).apply {
             setDropDownViewResource(R.layout.item_spinner_text)
         }
 
-        val anioActual = Calendar.getInstance().get(Calendar.YEAR)
         val anios = (anioActual - 5..anioActual + 5).map { it.toString() }
         binding.spinnerAnio.adapter = ArrayAdapter(this, R.layout.item_spinner_text, anios).apply {
             setDropDownViewResource(R.layout.item_spinner_text)
         }
 
         // Selección por defecto: mes/año actuales (el usuario puede cambiarlos
-        // libremente; la selección sigue siendo 100% manual, spec 4.1).
-        binding.spinnerMes.setSelection(Calendar.getInstance().get(Calendar.MONTH))
+        // libremente en este flujo; la selección sigue siendo 100% manual).
+        binding.spinnerMes.setSelection(mesActual)
         binding.spinnerAnio.setSelection(5)
     }
 
@@ -134,9 +166,6 @@ class CreateMonthActivity : AppCompatActivity() {
         }
         val suma = porcentajes.values.sum()
 
-        // 5. Fuera de alcance en la spec original: la validación exacta de
-        // que sumen 100% (mensajes, redondeos) queda pendiente de definir.
-        // Se aplica aquí la interpretación más directa: exigir suma = 100%.
         if (Math.abs(suma - 100.0) > 0.01) {
             binding.tvErrorPorcentaje.visibility = android.view.View.VISIBLE
             binding.tvErrorPorcentaje.text = getString(
@@ -147,20 +176,23 @@ class CreateMonthActivity : AppCompatActivity() {
         }
         binding.tvErrorPorcentaje.visibility = android.view.View.GONE
 
-        val mesSeleccionado = binding.spinnerMes.selectedItemPosition + 1
+        // Leer el mes por el TEXTO seleccionado (igual que el año), no por la
+        // posición dentro del adapter: en el flujo "primera vez" el adapter de
+        // spinnerMes solo contiene un elemento (el mes actual), así que su
+        // posición siempre es 0 y calcular "posición + 1" daba un mes incorrecto.
+        val mesSeleccionado = Presupuesto.NOMBRES_MES.indexOf(binding.spinnerMes.selectedItem.toString()) + 1
         val anioSeleccionado = binding.spinnerAnio.selectedItem.toString().toInt()
 
         binding.btnCrearMes.isEnabled = false
         lifecycleScope.launch {
             viewModel.crearMes(mesSeleccionado, anioSeleccionado, dinero, porcentajes)
-            // 4.5: navega automáticamente a la Pantalla principal con el
-            // mes recién creado, sin dejar esta pantalla ni Bienvenida en el back stack.
             val intent = Intent(this@CreateMonthActivity, MainActivity::class.java)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             startActivity(intent)
             finish()
         }
     }
+
 
     private fun formatearSuma(valor: Double): String =
         if (valor == valor.toLong().toDouble()) valor.toLong().toString() else valor.toString()

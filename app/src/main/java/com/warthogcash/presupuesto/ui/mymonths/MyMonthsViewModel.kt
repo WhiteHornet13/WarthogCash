@@ -34,9 +34,7 @@ class MyMonthsViewModel(private val repository: PresupuestoRepository) : ViewMod
     private var offset = 0
     private var hayMasPaginas = true
 
-    init {
-        cargarSiguientePagina()
-    }
+
 
     fun cargarSiguientePagina() {
         if (_cargando.value || !hayMasPaginas) return
