@@ -16,6 +16,7 @@ import com.warthogcash.presupuesto.ui.closemonth.CloseMonthActivity
 import com.warthogcash.presupuesto.ui.common.CategoriaAdapter
 import com.warthogcash.presupuesto.ui.history.ExpenseHistoryActivity
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.combine
 
 /**
  * Pantalla unificada que cubre tanto "Detalle de mes anterior (abierto)"
@@ -68,31 +69,25 @@ class MonthDetailActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.mes.collect { mes ->
-                    if (mes == null) return@collect
-                    binding.headerResumen.mostrarComoDetalle(mes) { finish() }
-                    adapter.actualizar(mes.categorias)
+                combine(viewModel.mes, viewModel.mostrarBotonCerrar) { mes, mostrar -> mes to mostrar }
+                    .collect { (mes, mostrar) ->
+                        if (mes == null) return@collect
+                        binding.headerResumen.mostrarComoDetalle(mes) { finish() }
+                        adapter.actualizar(mes.categorias)
 
-                    val esCerrado = mes.estado == EstadoPresupuesto.CERRADO
-                    binding.bannerMesCerrado.visibility = if (esCerrado) android.view.View.VISIBLE else android.view.View.GONE
-                    if (esCerrado) {
-                        binding.bannerMesCerrado.setMensaje(getString(com.warthogcash.presupuesto.R.string.detalle_banner_cerrado))
+                        val esCerrado = mes.estado == EstadoPresupuesto.CERRADO
+                        binding.bannerMesCerrado.visibility = if (esCerrado) android.view.View.VISIBLE else android.view.View.GONE
+                        if (esCerrado) {
+                            binding.bannerMesCerrado.setMensaje(getString(com.warthogcash.presupuesto.R.string.detalle_banner_cerrado))
+                        }
+                        binding.fabAnadirGasto.visibility = if (esCerrado) android.view.View.GONE else android.view.View.VISIBLE
+
+                        binding.btnCerrarMes.visibility =
+                            if (mostrar && !esCerrado) android.view.View.VISIBLE else android.view.View.GONE
                     }
-                    // 4.2 (abierto) / 4.2 (cerrado): el botón "+" solo existe en meses abiertos.
-                    binding.fabAnadirGasto.visibility = if (esCerrado) android.view.View.GONE else android.view.View.VISIBLE
-                }
             }
         }
 
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.mostrarBotonCerrar.collect { mostrar ->
-                    val esAbierto = viewModel.mes.value?.estado == EstadoPresupuesto.ABIERTO
-                    binding.btnCerrarMes.visibility =
-                        if (mostrar && esAbierto) android.view.View.VISIBLE else android.view.View.GONE
-                }
-            }
-        }
     }
 
     override fun onResume() {

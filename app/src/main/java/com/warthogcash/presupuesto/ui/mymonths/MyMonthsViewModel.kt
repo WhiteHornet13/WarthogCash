@@ -49,4 +49,18 @@ class MyMonthsViewModel(private val repository: PresupuestoRepository) : ViewMod
             _cargando.value = false
         }
     }
+
+    fun recargar() {
+        val cantidadActual = _meses.value.size.coerceAtLeast(TAMANO_PAGINA)
+        offset = 0
+        hayMasPaginas = true
+        viewModelScope.launch {
+            _cargando.value = true
+            val pagina = repository.obtenerPaginaMeses(cantidadActual, 0)
+            offset = pagina.size
+            if (pagina.size < cantidadActual) hayMasPaginas = false
+            _meses.value = pagina
+            _cargando.value = false
+        }
+    }
 }

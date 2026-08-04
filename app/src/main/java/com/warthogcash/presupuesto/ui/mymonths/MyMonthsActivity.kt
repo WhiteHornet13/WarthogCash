@@ -73,6 +73,11 @@ class MyMonthsActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.recargar()
+    }
+
     // 4.4: navegación según el mes pulsado.
     private fun navegarDesdeMes(mes: Presupuesto) {
         if (mes.esActual) {

@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.2.2] - 2026-08-04
+### Fixed
+- "Mis meses": al volver de cerrar un mes (o de cualquier detalle), la
+  tarjeta no reflejaba el nuevo estado (color/badge) hasta salir por
+  completo de la pantalla y volver a entrar. `MyMonthsViewModel` solo
+  cargaba los meses una vez en `init`; ahora se añade `recargar()` y se
+  invoca desde `onResume()` de `MyMonthsActivity`.
+- "Detalle de mes": tras pulsar "Cerrar mes", el botón seguía visible
+  al volver a esta pantalla porque su visibilidad se calculaba en un
+  `collect` separado de `mostrarBotonCerrar`, que al no cambiar de
+  valor no volvía a emitir junto con el nuevo estado del mes. Unificado
+  en un único `collect` sobre `combine(viewModel.mes, viewModel.mostrarBotonCerrar)`
+  en `MonthDetailActivity`, de forma que el botón se oculta de inmediato
+  al cerrar el mes sin necesidad de reentrar en la pantalla.
+
 ## [1.2.1] - 2026-08-04
 ### Fixed
 - "Detalle de mes" (abierto y cerrado): la lista de categorías no se
