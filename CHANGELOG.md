@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.2.1] - 2026-08-04
+### Fixed
+- "Detalle de mes" (abierto y cerrado): la lista de categorías no se
+  pintaba porque el `RecyclerView` `listaCategorias` no tenía
+  `LayoutManager` asignado, a diferencia del resto de listas de la app.
+  Añadido `app:layoutManager` en `activity_month_detail.xml`.
+- Cabecera de "Detalle de mes": el importe "Disponible" se solapaba con
+  el título del mes y el botón de volver, porque estaba anclado a
+  `tvEtiquetaDisponible`, una vista oculta (`GONE`) en el modo detalle.
+  Sustituido por un `Barrier` (`barrierCabecera`) que ancla
+  correctamente tanto en Pantalla principal como en Detalle de mes.
+- El chip de estado ("● Mes abierto" / "● Mes cerrado") pasa a mostrarse
+  a la derecha, a la misma altura que el importe "Disponible", en vez
+  de ocupar su propia fila debajo y empujar el resto del contenido
+  hacia abajo.
+
 ## [1.2.0] - 2026-08-04
 ### Changed
 - "Mis meses": las tarjetas de cada mes ahora usan un color de fondo

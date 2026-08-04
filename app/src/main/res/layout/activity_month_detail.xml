@@ -46,6 +46,7 @@
         android:paddingBottom="96dp"
         app:layout_constraintBottom_toTopOf="@id/btnCerrarMes"
         app:layout_constraintTop_toBottomOf="@id/tvEtiquetaCategorias"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_categoria_card" />
 
     <com.google.android.material.button.MaterialButton

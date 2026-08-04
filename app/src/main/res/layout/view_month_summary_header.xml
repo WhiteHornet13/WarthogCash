@@ -65,21 +65,22 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/espaciado_s"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvEtiquetaDisponible"
+        app:layout_constraintTop_toBottomOf="@id/barrierCabecera"
         tools:text="1.284,50 €" />
 
     <TextView
         android:id="@+id/tvEstadoBadge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/espaciado_s"
         android:paddingHorizontal="10dp"
         android:paddingVertical="4dp"
         android:textColor="@color/blanco"
         android:textSize="@dimen/texto_pequeno"
         android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvDisponible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvDisponible"
+        app:layout_constraintBottom_toBottomOf="@id/tvDisponible"
+        tools:visibility="visible"
         tools:text="● Mes abierto" />
 
     <TextView
@@ -92,7 +93,7 @@
         android:textColor="@color/blanco"
         android:textSize="@dimen/texto_pequeno"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvEstadoBadge" />
+        app:layout_constraintTop_toBottomOf="@id/tvDisponible" />
 
     <TextView
         android:id="@+id/tvIngreso"
@@ -123,5 +124,12 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/tvIngreso" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrierCabecera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="btnVolver,tvTituloMes,tvEtiquetaDisponible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
