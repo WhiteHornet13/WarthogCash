@@ -13,6 +13,12 @@ object Formato {
 
     fun moneda(valor: Double): String = formatoMoneda.format(valor)
 
+    /** Formato editable sin símbolo de moneda ni separador de miles, para
+     * precargar EditText que luego vuelven a parsearse (ej. "1284,50"),
+     * evitando que el punto de "1.284,50 €" se confunda con el decimal. */
+    fun importeEditable(valor: Double): String =
+        String.format(Locale("es", "ES"), "%.2f", valor)
+
     private val nombresMes = listOf(
         "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
         "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"

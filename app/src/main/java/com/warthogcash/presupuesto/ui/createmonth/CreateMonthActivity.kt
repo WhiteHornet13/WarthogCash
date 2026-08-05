@@ -19,6 +19,7 @@ import com.warthogcash.presupuesto.util.FabricaViewModel
 import kotlinx.coroutines.launch
 import java.util.Calendar
 import com.warthogcash.presupuesto.util.PorcentajesPredefinidos
+import com.warthogcash.presupuesto.ui.fixedexpenses.SelectFixedExpensesActivity
 
 /**
  * Especificación de pantalla "Crear mes nuevo". Se accede desde el botón
@@ -224,9 +225,19 @@ class CreateMonthActivity : AppCompatActivity() {
                 binding.tvErrorPorcentaje.text = getString(R.string.crear_mes_error_mes_duplicado)
                 return@launch
             }
-            viewModel.crearMes(mesSeleccionado, anioSeleccionado, dinero, porcentajes)
-            val intent = Intent(this@CreateMonthActivity, MainActivity::class.java)
-                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            val nuevoMesId = viewModel.crearMes(mesSeleccionado, anioSeleccionado, dinero, porcentajes)
+
+            // Spec "Seleccionar gastos fijos": si existe al menos un gasto
+            // fijo definido, se ofrece elegir cuáles aplicar a este mes.
+            // Si no hay ninguno, se va directo a Pantalla principal.
+            val intent = if (repo.existenGastosFijos()) {
+                Intent(this@CreateMonthActivity, SelectFixedExpensesActivity::class.java)
+                    .putExtra(SelectFixedExpensesActivity.EXTRA_MES_ID, nuevoMesId)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            } else {
+                Intent(this@CreateMonthActivity, MainActivity::class.java)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            }
             startActivity(intent)
             finish()
         }

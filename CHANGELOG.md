@@ -1,5 +1,29 @@
 # Changelog
 
+## [1.5.0] - 2026-08-06
+### Added
+- Nueva funcionalidad "Gastos fijos": permite definir plantillas de
+  gasto reutilizables mes a mes (Coste, Categoría y Comentario),
+  gestionables desde una nueva pantalla accesible mediante el botón
+  "Gastos fijos" añadido en "Ajustes" (crear, editar y eliminar).
+- Nueva pantalla "Seleccionar gastos fijos": se abre automáticamente
+  justo después de crear un mes nuevo, siempre que exista al menos un
+  gasto fijo definido. Permite elegir qué gastos fijos se aplican a
+  ese mes concreto (activados por defecto) y ajustar su importe solo
+  para ese mes, sin modificar el gasto fijo original. Al confirmar, se
+  generan automáticamente los gastos correspondientes en las
+  categorías del mes recién creado.
+- Si no existe ningún gasto fijo definido, "Crear mes nuevo" navega
+  directamente a la Pantalla principal, igual que antes, sin mostrar
+  la nueva pantalla de selección.
+- Nueva tabla Room `gastos_fijos` (`GastoFijoEntity`, `GastoFijoDao`),
+  con migración `1 → 2` de `AppDatabase` para no perder los datos ya
+  existentes en instalaciones previas.
+- Nuevos métodos en `PresupuestoRepository`/`PresupuestoRepositoryImpl`
+  para gestionar gastos fijos y aplicarlos a un mes
+  (`existenGastosFijos`, `obtenerGastosFijos`, `crearGastoFijo`,
+  `actualizarGastoFijo`, `eliminarGastoFijo`, `aplicarGastosFijosAMes`).
+
 ## [1.4.0] - 2026-08-05
 ### Added
 - "Crear mes nuevo": ya no se puede crear un mes posterior al siguiente

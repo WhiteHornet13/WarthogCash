@@ -49,6 +49,43 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/espaciado_s"
+                android:text="@string/ajustes_gastos_titulo" />
+
+            <LinearLayout
+                android:id="@+id/filaGastosFijos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/espaciado_l"
+                android:background="@drawable/bg_card_rounded"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/espaciado_m">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/gastos_fijos_titulo"
+                    android:textColor="@color/texto_principal"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="›"
+                    android:textColor="@color/texto_secundario"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <TextView
+                style="@style/EtiquetaCampo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/espaciado_s"
                 android:text="@string/ajustes_porcentajes_titulo" />
 
             <TextView

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/espaciado_s"
+    android:background="@drawable/bg_card_rounded"
+    android:orientation="vertical"
+    android:padding="@dimen/espaciado_m">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvComentarioGastoFijo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/texto_principal"
+            android:textStyle="bold"
+            tools:text="Netflix" />
+
+        <TextView
+            android:id="@+id/tvCosteGastoFijo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/texto_principal"
+            android:textStyle="bold"
+            tools:text="12,99 €" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvBadgeCategoria"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:background="@drawable/bg_badge_categoria"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="3dp"
+        android:textColor="@color/blanco"
+        android:textSize="@dimen/texto_pequeno"
+        android:textStyle="bold"
+        tools:text="Ocio" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/espaciado_s"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/btnEditar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="@dimen/espaciado_s"
+            android:background="@drawable/bg_card_borde_suave"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="@string/accion_editar"
+            android:textColor="@color/texto_secundario"
+            android:textSize="@dimen/texto_pequeno" />
+
+        <TextView
+            android:id="@+id/btnEliminar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_boton_outline_rojo"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="@string/accion_eliminar"
+            android:textColor="@color/rojo_limite"
+            android:textSize="@dimen/texto_pequeno" />
+
+    </LinearLayout>
+
+</LinearLayout>

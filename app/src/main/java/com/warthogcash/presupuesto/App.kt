@@ -19,6 +19,6 @@ class App : Application() {
 
     val repository: PresupuestoRepository by lazy {
         val db = AppDatabase.obtenerInstancia(this)
-        PresupuestoRepositoryImpl(db.presupuestoDao(), db.categoriaDao(), db.gastoDao())
+        PresupuestoRepositoryImpl(db.presupuestoDao(), db.categoriaDao(), db.gastoDao(), db.gastoFijoDao())
     }
 }

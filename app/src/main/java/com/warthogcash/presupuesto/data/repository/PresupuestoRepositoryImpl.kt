@@ -15,6 +15,10 @@ import com.warthogcash.presupuesto.domain.model.TipoCategoria
 import com.warthogcash.presupuesto.domain.repository.PresupuestoRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import com.warthogcash.presupuesto.data.dao.GastoFijoDao
+import com.warthogcash.presupuesto.data.entity.GastoFijoEntity
+import com.warthogcash.presupuesto.domain.model.GastoFijo
+import com.warthogcash.presupuesto.domain.model.GastoFijoAplicado
 
 /**
  * Implementación del repositorio: traduce entre entidades Room y modelos
@@ -24,8 +28,51 @@ import kotlinx.coroutines.flow.map
 class PresupuestoRepositoryImpl(
     private val presupuestoDao: PresupuestoDao,
     private val categoriaDao: CategoriaDao,
-    private val gastoDao: GastoDao
+    private val gastoDao: GastoDao,
+    private val gastoFijoDao: GastoFijoDao
 ) : PresupuestoRepository {
+
+    // --- Gastos fijos ---------------------------------------------------
+
+    override suspend fun existenGastosFijos(): Boolean = gastoFijoDao.contar() > 0
+
+    override suspend fun obtenerGastosFijos(): List<GastoFijo> =
+        gastoFijoDao.obtenerTodos().map { it.aDominio() }
+
+    override fun observarGastosFijos(): Flow<List<GastoFijo>> =
+        gastoFijoDao.observarTodos().map { lista -> lista.map { it.aDominio() } }
+
+    override suspend fun crearGastoFijo(coste: Double, tipo: TipoCategoria, comentario: String?): Long =
+        gastoFijoDao.insertar(GastoFijoEntity(coste = coste, tipo = tipo.name, comentario = comentario))
+
+    override suspend fun actualizarGastoFijo(id: Long, coste: Double, tipo: TipoCategoria, comentario: String?) {
+        gastoFijoDao.actualizar(GastoFijoEntity(id = id, coste = coste, tipo = tipo.name, comentario = comentario))
+    }
+
+    override suspend fun eliminarGastoFijo(id: Long) {
+        gastoFijoDao.obtenerPorId(id)?.let { gastoFijoDao.eliminar(it) }
+    }
+
+    override suspend fun aplicarGastosFijosAMes(mesId: Long, seleccionados: List<GastoFijoAplicado>) {
+        seleccionados.forEach { aplicado ->
+            val categoria = categoriaDao.obtenerPorPresupuestoYTipo(mesId, aplicado.tipo.name) ?: return@forEach
+            gastoDao.insertar(
+                GastoEntity(
+                    categoriaId = categoria.id,
+                    importe = aplicado.coste,
+                    descripcion = aplicado.comentario,
+                    fecha = System.currentTimeMillis()
+                )
+            )
+        }
+    }
+
+    private fun GastoFijoEntity.aDominio(): GastoFijo = GastoFijo(
+        id = id,
+        coste = coste,
+        tipo = TipoCategoria.valueOf(tipo),
+        comentario = comentario
+    )
 
     override suspend fun existeAlgunMes(): Boolean = presupuestoDao.contarMeses() > 0
 

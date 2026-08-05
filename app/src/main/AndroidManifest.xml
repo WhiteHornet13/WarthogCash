@@ -55,6 +55,18 @@
             android:exported="false" />
 
         <activity
+            android:name=".ui.fixedexpenses.FixedExpensesActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.fixedexpenses.FixedExpenseFormActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.fixedexpenses.SelectFixedExpensesActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".ui.settings.SettingsActivity"
             android:exported="false" />
 

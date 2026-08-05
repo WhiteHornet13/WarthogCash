@@ -4,6 +4,8 @@ import com.warthogcash.presupuesto.domain.model.GastoDetallado
 import com.warthogcash.presupuesto.domain.model.Presupuesto
 import com.warthogcash.presupuesto.domain.model.TipoCategoria
 import kotlinx.coroutines.flow.Flow
+import com.warthogcash.presupuesto.domain.model.GastoFijo
+import com.warthogcash.presupuesto.domain.model.GastoFijoAplicado
 
 /**
  * Contrato del repositorio de presupuestos. La interfaz de usuario nunca
@@ -54,4 +56,24 @@ interface PresupuestoRepository {
 
     /** true si existe un mes "actual" distinto del indicado (spec detalle mes anterior, 4.3). */
     suspend fun existeMesActualDistintoDe(presupuestoId: Long): Boolean
+
+    // --- Gastos fijos ---------------------------------------------------
+
+    /** true si existe al menos un gasto fijo definido (decide si se muestra
+     * la pantalla "Seleccionar gastos fijos" al crear un mes). */
+    suspend fun existenGastosFijos(): Boolean
+
+    suspend fun obtenerGastosFijos(): List<GastoFijo>
+
+    fun observarGastosFijos(): Flow<List<GastoFijo>>
+
+    suspend fun crearGastoFijo(coste: Double, tipo: TipoCategoria, comentario: String?): Long
+
+    suspend fun actualizarGastoFijo(id: Long, coste: Double, tipo: TipoCategoria, comentario: String?)
+
+    suspend fun eliminarGastoFijo(id: Long)
+
+    /** Aplica al mes [mesId] los gastos fijos seleccionados, creando un
+     * Gasto normal por cada uno en su categoría correspondiente. */
+    suspend fun aplicarGastosFijosAMes(mesId: Long, seleccionados: List<GastoFijoAplicado>)
 }

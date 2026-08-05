@@ -63,6 +63,8 @@
     <string name="accion_anadir_gasto">Añadir gasto</string>
     <string name="cargando">Cargando…</string>
     <string name="accion_hecho">Hecho</string>
+    <string name="accion_editar">Editar</string>
+    <string name="accion_eliminar">Eliminar</string>
 
     <!-- Ajustes -->
     <string name="ajustes_titulo">Ajustes</string>
@@ -70,4 +72,28 @@
     <string name="ajustes_porcentajes_descripcion">Se usarán como valores de partida al crear un mes nuevo. Podrás cambiarlos en cada mes si lo necesitas.</string>
     <string name="ajustes_boton_guardar">Guardar</string>
     <string name="ajustes_guardado_confirmacion">Ajustes guardados</string>
+
+    <!-- Ajustes: acceso a gastos fijos -->
+    <string name="ajustes_gastos_titulo">GASTOS</string>
+
+    <!-- Gastos fijos -->
+    <string name="gastos_fijos_titulo">Gastos fijos</string>
+    <string name="gastos_fijos_titulo_nuevo">Nuevo gasto fijo</string>
+    <string name="gastos_fijos_titulo_editar">Editar gasto fijo</string>
+    <string name="gastos_fijos_accion_nuevo">Añadir gasto fijo</string>
+    <string name="gastos_fijos_vacio">Todavía no has definido ningún gasto fijo.</string>
+    <string name="gastos_fijos_comentario">COMENTARIO</string>
+    <string name="gastos_fijos_comentario_hint">Añade un comentario (opcional)</string>
+    <string name="gastos_fijos_boton_guardar">Guardar gasto fijo</string>
+    <string name="gastos_fijos_error_coste">Introduce el coste</string>
+    <string name="gastos_fijos_error_categoria">Selecciona una categoría</string>
+    <string name="gastos_fijos_confirmar_eliminar_titulo">Eliminar gasto fijo</string>
+    <string name="gastos_fijos_confirmar_eliminar_mensaje">Se eliminará esta plantilla de gasto fijo. Los gastos ya añadidos a meses anteriores no se verán afectados.</string>
+
+    <!-- Seleccionar gastos fijos -->
+    <string name="seleccionar_gastos_fijos_titulo_formato">Gastos fijos de %1$s</string>
+    <string name="seleccionar_gastos_fijos_explicacion">Elige qué gastos fijos quieres aplicar este mes. Puedes ajustar el importe solo para este mes.</string>
+    <string name="seleccionar_gastos_fijos_total">Total a añadir este mes</string>
+    <string name="seleccionar_gastos_fijos_omitir">Omitir, no añadir ninguno</string>
+    <string name="seleccionar_gastos_fijos_boton_formato">Añadir al mes (%1$d)</string>
 </resources>

@@ -8,6 +8,7 @@ import com.warthogcash.presupuesto.databinding.ActivitySettingsBinding
 import com.warthogcash.presupuesto.databinding.ItemCategoryPercentInputBinding
 import com.warthogcash.presupuesto.domain.model.TipoCategoria
 import com.warthogcash.presupuesto.util.PorcentajesPredefinidos
+import android.content.Intent
 
 /**
  * Pantalla de opciones de la app. De momento solo contiene los
@@ -28,6 +29,10 @@ class SettingsActivity : AppCompatActivity() {
         predefinidos = PorcentajesPredefinidos(this)
 
         binding.btnVolver.setOnClickListener { finish() }
+
+        binding.filaGastosFijos.setOnClickListener {
+            startActivity(Intent(this, com.warthogcash.presupuesto.ui.fixedexpenses.FixedExpensesActivity::class.java))
+        }
 
         filas = mapOf(
             TipoCategoria.GENERAL to binding.filaGeneral,

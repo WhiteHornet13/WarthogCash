@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/fondo_pantalla">
+
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_header_rounded"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/espaciado_l"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tvTituloHeader"
+            style="@style/TextoTituloHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Gastos fijos de Agosto 2026" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/contenedorBotones"
+        app:layout_constraintTop_toBottomOf="@id/header">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/espaciado_l">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/espaciado_m"
+                android:text="@string/seleccionar_gastos_fijos_explicacion"
+                android:textColor="@color/texto_secundario"
+                android:textSize="@dimen/texto_pequeno" />
+
+            <LinearLayout
+                android:id="@+id/contenedorItems"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/espaciado_s"
+                android:background="@drawable/bg_header_rounded"
+                android:orientation="vertical"
+                android:padding="@dimen/espaciado_m">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:alpha="0.85"
+                    android:text="@string/seleccionar_gastos_fijos_total"
+                    android:textColor="@color/blanco"
+                    android:textSize="@dimen/texto_pequeno" />
+
+                <TextView
+                    android:id="@+id/tvTotalSeleccionado"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:textColor="@color/blanco"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    tools:text="762,99 €" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/contenedorBotones"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/espaciado_l"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAnadirAlMes"
+            style="@style/BotonPrimario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Añadir al mes (3)" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnOmitir"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/seleccionar_gastos_fijos_omitir"
+            android:textAllCaps="false"
+            android:textColor="@color/texto_secundario" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
