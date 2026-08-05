@@ -60,17 +60,20 @@ class PresupuestoRepositoryImpl(
         dineroDisponible: Double,
         porcentajes: Map<TipoCategoria, Double>
     ): Long {
-        val calendarioReal = java.util.Calendar.getInstance()
-        val mesReal = calendarioReal.get(java.util.Calendar.MONTH) + 1
-        val anioReal = calendarioReal.get(java.util.Calendar.YEAR)
-
-        // Índice absoluto de mes (para comparar fácilmente año+mes)
         fun indiceAbsoluto(a: Int, m: Int) = a * 12 + m
         val indiceNuevo = indiceAbsoluto(anio, mes)
-        val indiceReal = indiceAbsoluto(anioReal, mesReal)
 
-        // Solo pasa a ser "actual" si es el mes real o el siguiente al real.
-        val debeSerActual = indiceNuevo == indiceReal || indiceNuevo == indiceReal + 1
+        val actualExistente = presupuestoDao.obtenerActual()
+
+        // Un mes nuevo solo pasa a ser "actual" si no hay ninguno todavía
+        // (primer mes de la app) o si es exactamente el siguiente al que
+        // es actual en este momento. Cualquier otro mes se crea como
+        // ABIERTO normal, sin tocar cuál es el mes actual.
+        val debeSerActual = if (actualExistente == null) {
+            true
+        } else {
+            indiceNuevo == indiceAbsoluto(actualExistente.anio, actualExistente.mes) + 1
+        }
 
         if (debeSerActual) {
             presupuestoDao.limpiarActual()
@@ -101,6 +104,9 @@ class PresupuestoRepositoryImpl(
     override suspend fun cerrarMes(presupuestoId: Long) {
         presupuestoDao.actualizarEstado(presupuestoId, EstadoPresupuesto.CERRADO.name)
     }
+
+    override suspend fun existeMes(mes: Int, anio: Int): Boolean =
+        presupuestoDao.existeMes(mes, anio)
 
     override suspend fun agregarGasto(categoriaId: Long, importe: Double, descripcion: String?): Long {
         return gastoDao.insertar(

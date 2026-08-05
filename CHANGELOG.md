@@ -1,5 +1,34 @@
 # Changelog
 
+## [1.4.0] - 2026-08-05
+### Added
+- "Crear mes nuevo": ya no se puede crear un mes posterior al siguiente
+  al mes marcado como "actual" en la app. El límite avanza
+  automáticamente cada vez que se crea ese siguiente mes, igual que la
+  regla que ya aplicaba `PresupuestoRepositoryImpl.crearMes()` para
+  decidir si un mes nuevo pasa a ser "actual". En el flujo de primer
+  uso (sin ningún mes creado todavía) no se aplica este límite, ya que
+  el selector queda fijado al mes real del dispositivo.
+- "Crear mes nuevo": se impide crear dos veces un mes con el mismo
+  mes/año (`PresupuestoRepository.existeMes`), evitando duplicados que
+  dejaban dos meses distintos compitiendo por ser el "actual".
+
+### Fixed
+- "Mis meses": las tarjetas podían aparecer duplicadas al entrar en la
+  pantalla si una carga incremental de paginación (disparada por
+  scroll) terminaba después de que `onResume()` ya hubiera lanzado una
+  recarga completa. `MyMonthsViewModel` ahora cancela cualquier carga
+  en curso (`Job`) antes de lanzar una nueva, tanto en
+  `cargarSiguientePagina()` como en `recargar()`.
+- `PresupuestoRepositoryImpl.crearMes()`: el criterio para decidir si
+  un mes nuevo pasa a ser "actual" comparaba contra el calendario real
+  del dispositivo en lugar de contra el mes ya marcado como actual en
+  base de datos, lo que podía dejar la regla de negocio desincronizada
+  si el usuario no creaba un mes en cada mes real. Ahora se compara
+  siempre contra el mes actual existente en Room (o se marca como
+  actual sin más condiciones si todavía no hay ninguno, primer mes de
+  la app).
+
 ## [1.3.0] - 2026-08-04
 ### Added
 - "Crear mes nuevo": cuando se accede desde "Bienvenida" (primer uso,

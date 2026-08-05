@@ -32,6 +32,7 @@ class CreateMonthActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCreateMonthBinding
 
+
     // true si se llega desde "Bienvenida" (primer uso, sin ningún mes creado).
     private val esPrimeraVez: Boolean by lazy {
         intent.getBooleanExtra(EXTRA_ES_PRIMERA_VEZ, false)
@@ -45,6 +46,7 @@ class CreateMonthActivity : AppCompatActivity() {
 
     // Filas de porcentaje en el orden visual fijo de las 5 categorías.
     private lateinit var filas: Map<TipoCategoria, ItemCategoryPercentInputBinding>
+    private var mesActualApp: com.warthogcash.presupuesto.domain.model.Presupuesto? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,6 +77,11 @@ class CreateMonthActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.mesAnteriorAbierto.collect { mes -> actualizarBannerAviso(mes) }
+            }
+        }
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.mesActual.collect { mes -> mesActualApp = mes }
             }
         }
     }
@@ -183,8 +190,40 @@ class CreateMonthActivity : AppCompatActivity() {
         val mesSeleccionado = Presupuesto.NOMBRES_MES.indexOf(binding.spinnerMes.selectedItem.toString()) + 1
         val anioSeleccionado = binding.spinnerAnio.selectedItem.toString().toInt()
 
+        // No se puede crear un mes posterior al siguiente al mes "actual"
+        // DE LA APP (el marcado esActual=true en BD). Este es el mismo
+        // criterio que usa PresupuestoRepositoryImpl.crearMes() para decidir
+        // si el mes nuevo pasa a ser actual, así el límite avanza cada vez
+        // que se crea el siguiente mes real. Si todavía no hay ningún mes
+        // actual (primer uso), no se aplica límite: el spinner ya está
+        // bloqueado al mes real del dispositivo en ese flujo.
+        fun indiceAbsoluto(a: Int, m: Int) = a * 12 + m
+        val actual = mesActualApp
+        if (actual != null) {
+            val indiceMaximoPermitido = indiceAbsoluto(actual.anio, actual.mes) + 1
+            val indiceSeleccionado = indiceAbsoluto(anioSeleccionado, mesSeleccionado)
+            if (indiceSeleccionado > indiceMaximoPermitido) {
+                val anioMaximo = (indiceMaximoPermitido - 1) / 12
+                val mesMaximo = indiceMaximoPermitido - anioMaximo * 12
+                binding.tvErrorPorcentaje.visibility = android.view.View.VISIBLE
+                binding.tvErrorPorcentaje.text = getString(
+                    R.string.crear_mes_error_fecha_futura,
+                    "${Presupuesto.NOMBRES_MES[mesMaximo - 1]} $anioMaximo"
+                )
+                return
+            }
+        }
+        binding.tvErrorPorcentaje.visibility = android.view.View.GONE
+
         binding.btnCrearMes.isEnabled = false
         lifecycleScope.launch {
+            val repo = (application as App).repository
+            if (repo.existeMes(mesSeleccionado, anioSeleccionado)) {
+                binding.btnCrearMes.isEnabled = true
+                binding.tvErrorPorcentaje.visibility = android.view.View.VISIBLE
+                binding.tvErrorPorcentaje.text = getString(R.string.crear_mes_error_mes_duplicado)
+                return@launch
+            }
             viewModel.crearMes(mesSeleccionado, anioSeleccionado, dinero, porcentajes)
             val intent = Intent(this@CreateMonthActivity, MainActivity::class.java)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
@@ -197,3 +236,5 @@ class CreateMonthActivity : AppCompatActivity() {
     private fun formatearSuma(valor: Double): String =
         if (valor == valor.toLong().toDouble()) valor.toLong().toString() else valor.toString()
 }
+
+

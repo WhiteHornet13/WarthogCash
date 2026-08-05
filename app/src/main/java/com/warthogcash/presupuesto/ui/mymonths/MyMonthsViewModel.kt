@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.Job
 
 /**
  * Especificación de pantalla "Mis meses", sección 4.2: carga incremental
@@ -33,12 +34,13 @@ class MyMonthsViewModel(private val repository: PresupuestoRepository) : ViewMod
 
     private var offset = 0
     private var hayMasPaginas = true
+    private var jobCarga: Job? = null
 
 
 
     fun cargarSiguientePagina() {
         if (_cargando.value || !hayMasPaginas) return
-        viewModelScope.launch {
+        jobCarga = viewModelScope.launch {   // <-- guardar el job
             _cargando.value = true
             val pagina = repository.obtenerPaginaMeses(TAMANO_PAGINA, offset)
             offset += pagina.size
@@ -49,10 +51,11 @@ class MyMonthsViewModel(private val repository: PresupuestoRepository) : ViewMod
     }
 
     fun recargar() {
+        jobCarga?.cancel()   // <-- cancela cualquier carga anterior en curso
         val cantidadActual = _meses.value.size.coerceAtLeast(TAMANO_PAGINA)
         offset = 0
         hayMasPaginas = true
-        viewModelScope.launch {
+        jobCarga = viewModelScope.launch {   // <-- guardar el job
             _cargando.value = true
             val pagina = repository.obtenerPaginaMeses(cantidadActual, 0)
             offset = pagina.size

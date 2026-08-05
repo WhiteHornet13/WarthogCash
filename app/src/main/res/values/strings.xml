@@ -31,6 +31,8 @@
     <string name="crear_mes_aviso_mes_abierto">El mes anterior más reciente sigue abierto. Ciérralo desde su propio detalle si quieres traspasar su sobrante.</string>
     <string name="crear_mes_boton">Crear mes</string>
     <string name="crear_mes_error_porcentaje">Los porcentajes deben sumar 100%% (actual: %1$s%%)</string>
+    <string name="crear_mes_error_fecha_futura">No puedes crear un mes posterior a %1$s</string>
+    <string name="crear_mes_error_mes_duplicado">Ya existe un mes creado para esa fecha</string>
     <string name="crear_mes_error_dinero">Introduce el dinero disponible</string>
     <string name="crear_mes_selector_mes">Mes</string>
     <string name="crear_mes_selector_anio">Año</string>

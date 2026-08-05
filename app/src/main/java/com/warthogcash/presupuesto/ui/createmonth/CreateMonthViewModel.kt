@@ -22,9 +22,13 @@ class CreateMonthViewModel(private val repository: PresupuestoRepository) : View
     private val _mesAnteriorAbierto = MutableStateFlow<Presupuesto?>(null)
     val mesAnteriorAbierto: StateFlow<Presupuesto?> = _mesAnteriorAbierto.asStateFlow()
 
+    private val _mesActual = MutableStateFlow<Presupuesto?>(null)
+    val mesActual: StateFlow<Presupuesto?> = _mesActual.asStateFlow()
+
     init {
         viewModelScope.launch {
             val actual = repository.obtenerMesActual()
+            _mesActual.value = actual
             if (actual != null && actual.estado == EstadoPresupuesto.ABIERTO) {
                 _mesAnteriorAbierto.value = actual
             }

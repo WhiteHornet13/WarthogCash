@@ -15,6 +15,9 @@ interface PresupuestoRepository {
     /** true si no existe ningún mes creado todavía (condición de la pantalla Bienvenida). */
     suspend fun existeAlgunMes(): Boolean
 
+    /** true si ya existe un mes creado con ese mes/año (evita duplicados). */
+    suspend fun existeMes(mes: Int, anio: Int): Boolean
+
     suspend fun obtenerMesActual(): Presupuesto?
 
     /** Observa cambios en el mes actual (usado por la Pantalla principal). */

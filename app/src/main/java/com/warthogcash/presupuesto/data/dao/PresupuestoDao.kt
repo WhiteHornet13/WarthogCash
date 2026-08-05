@@ -42,4 +42,7 @@ interface PresupuestoDao {
 
     @Query("SELECT EXISTS(SELECT 1 FROM presupuestos WHERE esActual = 1 AND id != :presupuestoId)")
     suspend fun existeActualDistintoDe(presupuestoId: Long): Boolean
+
+    @Query("SELECT EXISTS(SELECT 1 FROM presupuestos WHERE mes = :mes AND anio = :anio)")
+    suspend fun existeMes(mes: Int, anio: Int): Boolean
 }
