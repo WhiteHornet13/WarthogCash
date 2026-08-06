@@ -61,6 +61,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        // Refresca el importe gastado/restante al volver de Añadir gasto,
+        // del Historial (donde ahora se puede editar/eliminar un gasto) o
+        // de cualquier otra pantalla.
+        viewModel.recargar()
+    }
+
     private fun abrirHistorialDeCategoria(categoria: Categoria) {
         val mesId = viewModel.mesActual.value?.id ?: return
         startActivity(

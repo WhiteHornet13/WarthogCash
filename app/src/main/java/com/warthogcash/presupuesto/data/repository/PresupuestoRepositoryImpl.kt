@@ -183,6 +183,16 @@ class PresupuestoRepositoryImpl(
         }
     }
 
+    override suspend fun editarGasto(gastoId: Long, importe: Double, descripcion: String?) {
+        val entidad = gastoDao.obtenerPorId(gastoId) ?: return
+        gastoDao.actualizar(entidad.copy(importe = importe, descripcion = descripcion))
+    }
+
+    override suspend fun eliminarGasto(gastoId: Long) {
+        val entidad = gastoDao.obtenerPorId(gastoId) ?: return
+        gastoDao.eliminar(entidad)
+    }
+
     override suspend fun existeMesActualDistintoDe(presupuestoId: Long): Boolean =
         presupuestoDao.existeActualDistintoDe(presupuestoId)
 

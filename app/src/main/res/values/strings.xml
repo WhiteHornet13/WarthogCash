@@ -50,6 +50,14 @@
     <string name="historial_titulo_generico_formato">Historial · %1$s</string>
     <string name="historial_titulo_filtrado_formato">%1$s · %2$s</string>
     <string name="historial_vacio">Todavía no hay gastos registrados aquí.</string>
+    <string name="historial_accion_editar_gasto">Editar gasto</string>
+    <string name="historial_accion_eliminar_gasto">Eliminar gasto</string>
+    <string name="historial_confirmar_eliminar_titulo">Eliminar gasto</string>
+    <string name="historial_confirmar_eliminar_mensaje_formato">Se eliminará «%1$s» (%2$s) y se recalculará el gasto de la categoría %3$s. Esta acción no se puede deshacer.</string>
+    <string name="historial_confirmar_editar_titulo">Editar gasto</string>
+    <string name="historial_editar_importe">Importe</string>
+    <string name="historial_editar_descripcion">Descripción</string>
+    <string name="historial_editar_boton_guardar">Guardar cambios</string>
 
     <!-- Cerrar mes -->
     <string name="cerrar_mes_titulo">Cerrar mes</string>

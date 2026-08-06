@@ -54,6 +54,12 @@ interface PresupuestoRepository {
 
     suspend fun obtenerGastosDeMesFiltrados(presupuestoId: Long, tipo: TipoCategoria): List<GastoDetallado>
 
+    /** Edita importe y descripción de un gasto existente; recalcula el gastado de su categoría. */
+    suspend fun editarGasto(gastoId: Long, importe: Double, descripcion: String?)
+
+    /** Elimina un gasto; recalcula el gastado de su categoría. */
+    suspend fun eliminarGasto(gastoId: Long)
+
     /** true si existe un mes "actual" distinto del indicado (spec detalle mes anterior, 4.3). */
     suspend fun existeMesActualDistintoDe(presupuestoId: Long): Boolean
 

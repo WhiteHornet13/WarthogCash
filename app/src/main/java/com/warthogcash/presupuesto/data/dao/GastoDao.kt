@@ -5,12 +5,23 @@ import androidx.room.Insert
 import androidx.room.Query
 import com.warthogcash.presupuesto.data.entity.GastoEntity
 import kotlinx.coroutines.flow.Flow
+import androidx.room.Delete
+import androidx.room.Update
 
 @Dao
 interface GastoDao {
 
     @Insert
     suspend fun insertar(gasto: GastoEntity): Long
+
+    @Update
+    suspend fun actualizar(gasto: GastoEntity)
+
+    @Delete
+    suspend fun eliminar(gasto: GastoEntity)
+
+    @Query("SELECT * FROM gastos WHERE id = :id")
+    suspend fun obtenerPorId(id: Long): GastoEntity?
 
     @Query("SELECT * FROM gastos WHERE categoriaId = :categoriaId ORDER BY fecha DESC")
     suspend fun obtenerPorCategoria(categoriaId: Long): List<GastoEntity>

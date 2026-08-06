@@ -67,7 +67,7 @@ class FixedExpensesActivity : AppCompatActivity() {
     }
 
     private fun confirmarEliminacion(gastoFijo: GastoFijo) {
-        AlertDialog.Builder(this)
+        AlertDialog.Builder(this, R.style.ThemeOverlay_WarthogCash_Dialog)
             .setTitle(R.string.gastos_fijos_confirmar_eliminar_titulo)
             .setMessage(R.string.gastos_fijos_confirmar_eliminar_mensaje)
             .setNegativeButton(android.R.string.cancel, null)

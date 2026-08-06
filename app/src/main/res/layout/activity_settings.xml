@@ -55,7 +55,7 @@
                 android:id="@+id/filaGastosFijos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/espaciado_l"
+                android:layout_marginBottom="@dimen/espaciado_s"
                 android:background="@drawable/bg_card_rounded"
                 android:clickable="true"
                 android:focusable="true"
@@ -81,57 +81,90 @@
 
             </LinearLayout>
 
-            <TextView
-                style="@style/EtiquetaCampo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/espaciado_s"
-                android:text="@string/ajustes_porcentajes_titulo" />
-
-            <TextView
+            <LinearLayout
+                android:id="@+id/filaPorcentajesPredefinidos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/espaciado_m"
-                android:text="@string/ajustes_porcentajes_descripcion"
-                android:textColor="@color/texto_secundario"
-                android:textSize="@dimen/texto_pequeno" />
+                android:layout_marginBottom="@dimen/espaciado_l"
+                android:background="@drawable/bg_card_rounded"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/espaciado_m">
 
-            <include
-                android:id="@+id/filaGeneral"
-                layout="@layout/item_category_percent_input" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/ajustes_porcentajes_titulo"
+                    android:textColor="@color/texto_principal"
+                    android:textStyle="bold" />
 
-            <include
-                android:id="@+id/filaAhorro"
-                layout="@layout/item_category_percent_input" />
+                <TextView
+                    android:id="@+id/ivChevronPorcentajes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="›"
+                    android:textColor="@color/texto_secundario"
+                    android:textSize="18sp" />
 
-            <include
-                android:id="@+id/filaInversion"
-                layout="@layout/item_category_percent_input" />
+            </LinearLayout>
 
-            <include
-                android:id="@+id/filaOcio"
-                layout="@layout/item_category_percent_input" />
-
-            <include
-                android:id="@+id/filaCultura"
-                layout="@layout/item_category_percent_input" />
-
-            <TextView
-                android:id="@+id/tvErrorPorcentaje"
+            <LinearLayout
+                android:id="@+id/contenedorPorcentajes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/espaciado_xs"
-                android:textColor="@color/rojo_limite"
-                android:textSize="@dimen/texto_pequeno"
-                android:visibility="gone" />
+                android:orientation="vertical"
+                android:visibility="gone">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnGuardarAjustes"
-                style="@style/BotonPrimario"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/espaciado_l"
-                android:text="@string/ajustes_boton_guardar" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/espaciado_m"
+                    android:text="@string/ajustes_porcentajes_descripcion"
+                    android:textColor="@color/texto_secundario"
+                    android:textSize="@dimen/texto_pequeno" />
+
+                <include
+                    android:id="@+id/filaGeneral"
+                    layout="@layout/item_category_percent_input" />
+
+                <include
+                    android:id="@+id/filaAhorro"
+                    layout="@layout/item_category_percent_input" />
+
+                <include
+                    android:id="@+id/filaInversion"
+                    layout="@layout/item_category_percent_input" />
+
+                <include
+                    android:id="@+id/filaOcio"
+                    layout="@layout/item_category_percent_input" />
+
+                <include
+                    android:id="@+id/filaCultura"
+                    layout="@layout/item_category_percent_input" />
+
+                <TextView
+                    android:id="@+id/tvErrorPorcentaje"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/espaciado_xs"
+                    android:textColor="@color/rojo_limite"
+                    android:textSize="@dimen/texto_pequeno"
+                    android:visibility="gone" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnGuardarAjustes"
+                    style="@style/BotonPrimario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/espaciado_l"
+                    android:text="@string/ajustes_boton_guardar" />
+
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"

@@ -43,4 +43,13 @@
         <item name="android:layout_marginEnd">8dp</item>
         <item name="android:layout_marginBottom">8dp</item>
     </style>
+
+    <style name="ThemeOverlay.WarthogCash.Dialog" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <item name="colorPrimary">@color/verde_principal</item>
+        <item name="colorAccent">@color/verde_principal</item>
+        <item name="android:windowBackground">@color/blanco</item>
+        <item name="android:textColorPrimary">@color/texto_principal</item>
+        <item name="android:textColorSecondary">@color/texto_secundario</item>
+        <item name="android:textColorPrimaryInverse">@color/texto_principal</item>
+    </style>
 </resources>

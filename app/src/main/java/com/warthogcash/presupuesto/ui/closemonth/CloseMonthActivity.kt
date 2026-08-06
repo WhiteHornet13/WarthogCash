@@ -57,7 +57,7 @@ class CloseMonthActivity : AppCompatActivity() {
     }
 
     private fun confirmarConDialogo() {
-        AlertDialog.Builder(this)
+        AlertDialog.Builder(this, R.style.ThemeOverlay_WarthogCash_Dialog)
             .setTitle(R.string.cerrar_mes_titulo)
             .setMessage(R.string.cerrar_mes_resumen)
             .setNegativeButton(android.R.string.cancel, null)

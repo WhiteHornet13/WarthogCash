@@ -34,6 +34,16 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(Intent(this, com.warthogcash.presupuesto.ui.fixedexpenses.FixedExpensesActivity::class.java))
         }
 
+        binding.filaGastosFijos.setOnClickListener {
+            startActivity(Intent(this, com.warthogcash.presupuesto.ui.fixedexpenses.FixedExpensesActivity::class.java))
+        }
+
+        binding.filaPorcentajesPredefinidos.setOnClickListener {
+            val mostrar = binding.contenedorPorcentajes.visibility != android.view.View.VISIBLE
+            binding.contenedorPorcentajes.visibility = if (mostrar) android.view.View.VISIBLE else android.view.View.GONE
+            binding.ivChevronPorcentajes.text = if (mostrar) "⌄" else "›"
+        }
+
         filas = mapOf(
             TipoCategoria.GENERAL to binding.filaGeneral,
             TipoCategoria.AHORRO to binding.filaAhorro,

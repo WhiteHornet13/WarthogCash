@@ -39,4 +39,24 @@
         android:textStyle="bold"
         tools:text="−24,90 €" />
 
+    <ImageButton
+        android:id="@+id/btnEditarGasto"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="@dimen/espaciado_s"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/historial_accion_editar_gasto"
+        android:padding="6dp"
+        android:src="@drawable/ic_edit" />
+
+    <ImageButton
+        android:id="@+id/btnEliminarGasto"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/historial_accion_eliminar_gasto"
+        android:padding="6dp"
+        android:src="@drawable/ic_delete" />
+
 </LinearLayout>
+

@@ -31,13 +31,26 @@ class ExpenseHistoryViewModel(
     init {
         viewModelScope.launch {
             _mes.value = repository.obtenerMesPorId(mesId)
-            val resultado = if (tipoFiltro != null) {
-                repository.obtenerGastosDeMesFiltrados(mesId, tipoFiltro)
-            } else {
-                repository.obtenerGastosDeMes(mesId)
-            }
-            // 4.1: ordenados por fecha, más reciente primero.
-            _gastos.value = resultado.sortedByDescending { it.gasto.fecha }
+            recargarGastos()
         }
+    }
+
+    suspend fun editarGasto(gastoId: Long, importe: Double, descripcion: String?) {
+        repository.editarGasto(gastoId, importe, descripcion)
+        recargarGastos()
+    }
+
+    suspend fun eliminarGasto(gastoId: Long) {
+        repository.eliminarGasto(gastoId)
+        recargarGastos()
+    }
+
+    private suspend fun recargarGastos() {
+        val resultado = if (tipoFiltro != null) {
+            repository.obtenerGastosDeMesFiltrados(mesId, tipoFiltro)
+        } else {
+            repository.obtenerGastosDeMes(mesId)
+        }
+        _gastos.value = resultado.sortedByDescending { it.gasto.fecha }
     }
 }

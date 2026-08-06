@@ -1,5 +1,48 @@
 # Changelog
 
+## [1.6.0] - 2026-08-06
+### Added
+- "Historial de gastos": cada fila permite ahora editar o eliminar el
+  gasto individual, para corregir errores al introducir el importe o
+  la descripción. Ambas acciones piden confirmación mediante un
+  diálogo, ya que recalculan el gasto de la categoría afectada.
+  Disponible solo si el mes está abierto; en un mes cerrado los
+  botones de editar/eliminar quedan ocultos.
+- Nuevos iconos `ic_edit.xml` e `ic_delete.xml`.
+- Nuevos métodos `editarGasto`/`eliminarGasto` en
+  `PresupuestoRepository`/`PresupuestoRepositoryImpl`, y
+  `actualizar`/`eliminar`/`obtenerPorId` en `GastoDao`.
+- "Ajustes": el bloque "Porcentajes predefinidos" pasa a ser una fila
+  plegable con el mismo estilo de acceso que "Gastos fijos" (icono
+  `›` que se pulsa para expandir/contraer los 5 campos, en vez de
+  mostrarlos siempre visibles).
+
+### Fixed
+- La Pantalla principal no reflejaba el nuevo importe "gastado" tras
+  eliminar o editar un gasto desde el Historial (había que salir y
+  volver a entrar en la app). `observarMesActual()` usa el Flow
+  reactivo de Room, que solo se invalida con cambios en la tabla
+  `presupuestos`, no en `gastos`. `MainViewModel` añade un
+  `recargar()` explícito, invocado desde el nuevo
+  `MainActivity.onResume()`, igual que ya hacían
+  `MonthDetailActivity`/`MyMonthsActivity`.
+- Los diálogos de confirmación (`AlertDialog`) de toda la app
+  mostraban el título y el mensaje en verde, casi ilegibles, al
+  heredar `colorPrimary`/`colorAccent` del tema general. Nuevo
+  `ThemeOverlay.WarthogCash.Dialog` con colores de texto explícitos,
+  aplicado en `ExpenseHistoryActivity`, `CloseMonthActivity` y
+  `FixedExpensesActivity`.
+- En "Editar gasto", el campo de importe mostraba el texto en blanco
+  sobre fondo blanco (mismo problema ya corregido en 1.0.2 para los
+  `EditText` definidos en XML, pero este se crea por código y no
+  heredaba el arreglo). Añadido `textColor`/`hintTextColor` explícitos.
+- En "Editar gasto", los campos de importe y descripción no tenían
+  ningún borde visible. Añadido `bg_card_borde_suave` como fondo.
+- En "Editar gasto", el campo de importe aceptaba `.` como separador
+  decimal además de `,`, inconsistente con el resto de la app.
+  Restringido con `DigitsKeyListener` y normalizado a `,` sobre la
+  marcha, igual que en `AddExpenseActivity`/`CreateMonthActivity`.
+
 ## [1.5.0] - 2026-08-06
 ### Added
 - Nueva funcionalidad "Gastos fijos": permite definir plantillas de

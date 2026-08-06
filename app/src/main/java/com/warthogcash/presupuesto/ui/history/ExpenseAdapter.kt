@@ -1,6 +1,7 @@
 package com.warthogcash.presupuesto.ui.history
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.warthogcash.presupuesto.databinding.ItemExpenseRowBinding
@@ -8,18 +9,22 @@ import com.warthogcash.presupuesto.domain.model.GastoDetallado
 import com.warthogcash.presupuesto.util.Formato
 
 /**
- * Adapter genérico de filas de gasto, usado tanto en modo "todos los
- * gastos del mes" como en modo filtrado por categoría (especificación de
- * pantalla "Historial de gastos", sección 4.1/4.2). Cada fila sigue
- * mostrando su etiqueta de categoría en ambos modos, por consistencia
- * visual (sección 4.2).
+ * Adapter genérico de filas de gasto. Desde 1.6.0 permite editar y
+ * eliminar cada fila (con confirmación gestionada por la Activity),
+ * salvo cuando el mes está cerrado ([editable] = false), en cuyo caso
+ * los botones se ocultan.
  */
-class ExpenseAdapter : RecyclerView.Adapter<ExpenseAdapter.GastoViewHolder>() {
+class ExpenseAdapter(
+    private val alPulsarEditar: (GastoDetallado) -> Unit,
+    private val alPulsarEliminar: (GastoDetallado) -> Unit
+) : RecyclerView.Adapter<ExpenseAdapter.GastoViewHolder>() {
 
     private var gastos: List<GastoDetallado> = emptyList()
+    private var editable: Boolean = true
 
-    fun actualizar(nuevos: List<GastoDetallado>) {
+    fun actualizar(nuevos: List<GastoDetallado>, editable: Boolean = true) {
         gastos = nuevos
+        this.editable = editable
         notifyDataSetChanged()
     }
 
@@ -29,17 +34,22 @@ class ExpenseAdapter : RecyclerView.Adapter<ExpenseAdapter.GastoViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: GastoViewHolder, position: Int) {
-        holder.bind(gastos[position])
+        holder.bind(gastos[position], editable)
     }
 
     override fun getItemCount(): Int = gastos.size
 
-    class GastoViewHolder(private val binding: ItemExpenseRowBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: GastoDetallado) {
+    inner class GastoViewHolder(private val binding: ItemExpenseRowBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: GastoDetallado, editable: Boolean) {
             val descripcion = item.gasto.descripcion?.takeIf { it.isNotBlank() } ?: item.categoria.etiqueta
             binding.tvDescripcionGasto.text = descripcion
             binding.tvFechaCategoriaGasto.text = "${Formato.fechaCorta(item.gasto.fecha)} · ${item.categoria.etiqueta}"
             binding.tvImporteGasto.text = "−${Formato.moneda(item.gasto.importe)}"
+
+            binding.btnEditarGasto.visibility = if (editable) View.VISIBLE else View.GONE
+            binding.btnEliminarGasto.visibility = if (editable) View.VISIBLE else View.GONE
+            binding.btnEditarGasto.setOnClickListener { alPulsarEditar(item) }
+            binding.btnEliminarGasto.setOnClickListener { alPulsarEliminar(item) }
         }
     }
 }
