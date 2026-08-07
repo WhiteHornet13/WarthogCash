@@ -32,9 +32,15 @@ interface GastoDao {
     @Query("SELECT * FROM gastos WHERE categoriaId IN (:categoriaIds) ORDER BY fecha DESC")
     fun observarPorCategorias(categoriaIds: List<Long>): Flow<List<GastoEntity>>
 
-    @Query("SELECT COALESCE(SUM(importe), 0) FROM gastos WHERE categoriaId = :categoriaId")
+    /** Solo gastos reales (esIngreso = 0); nunca debe verse afectado por traspasos. */
+    @Query("SELECT COALESCE(SUM(importe), 0) FROM gastos WHERE categoriaId = :categoriaId AND esIngreso = 0")
     suspend fun sumarPorCategoria(categoriaId: Long): Double
 
-    @Query("SELECT COALESCE(SUM(importe), 0) FROM gastos WHERE categoriaId IN (:categoriaIds)")
+    @Query("SELECT COALESCE(SUM(importe), 0) FROM gastos WHERE categoriaId IN (:categoriaIds) AND esIngreso = 0")
     suspend fun sumarPorCategorias(categoriaIds: List<Long>): Double
+
+    /** Ingresos por traspaso (esIngreso = 1) recibidos por una categoría; se suman
+     *  al monto asignado, nunca al gastado. */
+    @Query("SELECT COALESCE(SUM(importe), 0) FROM gastos WHERE categoriaId = :categoriaId AND esIngreso = 1")
+    suspend fun sumarIngresosPorCategoria(categoriaId: Long): Double
 }

@@ -65,6 +65,9 @@
     <string name="cerrar_mes_sobrante_formato">Sobrante total del mes: %1$s</string>
     <string name="cerrar_mes_boton_confirmar">Confirmar cierre</string>
     <string name="cerrar_mes_nota_traspasos">La lógica detallada de traspaso de sobrante entre meses no forma parte todavía de la especificación de pantallas disponible; esta pantalla deja el mes cerrado de forma definitiva sin mover fondos.</string>
+    <string name="cerrar_mes_explicacion_reparto">Elige qué categorías traspasan su sobrante a %1$s. El resto se sumará a Ahorro de este mes.</string>
+    <string name="cerrar_mes_destino_siguiente_formato">→ %1$s</string>
+    <string name="cerrar_mes_destino_ahorro">→ Ahorro (este mes)</string>
 
     <!-- Genéricos -->
     <string name="accion_volver">Volver</string>

@@ -45,4 +45,7 @@ interface PresupuestoDao {
 
     @Query("SELECT EXISTS(SELECT 1 FROM presupuestos WHERE mes = :mes AND anio = :anio)")
     suspend fun existeMes(mes: Int, anio: Int): Boolean
+
+    @Query("SELECT * FROM presupuestos WHERE mes = :mes AND anio = :anio LIMIT 1")
+    suspend fun obtenerPorMesYAnio(mes: Int, anio: Int): PresupuestoEntity?
 }

@@ -10,29 +10,29 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 /**
- * Pantalla "Cerrar mes · paso de traspasos", referenciada desde "Detalle
- * de mes anterior (abierto)" (sección 4.3) pero SIN especificación propia
- * en la documentación de pantallas disponible: no se detalla ahí ninguna
- * lógica de traspaso de sobrante entre meses.
- *
- * Implementación mínima y honesta mientras no exista esa especificación:
- * se muestra el sobrante total del mes y se permite cerrarlo (pasa a
- * estado CERRADO), sin mover fondos a ningún otro mes. Revisar y ampliar
- * en cuanto se disponga de la especificación de esta pantalla.
+ * "Cerrar mes". Regla de negocio: solo se puede repartir el sobrante hacia
+ * el mes siguiente si este mes es el inmediatamente anterior al actual.
+ * Cualquier otro mes abierto que se cierre manda todo su sobrante a Ahorro.
  */
 class CloseMonthViewModel(
     private val repository: PresupuestoRepository,
     private val mesId: Long
 ) : ViewModel() {
 
-    private val _mes = MutableStateFlow<Presupuesto?>(null)
-    val mes: StateFlow<Presupuesto?> = _mes.asStateFlow()
+    data class EstadoCierre(val mes: Presupuesto, val permiteTraspaso: Boolean)
+
+    private val _estado = MutableStateFlow<EstadoCierre?>(null)
+    val estado: StateFlow<EstadoCierre?> = _estado.asStateFlow()
 
     init {
-        viewModelScope.launch { _mes.value = repository.obtenerMesPorId(mesId) }
+        viewModelScope.launch {
+            val mes = repository.obtenerMesPorId(mesId) ?: return@launch
+            val permiteTraspaso = repository.existeMesSiguienteInmediatoAbierto(mesId)
+            _estado.value = EstadoCierre(mes, permiteTraspaso)
+        }
     }
 
-    suspend fun confirmarCierre() {
-        repository.cerrarMes(mesId)
+    suspend fun confirmarCierre(categoriasATraspasar: Set<Long>) {
+        repository.cerrarMesConReparto(mesId, categoriasATraspasar)
     }
 }

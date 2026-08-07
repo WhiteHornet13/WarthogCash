@@ -1,5 +1,44 @@
 # Changelog
 
+## [1.7.0] - 2026-08-07
+### Added
+- "Cerrar mes" ahora reparte el sobrante en vez de descartarlo:
+  - Si existe el mes calendario inmediatamente siguiente y está abierto
+    (p. ej. cerrar mayo cuando junio ya existe y está abierto), se muestra
+    una lista con un checkbox por categoría: marcada traspasa su sobrante
+    a la misma categoría de ese mes siguiente; desmarcada lo suma a Ahorro
+    de este mismo mes. Ahorro nunca se traspasa a sí mismo.
+  - Si no existe ese mes exacto (p. ej. cerrar junio cuando solo existe
+    agosto, sin julio) o el siguiente ya está cerrado, no se muestra la
+    lista: todo el sobrante va directo a Ahorro de este mes, categoría a
+    categoría (una fila de ingreso independiente por cada categoría de
+    origen, no un total agregado).
+- Nuevo campo `esIngreso` en `GastoEntity`/`Gasto` (migración Room `2 → 3`)
+  para distinguir un gasto real de un ingreso por traspaso. El "gastado"
+  de una categoría solo suma gastos reales; el "asignado" pasa a ser
+  `dinero_mes × porcentaje + ingresos por traspaso recibidos`.
+- El historial de gastos muestra los ingresos por traspaso con signo `+`
+  y color verde, en vez de forzar siempre el signo `−`.
+- Nuevos métodos en `PresupuestoRepository`/`PresupuestoRepositoryImpl`:
+  `existeMesSiguienteInmediatoAbierto`, `cerrarMesConReparto`; y en
+  `PresupuestoDao`: `obtenerPorMesYAnio`; y en `GastoDao`:
+  `sumarIngresosPorCategoria`.
+
+### Fixed
+- Los traspasos se registraban como gastos negativos en la propia tabla
+  de gastos, dejando el "gastado" de la categoría destino en negativo en
+  vez de aumentar su dinero disponible.
+- Al cerrar un mes traspasando su sobrante, la categoría de ORIGEN seguía
+  mostrando ese sobrante como "restante" disponible tras el cierre, pese
+  a que ese mismo dinero ya aparecía también en el destino (Ahorro o mes
+  siguiente): doble conteo. Ahora se registra la salida real en la
+  categoría de origen, dejando su restante en 0.
+- El importe "Disponible" del header y de las tarjetas de "Mis meses"
+  (`Presupuesto.totalRestante`) no sumaba los ingresos recibidos por
+  traspaso, mostrando siempre el dinero disponible original del mes tal
+  cual se creó. Ahora es `dineroDisponible + totalIngresosTraspasados −
+  totalGastado`.
+
 ## [1.6.0] - 2026-08-06
 ### Added
 - "Historial de gastos": cada fila permite ahora editar o eliminar el

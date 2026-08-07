@@ -28,5 +28,9 @@ data class GastoEntity(
     val categoriaId: Long,
     val importe: Double,
     val descripcion: String?,
-    val fecha: Long
+    val fecha: Long,
+    /** true si esta fila es un ingreso (traspaso de sobrante recibido de otra
+     *  categoría/mes), no un gasto real. Se excluye del cálculo de "gastado"
+     *  y se suma al monto asignado de la categoría. */
+    val esIngreso: Boolean = false
 )

@@ -1,25 +1,24 @@
 package com.warthogcash.presupuesto.domain.model
 
-/**
- * Una de las 5 categorías fijas dentro de un Presupuesto (mes).
- *
- * Especificación técnica, sección 5.3: los importes "gastado" y "restante"
- * no se almacenan como campos propios; se calculan a partir de la suma de
- * los Gasto asociados, para evitar datos duplicados o desincronizados.
- * Por eso [gastado] llega ya calculado desde el repositorio y no desde Room.
- */
 data class Categoria(
     val id: Long,
     val presupuestoId: Long,
     val tipo: TipoCategoria,
     val porcentaje: Double,
-    val montoAsignado: Double,
+    /** Monto asignado según el % del dinero disponible del mes, SIN traspasos. */
+    val montoAsignadoBase: Double,
+    /** Suma de traspasos recibidos de otras categorías/meses (nunca negativo). */
+    val ingresosTraspasados: Double = 0.0,
+    /** Solo gastos reales; nunca incluye traspasos. */
     val gastado: Double
 ) {
+    /** Total disponible en la categoría: lo asignado por % + lo recibido por traspaso. */
+    val montoAsignado: Double
+        get() = montoAsignadoBase + ingresosTraspasados
+
     val restante: Double
         get() = montoAsignado - gastado
 
-    /** Progreso 0..1 (puede superar 1 si el gasto excede lo asignado). */
     val progreso: Float
         get() = if (montoAsignado <= 0.0) 0f else (gastado / montoAsignado).toFloat()
 

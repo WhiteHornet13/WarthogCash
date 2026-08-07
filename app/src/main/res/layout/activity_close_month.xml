@@ -33,49 +33,75 @@
             android:text="@string/cerrar_mes_titulo" />
     </LinearLayout>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:orientation="vertical"
-        android:padding="@dimen/espaciado_l"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:clipToPadding="false"
+        app:layout_constraintBottom_toTopOf="@id/btnConfirmarCierre"
         app:layout_constraintTop_toBottomOf="@id/header">
 
-        <TextView
-            android:id="@+id/tvResumen"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/cerrar_mes_resumen"
-            android:textColor="@color/texto_principal"
-            android:textSize="@dimen/texto_cuerpo" />
+            android:orientation="vertical"
+            android:padding="@dimen/espaciado_l">
 
-        <TextView
-            android:id="@+id/tvSobrante"
-            style="@style/TextoImporteGrande"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/espaciado_m"
-            tools:text="220,00 €" />
+            <TextView
+                android:id="@+id/tvResumen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/cerrar_mes_resumen"
+                android:textColor="@color/texto_principal"
+                android:textSize="@dimen/texto_cuerpo" />
 
-        <com.warthogcash.presupuesto.ui.common.WarningBannerView
-            android:id="@+id/bannerNotaTraspasos"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/espaciado_l" />
+            <TextView
+                android:id="@+id/tvSobrante"
+                style="@style/TextoImporteGrande"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/espaciado_m"
+                tools:text="220,00 €" />
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+            <!-- Solo visible si este mes es el inmediatamente anterior al actual. -->
+            <TextView
+                android:id="@+id/tvExplicacionReparto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/espaciado_s"
+                android:textColor="@color/texto_secundario"
+                android:textSize="@dimen/texto_pequeno"
+                android:visibility="gone"
+                tools:visibility="visible"
+                tools:text="Elige qué categorías traspasan su sobrante a Agosto 2026. El resto se sumará a Ahorro de este mes." />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnConfirmarCierre"
-            style="@style/BotonPrimario"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/rojo_limite"
-            android:text="@string/cerrar_mes_boton_confirmar" />
+            <LinearLayout
+                android:id="@+id/contenedorCategorias"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/espaciado_m"
+                android:orientation="vertical"
+                android:visibility="gone" />
 
-    </LinearLayout>
+            <com.warthogcash.presupuesto.ui.common.WarningBannerView
+                android:id="@+id/bannerNotaTraspasos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/espaciado_l" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnConfirmarCierre"
+        style="@style/BotonPrimario"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/espaciado_l"
+        android:layout_marginBottom="@dimen/espaciado_l"
+        android:backgroundTint="@color/rojo_limite"
+        android:text="@string/cerrar_mes_boton_confirmar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

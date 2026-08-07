@@ -44,7 +44,14 @@ class ExpenseAdapter(
             val descripcion = item.gasto.descripcion?.takeIf { it.isNotBlank() } ?: item.categoria.etiqueta
             binding.tvDescripcionGasto.text = descripcion
             binding.tvFechaCategoriaGasto.text = "${Formato.fechaCorta(item.gasto.fecha)} · ${item.categoria.etiqueta}"
-            binding.tvImporteGasto.text = "−${Formato.moneda(item.gasto.importe)}"
+            val contexto = binding.root.context
+            if (item.gasto.esIngreso) {
+                binding.tvImporteGasto.text = "+${Formato.moneda(item.gasto.importe)}"
+                binding.tvImporteGasto.setTextColor(androidx.core.content.ContextCompat.getColor(contexto, com.warthogcash.presupuesto.R.color.verde_ahorro))
+            } else {
+                binding.tvImporteGasto.text = "−${Formato.moneda(item.gasto.importe)}"
+                binding.tvImporteGasto.setTextColor(androidx.core.content.ContextCompat.getColor(contexto, com.warthogcash.presupuesto.R.color.texto_principal))
+            }
 
             binding.btnEditarGasto.visibility = if (editable) View.VISIBLE else View.GONE
             binding.btnEliminarGasto.visibility = if (editable) View.VISIBLE else View.GONE

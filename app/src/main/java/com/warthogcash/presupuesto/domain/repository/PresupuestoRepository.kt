@@ -44,8 +44,24 @@ interface PresupuestoRepository {
         porcentajes: Map<TipoCategoria, Double>
     ): Long
 
-    /** Cierra un mes (no aplicable al mes actual, ver spec "Mis meses" 4.6). */
-    suspend fun cerrarMes(presupuestoId: Long)
+    /** true si existe un Presupuesto creado para el mes calendario INMEDIATAMENTE
+     *  siguiente a [presupuestoId] (mes+1, con ajuste de año) y ese mes está ABIERTO.
+     *  Solo en ese caso "Cerrar mes" permite elegir, categoría a categoría, si su
+     *  sobrante pasa a ese mes siguiente o se suma a Ahorro de este mismo mes.
+     *  No basta con que exista "algún" mes posterior (p. ej. mayo no puede pasar
+     *  a agosto si junio no existe: en ese caso todo va a Ahorro). */
+    suspend fun existeMesSiguienteInmediatoAbierto(presupuestoId: Long): Boolean
+
+    /**
+     * Cierra un mes repartiendo su sobrante:
+     * - Si [presupuestoId] es el mes inmediatamente anterior al actual, el sobrante de las
+     *   categorías cuyo id esté en [categoriasATraspasar] se suma a la misma categoría del mes
+     *   siguiente (si existe).
+     * - El sobrante de cualquier otra categoría —no marcada, sin mes siguiente creado, o de un
+     *   mes que no es el inmediatamente anterior al actual— se suma a Ahorro de este mismo mes.
+     * - Ahorro nunca traspasa a sí mismo.
+     */
+    suspend fun cerrarMesConReparto(presupuestoId: Long, categoriasATraspasar: Set<Long>)
 
     /** Registra un gasto en una categoría; devuelve el id generado. */
     suspend fun agregarGasto(categoriaId: Long, importe: Double, descripcion: String?): Long

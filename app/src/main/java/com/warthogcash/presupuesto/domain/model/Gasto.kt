@@ -9,6 +9,6 @@ data class Gasto(
     val categoriaId: Long,
     val importe: Double,
     val descripcion: String?,
-    /** Instante de creación en millis epoch, usado para ordenar el historial. */
-    val fecha: Long
+    val fecha: Long,
+    val esIngreso: Boolean = false
 )

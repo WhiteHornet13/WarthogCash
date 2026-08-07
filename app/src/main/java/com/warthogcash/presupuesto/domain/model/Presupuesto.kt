@@ -17,8 +17,13 @@ data class Presupuesto(
     val totalGastado: Double
         get() = categorias.sumOf { it.gastado }
 
+    /** Suma de todos los traspasos recibidos por las categorías de este mes
+     *  (de otra categoría del mismo mes hacia Ahorro, o del mes anterior). */
+    val totalIngresosTraspasados: Double
+        get() = categorias.sumOf { it.ingresosTraspasados }
+
     val totalRestante: Double
-        get() = dineroDisponible - totalGastado
+        get() = dineroDisponible + totalIngresosTraspasados - totalGastado
 
     /** Fracción 0..1 gastada del total del mes, usada para la mini barra en "Mis meses". */
     val progresoTotal: Float

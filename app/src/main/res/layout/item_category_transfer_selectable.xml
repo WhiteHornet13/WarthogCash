@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/espaciado_s"
+    android:background="@drawable/bg_card_rounded"
+    android:orientation="vertical"
+    android:padding="@dimen/espaciado_m">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/checkTraspasar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/verde_principal"
+            android:checked="true" />
+
+        <TextView
+            android:id="@+id/tvBadgeCategoria"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/espaciado_s"
+            android:background="@drawable/bg_badge_categoria"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="3dp"
+            android:textColor="@color/blanco"
+            android:textSize="@dimen/texto_pequeno"
+            android:textStyle="bold"
+            tools:text="General" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/tvImporteSobrante"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/texto_principal"
+            android:textStyle="bold"
+            tools:text="80,00 €" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvDestino"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="32dp"
+        android:textSize="@dimen/texto_pequeno"
+        android:textStyle="bold"
+        tools:text="→ Agosto 2026" />
+
+</LinearLayout>
