@@ -10,5 +10,6 @@ data class Gasto(
     val importe: Double,
     val descripcion: String?,
     val fecha: Long,
-    val esIngreso: Boolean = false
+    val esIngreso: Boolean = false,
+    val esTraspasoSalida: Boolean = false
 )

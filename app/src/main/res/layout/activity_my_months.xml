@@ -36,6 +36,15 @@
             android:layout_weight="1" />
 
         <ImageButton
+            android:id="@+id/btnFunciones"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/mis_meses_accion_funciones"
+            android:src="@drawable/ic_functions" />
+
+        <ImageButton
             android:id="@+id/btnAjustes"
             android:layout_width="32dp"
             android:layout_height="32dp"

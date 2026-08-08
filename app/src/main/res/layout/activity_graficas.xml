@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/fondo_pantalla">
+
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_header_rounded"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/espaciado_l"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/btnVolver"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/accion_volver"
+            android:src="@drawable/ic_back" />
+
+        <TextView
+            style="@style/TextoTituloHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/espaciado_s"
+            android:text="@string/graficas_titulo" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/header">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/espaciado_l">
+
+            <!-- Selector de tipo de gráfica -->
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipsTipoGrafica"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/espaciado_m"
+                app:singleSelection="true"
+                app:selectionRequired="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipTipo1"
+                    style="@style/ChipCategoria"
+                    android:checked="true"
+                    android:text="@string/graficas_tipo_1" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipTipo2"
+                    style="@style/ChipCategoria"
+                    android:text="@string/graficas_tipo_2" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipTipo3"
+                    style="@style/ChipCategoria"
+                    android:text="@string/graficas_tipo_3" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipTipo4"
+                    style="@style/ChipCategoria"
+                    android:text="@string/graficas_tipo_4" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipTipo5"
+                    style="@style/ChipCategoria"
+                    android:text="@string/graficas_tipo_5" />
+
+            </com.google.android.material.chip.ChipGroup>
+
+            <!-- Controles: año único (tipos 1 y 3) -->
+            <LinearLayout
+                android:id="@+id/contenedorAnioUnico"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="@dimen/espaciado_m">
+
+                <TextView style="@style/EtiquetaCampo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/graficas_etiqueta_anio" android:layout_marginBottom="4dp"/>
+                <Spinner
+                    android:id="@+id/spinnerAnioUnico"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_card_rounded"
+                    android:padding="@dimen/espaciado_s" />
+            </LinearLayout>
+
+            <!-- Controles: mes (solo tipo 2) -->
+            <LinearLayout
+                android:id="@+id/contenedorMes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="@dimen/espaciado_m"
+                android:visibility="gone">
+
+                <TextView style="@style/EtiquetaCampo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/graficas_etiqueta_mes" android:layout_marginBottom="4dp"/>
+                <Spinner
+                    android:id="@+id/spinnerMes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_card_rounded"
+                    android:padding="@dimen/espaciado_s" />
+            </LinearLayout>
+
+            <!-- Controles: años a comparar (tipos 2, 4 y 5) -->
+            <LinearLayout
+                android:id="@+id/contenedorAniosMultiples"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="@dimen/espaciado_m"
+                android:visibility="gone">
+
+                <TextView style="@style/EtiquetaCampo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/graficas_etiqueta_anios_comparar" android:layout_marginBottom="4dp"/>
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chipsAnios"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:singleSelection="false" />
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnGenerar"
+                style="@style/BotonPrimario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/espaciado_m"
+                android:text="@string/graficas_boton_generar" />
+
+            <TextView
+                android:id="@+id/tvSinDatos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="@dimen/espaciado_l"
+                android:text="@string/graficas_sin_datos"
+                android:textColor="@color/texto_secundario"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/contenedorGraficas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

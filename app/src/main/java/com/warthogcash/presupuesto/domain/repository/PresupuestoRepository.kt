@@ -6,6 +6,7 @@ import com.warthogcash.presupuesto.domain.model.TipoCategoria
 import kotlinx.coroutines.flow.Flow
 import com.warthogcash.presupuesto.domain.model.GastoFijo
 import com.warthogcash.presupuesto.domain.model.GastoFijoAplicado
+import com.warthogcash.presupuesto.domain.model.PresupuestoConGastos
 
 /**
  * Contrato del repositorio de presupuestos. La interfaz de usuario nunca
@@ -16,6 +17,10 @@ interface PresupuestoRepository {
 
     /** true si no existe ningún mes creado todavía (condición de la pantalla Bienvenida). */
     suspend fun existeAlgunMes(): Boolean
+
+    /** Número total de meses creados; determina si se puede restaurar
+     *  directamente (0), preguntando (1) o no se permite (2+). */
+    suspend fun contarMeses(): Int
 
     /** true si ya existe un mes creado con ese mes/año (evita duplicados). */
     suspend fun existeMes(mes: Int, anio: Int): Boolean
@@ -31,6 +36,35 @@ interface PresupuestoRepository {
 
     /** Página de meses ordenados de más reciente a más antiguo, para "Mis meses". */
     suspend fun obtenerPaginaMeses(limite: Int, offset: Int): List<Presupuesto>
+
+    /** Todos los meses con sus categorías y el listado real de gastos de cada
+     *  una (no solo el total agregado). Usado por la exportación de copia de
+     *  seguridad (JSON) y por el CSV para Excel/OpenOffice. */
+    suspend fun obtenerTodoParaBackup(): List<PresupuestoConGastos>
+
+    /**
+     * Restaura una copia de seguridad. Solo debe llamarse cuando
+     * [contarMeses] es 0 o 1 (comprobado antes, en la UI/ViewModel).
+     *
+     * - Si [mesIdAConservar] es null: se borra cualquier mes existente (el
+     *   caso de 0 meses no borra nada) y se insertan TODOS los meses del
+     *   backup tal cual, incluyendo cuál es "actual" según el propio backup.
+     * - Si [mesIdAConservar] no es null: es el id del único mes existente
+     *   (el "mes inicial") que el usuario decidió conservar. Se mantiene tal
+     *   cual está en la app; del backup se insertan todos los meses EXCEPTO
+     *   el que coincida en mes/año con el mes conservado (gana el de la
+     *   app, según lo acordado), y ninguno de los insertados se marca como
+     *   "actual" (ese estado se lo queda el mes conservado).
+     *
+     * Los gastos fijos del backup solo se importan si no existe ya ninguno
+     * en la app, para no duplicar plantillas si el usuario ya había creado
+     * alguna antes de restaurar.
+     */
+    suspend fun restaurarBackup(
+        meses: List<com.warthogcash.presupuesto.domain.model.PresupuestoConGastos>,
+        gastosFijos: List<com.warthogcash.presupuesto.domain.model.GastoFijo>,
+        mesIdAConservar: Long?
+    )
 
     /**
      * Crea un nuevo mes con sus 5 categorías fijas y sus porcentajes.

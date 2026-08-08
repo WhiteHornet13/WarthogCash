@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/fondo_pantalla">
+
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_header_rounded"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/espaciado_l"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/btnVolver"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/accion_volver"
+            android:src="@drawable/ic_back" />
+
+        <TextView
+            style="@style/TextoTituloHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/espaciado_s"
+            android:text="@string/exportar_titulo" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/header">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/espaciado_l">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/espaciado_s"
+                android:text="@string/exportar_backup_titulo"
+                android:textColor="@color/texto_principal"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/espaciado_s"
+                android:text="@string/exportar_backup_descripcion"
+                android:textColor="@color/texto_secundario"
+                android:textSize="@dimen/texto_pequeno" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnExportarBackup"
+                style="@style/BotonPrimario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/exportar_backup_boton" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="@dimen/espaciado_l"
+                android:background="@color/borde_chip" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/espaciado_s"
+                android:text="@string/exportar_csv_titulo"
+                android:textColor="@color/texto_principal"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/espaciado_s"
+                android:text="@string/exportar_csv_descripcion"
+                android:textColor="@color/texto_secundario"
+                android:textSize="@dimen/texto_pequeno" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnExportarCsv"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAllCaps="false"
+                app:cornerRadius="14dp"
+                android:text="@string/exportar_csv_boton" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="@dimen/espaciado_l"
+                android:background="@color/borde_chip" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/espaciado_s"
+                android:text="@string/restaurar_titulo"
+                android:textColor="@color/texto_principal"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/espaciado_s"
+                android:text="@string/restaurar_descripcion"
+                android:textColor="@color/texto_secundario"
+                android:textSize="@dimen/texto_pequeno" />
+
+            <com.warthogcash.presupuesto.ui.common.WarningBannerView
+                android:id="@+id/bannerRestaurarBloqueado"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/espaciado_s"
+                android:visibility="gone" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnRestaurar"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAllCaps="false"
+                app:cornerRadius="14dp"
+                android:text="@string/restaurar_boton" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

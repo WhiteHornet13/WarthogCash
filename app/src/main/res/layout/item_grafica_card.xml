@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tarjetaGrafica"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/espaciado_m"
+    android:background="@drawable/bg_card_rounded"
+    android:orientation="vertical"
+    android:padding="@dimen/espaciado_m">
+
+    <TextView
+        android:id="@+id/tvTituloGrafica"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/espaciado_s"
+        android:textColor="@color/texto_principal"
+        android:textStyle="bold"
+        tools:text="General" />
+
+    <FrameLayout
+        android:id="@+id/contenedorChart"
+        android:layout_width="match_parent"
+        android:layout_height="220dp" />
+
+</LinearLayout>

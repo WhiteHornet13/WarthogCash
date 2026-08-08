@@ -1,5 +1,57 @@
 # Changelog
 
+## [1.8.0] - 2026-08-07
+### Added
+- Nuevo botón "Funciones" en el header de "Mis meses", junto a Ajustes.
+  Abre una hoja inferior con tres opciones: Gráficas, Exportar datos y
+  Resumen anual.
+- "Exportar datos": dos exportaciones independientes desde una nueva
+  pantalla (`ExportActivity`):
+  - Copia de seguridad completa en JSON (meses, categorías, gastos,
+    gastos fijos y porcentajes predefinidos), restaurable en la propia
+    app.
+  - CSV del historial de gastos (fecha, mes, categoría, tipo, importe,
+    descripción), pensado para abrir en Excel/OpenOffice. No sirve
+    para restaurar datos en la app.
+- "Restaurar copia de seguridad": permite recuperar un backup JSON.
+  Solo disponible si hay 0 o 1 mes creado en la app (con 2 o más, hay
+  que borrar los datos antes desde Ajustes). Con exactamente 1 mes
+  (el mes inicial), se pregunta si sustituirlo por el contenido del
+  backup o conservarlo; si se conserva y el backup trae ese mismo
+  mes/año, gana el mes que ya existía en la app. Los gastos fijos y
+  los porcentajes predefinidos del backup se importan siempre por
+  completo, pudiendo solaparse con los que ya hubiera.
+- "Gráficas": nueva pantalla con 5 tipos de gráfica seleccionables,
+  todas basadas exclusivamente en meses **cerrados**:
+  1. Gasto por categoría, mes a mes, en un año (barras, una gráfica
+     por categoría).
+  2. Gasto de una categoría en un mes concreto, comparado entre varios
+     años (barras, una gráfica por categoría).
+  3. Gasto, ahorro e ingreso mes a mes en un año (líneas, una gráfica
+     por cada magnitud).
+  4. Igual que el punto 3, comparando hasta 3 años a la vez (líneas
+     multiserie).
+  5. Gasto, ahorro e ingreso total anual, comparando 1 o más años
+     (barras).
+     Usa la librería MPAndroidChart (`com.github.PhilJay:MPAndroidChart`).
+- Nuevo campo `esTraspasoSalida` en `GastoEntity`/`Gasto` (migración
+  Room `3 → 4`) para distinguir un gasto real del apunte interno que
+  `cerrarMesConReparto()` registra en la categoría de origen al
+  traspasar su sobrante. Sin este flag, ese apunte se contabilizaba
+  como gasto real en los nuevos cálculos de "Gasto total" de las
+  gráficas y en el CSV exportado.
+- Nuevos métodos en `PresupuestoRepository`/`PresupuestoRepositoryImpl`:
+  `obtenerTodoParaBackup`, `contarMeses`, `restaurarBackup`; en
+  `PresupuestoDao`: `obtenerTodos`, `eliminar`; utilidades nuevas
+  `BackupJson`, `CsvExporter`, `EstadisticasCalculator`.
+
+### Fixed
+- "Ahorro" en las gráficas ya no se calculaba como los gastos reales
+  registrados en la categoría Ahorro (lo que sería un "retiro"), sino
+  como su `restante` real al cerrar el mes: asignado por % + ingresos
+  por traspaso recibidos − gastos reales, que es lo que efectivamente
+  queda ahorrado ese mes.
+
 ## [1.7.0] - 2026-08-07
 ### Added
 - "Cerrar mes" ahora reparte el sobrante en vez de descartarlo:

@@ -10,6 +10,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.warthogcash.presupuesto.App
+import com.warthogcash.presupuesto.R
 import com.warthogcash.presupuesto.databinding.ActivityMyMonthsBinding
 import com.warthogcash.presupuesto.domain.model.Presupuesto
 import com.warthogcash.presupuesto.ui.createmonth.CreateMonthActivity
@@ -61,6 +62,8 @@ class MyMonthsActivity : AppCompatActivity() {
             startActivity(Intent(this, com.warthogcash.presupuesto.ui.settings.SettingsActivity::class.java))
         }
 
+        binding.btnFunciones.setOnClickListener { mostrarHojaFunciones() }
+
         binding.fabNuevoMes.setOnClickListener {
             startActivity(Intent(this, CreateMonthActivity::class.java))
         }
@@ -88,5 +91,26 @@ class MyMonthsActivity : AppCompatActivity() {
                     .putExtra(MonthDetailActivity.EXTRA_MES_ID, mes.id)
             )
         }
+    }
+
+    private fun mostrarHojaFunciones() {
+        val hoja = com.google.android.material.bottomsheet.BottomSheetDialog(this, R.style.ThemeOverlay_WarthogCash_Dialog)
+        val vista = layoutInflater.inflate(R.layout.bottom_sheet_funciones, null)
+        hoja.setContentView(vista)
+
+        vista.findViewById<android.view.View>(R.id.opcionGraficas).setOnClickListener {
+            hoja.dismiss()
+            startActivity(Intent(this, com.warthogcash.presupuesto.ui.graficas.GraficasActivity::class.java))
+        }
+        vista.findViewById<android.view.View>(R.id.opcionExportar).setOnClickListener {
+            hoja.dismiss()
+            startActivity(Intent(this, com.warthogcash.presupuesto.ui.export.ExportActivity::class.java))
+        }
+        vista.findViewById<android.view.View>(R.id.opcionResumenAnual).setOnClickListener {
+            hoja.dismiss()
+            // TODO Parte siguiente: abrir pantalla de Resumen anual
+        }
+
+        hoja.show()
     }
 }

@@ -17,6 +17,17 @@
     <string name="mis_meses_badge_actual">Actual</string>
     <string name="mis_meses_boton_nuevo">Añadir nuevo mes</string>
     <string name="mis_meses_subtitulo_formato">Gastado %1$s de %2$s</string>
+    <string name="mis_meses_accion_funciones">Funciones</string>
+
+    <!-- Funciones -->
+    <string name="funciones_titulo">Funciones</string>
+    <string name="funciones_descripcion">Herramientas adicionales sobre tus meses guardados.</string>
+    <string name="funciones_graficas_titulo">Gráficas</string>
+    <string name="funciones_graficas_subtitulo">Evolución de gasto y reparto por categoría</string>
+    <string name="funciones_exportar_titulo">Exportar datos</string>
+    <string name="funciones_exportar_subtitulo">Copia de seguridad (JSON) o CSV para Excel</string>
+    <string name="funciones_resumen_titulo">Resumen anual</string>
+    <string name="funciones_resumen_subtitulo">Ingreso, gasto y ahorro total de un año</string>
 
     <!-- Detalle de mes -->
     <string name="detalle_estado_abierto">● Mes abierto</string>
@@ -107,4 +118,44 @@
     <string name="seleccionar_gastos_fijos_total">Total a añadir este mes</string>
     <string name="seleccionar_gastos_fijos_omitir">Omitir, no añadir ninguno</string>
     <string name="seleccionar_gastos_fijos_boton_formato">Añadir al mes (%1$d)</string>
+
+    <!-- Exportar -->
+    <string name="exportar_titulo">Exportar datos</string>
+    <string name="exportar_backup_titulo">Copia de seguridad</string>
+    <string name="exportar_backup_descripcion">Guarda un archivo con todos tus datos (meses, categorías, gastos y gastos fijos) para restaurarlos más adelante en esta app.</string>
+    <string name="exportar_backup_boton">Guardar copia de seguridad (.json)</string>
+    <string name="exportar_csv_titulo">Exportar a Excel / OpenOffice</string>
+    <string name="exportar_csv_descripcion">Genera un listado de todos tus gastos en formato CSV, para abrir y analizar en una hoja de cálculo. No sirve para restaurar datos en la app.</string>
+    <string name="exportar_csv_boton">Exportar CSV (.csv)</string>
+    <string name="exportar_confirmacion_formato">Archivo guardado correctamente</string>
+    <string name="exportar_error_formato">No se pudo guardar el archivo</string>
+
+    <!-- Gráficas -->
+    <string name="graficas_titulo">Gráficas</string>
+    <string name="graficas_tipo_1">Categorías por mes</string>
+    <string name="graficas_tipo_2">Categoría entre años</string>
+    <string name="graficas_tipo_3">Resumen mensual</string>
+    <string name="graficas_tipo_4">Resumen mensual (comparar años)</string>
+    <string name="graficas_tipo_5">Resumen anual</string>
+    <string name="graficas_etiqueta_anio">Año</string>
+    <string name="graficas_etiqueta_mes">Mes</string>
+    <string name="graficas_etiqueta_anios_comparar">Años a comparar</string>
+    <string name="graficas_boton_generar">Generar gráficas</string>
+    <string name="graficas_sin_datos">No hay meses cerrados suficientes para generar esta gráfica.</string>
+    <string name="graficas_gasto">Gasto</string>
+    <string name="graficas_ahorro">Ahorro</string>
+    <string name="graficas_ingreso">Ingreso</string>
+
+    <!-- Restaurar -->
+    <string name="restaurar_titulo">Restaurar copia de seguridad</string>
+    <string name="restaurar_descripcion">Recupera tus datos desde un archivo de copia de seguridad (.json) generado por esta app.</string>
+    <string name="restaurar_boton">Elegir archivo…</string>
+    <string name="restaurar_bloqueado">Ya tienes varios meses creados. Para restaurar una copia de seguridad, borra antes tus datos desde Ajustes.</string>
+    <string name="restaurar_confirmar_titulo">Restaurar copia de seguridad</string>
+    <string name="restaurar_confirmar_mensaje_formato">Ya tienes un mes creado (%1$s). ¿Quieres sustituirlo por los datos del archivo, o conservarlo?</string>
+    <string name="restaurar_boton_pisar">Sustituir</string>
+    <string name="restaurar_boton_conservar">Conservar %1$s</string>
+    <string name="restaurar_exito">Datos restaurados correctamente</string>
+    <string name="restaurar_error_archivo">El archivo no es una copia de seguridad válida</string>
+    <string name="restaurar_error_generico">No se pudo restaurar la copia de seguridad</string>
 </resources>

@@ -19,6 +19,8 @@ import com.warthogcash.presupuesto.data.dao.GastoFijoDao
 import com.warthogcash.presupuesto.data.entity.GastoFijoEntity
 import com.warthogcash.presupuesto.domain.model.GastoFijo
 import com.warthogcash.presupuesto.domain.model.GastoFijoAplicado
+import com.warthogcash.presupuesto.domain.model.PresupuestoConGastos
+import com.warthogcash.presupuesto.domain.model.CategoriaConGastos
 
 /**
  * Implementación del repositorio: traduce entre entidades Room y modelos
@@ -76,6 +78,8 @@ class PresupuestoRepositoryImpl(
 
     override suspend fun existeAlgunMes(): Boolean = presupuestoDao.contarMeses() > 0
 
+    override suspend fun contarMeses(): Int = presupuestoDao.contarMeses()
+
     override suspend fun obtenerMesActual(): Presupuesto? {
         val entidad = presupuestoDao.obtenerActual() ?: return null
         return mapearPresupuestoCompleto(entidad)
@@ -99,6 +103,102 @@ class PresupuestoRepositoryImpl(
     override suspend fun obtenerPaginaMeses(limite: Int, offset: Int): List<Presupuesto> {
         val entidades = presupuestoDao.obtenerPagina(limite, offset)
         return entidades.map { mapearPresupuestoCompleto(it) }
+    }
+
+    override suspend fun obtenerTodoParaBackup(): List<PresupuestoConGastos> {
+        val meses = presupuestoDao.obtenerTodos()
+        return meses.map { mesEntity ->
+            val categoriasEntity = categoriaDao.obtenerPorPresupuesto(mesEntity.id)
+            val categorias = categoriasEntity.map { catEntity ->
+                val gastos = gastoDao.obtenerPorCategoria(catEntity.id).map { it.aDominio() }
+                CategoriaConGastos(
+                    tipo = TipoCategoria.valueOf(catEntity.tipo),
+                    porcentaje = catEntity.porcentaje,
+                    gastos = gastos
+                )
+            }
+            PresupuestoConGastos(
+                mes = mesEntity.mes,
+                anio = mesEntity.anio,
+                dineroDisponible = mesEntity.dineroDisponible,
+                estado = EstadoPresupuesto.valueOf(mesEntity.estado),
+                esActual = mesEntity.esActual,
+                categorias = categorias
+            )
+        }
+    }
+
+    override suspend fun restaurarBackup(
+        meses: List<PresupuestoConGastos>,
+        gastosFijos: List<GastoFijo>,
+        mesIdAConservar: Long?
+    ) {
+        if (mesIdAConservar == null) {
+            // Pisar: borra cualquier mes existente (0 o 1, según la regla acordada)
+            // e inserta todo el backup tal cual, respetando su propio "esActual".
+            presupuestoDao.obtenerTodos().forEach { presupuestoDao.eliminar(it) }
+            meses.forEach { insertarMesCompleto(it, esActual = it.esActual) }
+            asegurarUnSoloMesActual()
+        } else {
+            // Conservar: el mes existente no se toca; se insertan los del backup
+            // salvo el que coincide en mes/año (gana el ya existente), y ninguno
+            // se marca como actual (ese estado se lo queda el mes conservado).
+            val existente = presupuestoDao.obtenerPorId(mesIdAConservar)
+            meses
+                .filter { !(existente != null && it.mes == existente.mes && it.anio == existente.anio) }
+                .forEach { insertarMesCompleto(it, esActual = false) }
+        }
+
+        // Siempre se importan todos los gastos fijos del backup, sin comprobar si
+// ya existe uno igual: pueden quedar duplicados si coinciden con alguno
+// que el usuario ya tenía creado (comportamiento acordado explícitamente).
+        gastosFijos.forEach { gf ->
+            gastoFijoDao.insertar(GastoFijoEntity(coste = gf.coste, tipo = gf.tipo.name, comentario = gf.comentario))
+        }
+    }
+
+    private suspend fun insertarMesCompleto(mes: PresupuestoConGastos, esActual: Boolean) {
+        val nuevoId = presupuestoDao.insertar(
+            PresupuestoEntity(
+                mes = mes.mes,
+                anio = mes.anio,
+                dineroDisponible = mes.dineroDisponible,
+                estado = mes.estado.name,
+                esActual = esActual
+            )
+        )
+        mes.categorias.forEach { categoria ->
+            val idsInsertados = categoriaDao.insertarTodas(
+                listOf(CategoriaEntity(presupuestoId = nuevoId, tipo = categoria.tipo.name, porcentaje = categoria.porcentaje))
+            )
+            val categoriaId = idsInsertados.first()
+            categoria.gastos.forEach { gasto ->
+                gastoDao.insertar(
+                    GastoEntity(
+                        categoriaId = categoriaId,
+                        importe = gasto.importe,
+                        descripcion = gasto.descripcion,
+                        fecha = gasto.fecha,
+                        esIngreso = gasto.esIngreso,
+                        esTraspasoSalida = gasto.esTraspasoSalida
+                    )
+                )
+            }
+        }
+    }
+
+    /** Si el backup restaurado ("pisar") no traía ningún mes marcado como
+     *  actual (o, por datos corruptos, traía más de uno), deja como actual
+     *  el mes calendario más reciente de los insertados, para que la app
+     *  nunca quede sin ningún mes navegable desde la Pantalla principal. */
+    private suspend fun asegurarUnSoloMesActual() {
+        val todos = presupuestoDao.obtenerTodos()
+        val actuales = todos.filter { it.esActual }
+        if (actuales.size == 1) return
+
+        presupuestoDao.limpiarActual()
+        val masReciente = todos.maxByOrNull { it.anio * 12 + it.mes } ?: return
+        presupuestoDao.actualizar(masReciente.copy(esActual = true))
     }
 
     override suspend fun crearMes(
@@ -220,7 +320,8 @@ class PresupuestoRepositoryImpl(
                     else
                         "Traspasado a Ahorro",
                     fecha = System.currentTimeMillis(),
-                    esIngreso = false
+                    esIngreso = false,
+                    esTraspasoSalida = true // apunte interno: excluir de "gasto total" en gráficas
                 )
             )
         }
@@ -323,6 +424,7 @@ class PresupuestoRepositoryImpl(
         importe = importe,
         descripcion = descripcion,
         fecha = fecha,
-        esIngreso = esIngreso
+        esIngreso = esIngreso,
+        esTraspasoSalida = esTraspasoSalida
     )
 }

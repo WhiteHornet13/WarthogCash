@@ -67,7 +67,15 @@
             android:exported="false" />
 
         <activity
+            android:name=".ui.export.ExportActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".ui.settings.SettingsActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.graficas.GraficasActivity"
             android:exported="false" />
 
     </application>
