@@ -94,7 +94,7 @@ class MyMonthsActivity : AppCompatActivity() {
     }
 
     private fun mostrarHojaFunciones() {
-        val hoja = com.google.android.material.bottomsheet.BottomSheetDialog(this, R.style.ThemeOverlay_WarthogCash_Dialog)
+        val hoja = com.google.android.material.bottomsheet.BottomSheetDialog(this)
         val vista = layoutInflater.inflate(R.layout.bottom_sheet_funciones, null)
         hoja.setContentView(vista)
 

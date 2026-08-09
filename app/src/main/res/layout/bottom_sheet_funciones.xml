@@ -5,7 +5,8 @@
     android:orientation="vertical"
     android:paddingHorizontal="@dimen/espaciado_l"
     android:paddingTop="@dimen/espaciado_s"
-    android:paddingBottom="@dimen/espaciado_l">
+    android:paddingBottom="@dimen/espaciado_l"
+    android:background="@drawable/bg_card_rounded">
 
     <TextView
         android:layout_width="wrap_content"

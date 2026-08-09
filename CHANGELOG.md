@@ -1,5 +1,33 @@
 # Changelog
 
+## [1.8.1] - 2026-08-09
+### Fixed
+- Hoja "Funciones" (Mis meses): el `BottomSheetDialog` usaba
+  `ThemeOverlay.WarthogCash.Dialog` (pensado para `AlertDialog`), que no
+  define `bottomSheetStyle`, dejando la parte superior sin esquinas
+  redondeadas. Se elimina ese theme al construir el diálogo y se añade
+  `android:background="@drawable/bg_card_rounded"` al layout
+  `bottom_sheet_funciones.xml` como fondo propio.
+- "Gráficas": los chips de "Años a comparar" (tipos 2, 4 y 5) no traían
+  ningún año marcado por defecto, así que esas tres gráficas devolvían
+  siempre "sin datos" al pulsar "Generar" sin tocar nada.
+  `GraficasActivity.poblarSelectoresAnio()` marca ahora el año más
+  reciente (`isChecked = anio == anios.last()`).
+- "Gráficas": los 5 chips del selector de tipo de gráfica
+  (`chipsTipoGrafica`) no eran `checkable`, por lo que nunca cambiaban
+  de estado al pulsarlos y la app seguía generando siempre el Tipo 1 sin
+  que el usuario pudiera notarlo. Añadido `android:checkable="true"` a
+  los 5 chips en `activity_graficas.xml`, junto con
+  `app:chipBackgroundColor`, `android:textColor` y
+  `app:chipStrokeColor`/`app:chipStrokeWidth` (usando los selectores de
+  color ya existentes en el proyecto) para que el chip seleccionado se
+  distinga claramente del resto.
+
+### Changed
+- Icono del botón "Funciones" (`ic_functions.xml`): sustituido el glifo
+  "F" por una rejilla 3x3, más reconocible como acceso a un menú de
+  herramientas adicionales.
+
 ## [1.8.0] - 2026-08-07
 ### Added
 - Nuevo botón "Funciones" en el header de "Mis meses", junto a Ajustes.

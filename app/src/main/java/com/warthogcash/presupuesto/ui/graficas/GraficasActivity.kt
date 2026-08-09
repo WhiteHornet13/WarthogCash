@@ -91,6 +91,7 @@ class GraficasActivity : AppCompatActivity() {
                 isClickable = true
                 chipBackgroundColor = ContextCompat.getColorStateList(context, R.color.chip_background_selector)
                 setTextColor(ContextCompat.getColorStateList(context, R.color.chip_text_selector))
+                isChecked = (anio == anios.last()) // año más reciente marcado por defecto
             }
             binding.chipsAnios.addView(chip)
         }
