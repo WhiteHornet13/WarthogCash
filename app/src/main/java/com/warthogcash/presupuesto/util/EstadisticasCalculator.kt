@@ -64,6 +64,22 @@ object EstadisticasCalculator {
         return resultado
     }
 
+    /** Gráfica 1 (línea superpuesta): monto asignado a cada categoría, mes a
+     *  mes, en un año concreto = dinero_mes × % categoría + ingresos por
+     *  traspaso recibidos ese mes. */
+    fun asignadoPorCategoriaMensual(meses: List<PresupuestoConGastos>, anio: Int): Map<TipoCategoria, FloatArray> {
+        val resultado = TipoCategoria.ORDEN_VISUAL.associateWith { FloatArray(12) }
+        meses.filter { it.estado == EstadoPresupuesto.CERRADO && it.anio == anio }
+            .forEach { mes ->
+                mes.categorias.forEach { categoria ->
+                    val asignadoBase = mes.dineroDisponible * (categoria.porcentaje / 100.0)
+                    val ingresosRecibidos = categoria.gastos.filter { it.esIngreso }.sumOf { it.importe }
+                    resultado[categoria.tipo]?.set(mes.mes - 1, (asignadoBase + ingresosRecibidos).toFloat())
+                }
+            }
+        return resultado
+    }
+
     /** Gráficas 3/4: gasto, ahorro e ingreso mes a mes de UN año. */
     fun resumenMensual(meses: List<PresupuestoConGastos>, anio: Int): ResumenMensual {
         val gasto = FloatArray(12)

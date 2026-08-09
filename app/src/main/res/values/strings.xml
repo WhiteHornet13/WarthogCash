@@ -135,8 +135,8 @@
     <string name="graficas_tipo_1">Categorías por mes</string>
     <string name="graficas_tipo_2">Categoría entre años</string>
     <string name="graficas_tipo_3">Resumen mensual</string>
-    <string name="graficas_tipo_4">Resumen mensual (comparar años)</string>
-    <string name="graficas_tipo_5">Resumen anual</string>
+    <string name="graficas_tipo_4">Resumen mensual entre años</string>
+    <string name="graficas_tipo_5">Resumen anual (1 o mas años)</string>
     <string name="graficas_etiqueta_anio">Año</string>
     <string name="graficas_etiqueta_mes">Mes</string>
     <string name="graficas_etiqueta_anios_comparar">Años a comparar</string>
@@ -145,6 +145,7 @@
     <string name="graficas_gasto">Gasto</string>
     <string name="graficas_ahorro">Ahorro</string>
     <string name="graficas_ingreso">Ingreso</string>
+    <string name="graficas_asignado">Asignado</string>
 
     <!-- Restaurar -->
     <string name="restaurar_titulo">Restaurar copia de seguridad</string>

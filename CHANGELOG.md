@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.8.2] - 2026-08-09
+### Added
+- "Gráficas", tipo 1 (Categorías por mes): cada gráfica de barras ahora
+  superpone una línea roja con el monto asignado a la categoría cada
+  mes (dinero del mes × % de la categoría + ingresos por traspaso
+  recibidos), para comparar visualmente el gasto real contra lo
+  presupuestado. Implementado con `CombinedChart` de MPAndroidChart en
+  vez de `BarChart`; nuevo método `EstadisticasCalculator.asignadoPorCategoriaMensual`.
+
 ## [1.8.1] - 2026-08-09
 ### Fixed
 - Hoja "Funciones" (Mis meses): el `BottomSheetDialog` usaba

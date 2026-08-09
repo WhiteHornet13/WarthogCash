@@ -14,6 +14,8 @@ import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.Legend
+import com.github.mikephil.charting.charts.CombinedChart
+import com.github.mikephil.charting.data.CombinedData
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
@@ -135,9 +137,10 @@ class GraficasActivity : AppCompatActivity() {
             1 -> {
                 val anio = anios.getOrNull(binding.spinnerAnioUnico.selectedItemPosition) ?: return sinDatos()
                 val datos = EstadisticasCalculator.gastoPorCategoriaMensual(meses, anio)
+                val asignados = EstadisticasCalculator.asignadoPorCategoriaMensual(meses, anio)
                 if (datos.values.all { it.all { v -> v == 0f } }) return sinDatos()
                 TipoCategoria.ORDEN_VISUAL.forEach { tipo ->
-                    agregarGraficaBarrasMeses(tipo.etiqueta, datos.getValue(tipo), tipo.colorResId)
+                    agregarGraficaBarrasMeses(tipo.etiqueta, datos.getValue(tipo), tipo.colorResId, asignados.getValue(tipo))
                 }
             }
             2 -> {
@@ -193,19 +196,38 @@ class GraficasActivity : AppCompatActivity() {
     private val nombresMesCortos = listOf("Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic")
 
     /** Gráfica 1: barras, una por mes, para una categoría en un año. */
-    private fun agregarGraficaBarrasMeses(titulo: String, valores: FloatArray, colorResId: Int) {
+    /** Gráfica 1: barras (gasto real) + línea superpuesta (monto asignado),
+     *  una por mes, para una categoría en un año. */
+    private fun agregarGraficaBarrasMeses(titulo: String, valores: FloatArray, colorResId: Int, asignado: FloatArray) {
         val tarjeta = nuevaTarjeta(titulo)
-        val chart = BarChart(this)
+        val chart = CombinedChart(this)
+        chart.drawOrder = arrayOf(CombinedChart.DrawOrder.BAR, CombinedChart.DrawOrder.LINE)
         tarjeta.contenedorChart.addView(chart)
 
-        val entradas = valores.mapIndexed { i, v -> BarEntry(i.toFloat(), v) }
-        val dataset = BarDataSet(entradas, titulo).apply {
+        val entradasBarras = valores.mapIndexed { i, v -> BarEntry(i.toFloat(), v) }
+        val datasetBarras = BarDataSet(entradasBarras, getString(R.string.graficas_gasto)).apply {
             color = ContextCompat.getColor(this@GraficasActivity, colorResId)
             setDrawValues(false)
         }
-        chart.data = BarData(dataset)
+        val barData = BarData(datasetBarras)
+
+        val entradasLinea = asignado.mapIndexed { i, v -> Entry(i.toFloat(), v) }
+        val datasetLinea = LineDataSet(entradasLinea, getString(R.string.graficas_asignado)).apply {
+            color = ContextCompat.getColor(this@GraficasActivity, R.color.rojo_limite)
+            setCircleColor(ContextCompat.getColor(this@GraficasActivity, R.color.rojo_limite))
+            lineWidth = 3.5f
+            circleRadius = 4f
+            setDrawValues(false)
+        }
+
+        val combinedData = CombinedData()
+        combinedData.setData(barData)
+        combinedData.setData(LineData(datasetLinea))
+        chart.data = combinedData
+
         configurarEjeXCategorias(chart.xAxis, nombresMesCortos)
         aplicarEstiloBasico(chart)
+        chart.legend.isEnabled = true
     }
 
     /** Gráfica 2 y 5: barras, una por año (para una categoría o para gasto/ahorro/ingreso). */
