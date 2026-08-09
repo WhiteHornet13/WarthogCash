@@ -21,6 +21,7 @@ import com.warthogcash.presupuesto.domain.model.GastoFijo
 import com.warthogcash.presupuesto.domain.model.GastoFijoAplicado
 import com.warthogcash.presupuesto.domain.model.PresupuestoConGastos
 import com.warthogcash.presupuesto.domain.model.CategoriaConGastos
+import com.warthogcash.presupuesto.util.Formato
 
 /**
  * Implementación del repositorio: traduce entre entidades Room y modelos
@@ -288,7 +289,8 @@ class PresupuestoRepositoryImpl(
                         importe = sobrante,
                         descripcion = "Traspaso de ${categoria.tipo.etiqueta} de ${mes.nombreMesAnio}",
                         fecha = System.currentTimeMillis(),
-                        esIngreso = true
+                        esIngreso = true,
+                        mesOrigenId = mesEntity.id
                     )
                 )
             } else if (categoriaAhorroEntity != null) {
@@ -322,7 +324,8 @@ class PresupuestoRepositoryImpl(
                         "Traspasado a Ahorro",
                     fecha = System.currentTimeMillis(),
                     esIngreso = false,
-                    esTraspasoSalida = true // apunte interno: excluir de "gasto total" en gráficas
+                    esTraspasoSalida = true, // apunte interno: excluir de "gasto total" en gráficas
+                    mesOrigenId = if (categoriaDestinoSiguiente != null) siguienteMesEntity?.id else null
                 )
             )
         }
@@ -350,7 +353,20 @@ class PresupuestoRepositoryImpl(
         val entidad = presupuestoDao.obtenerPorId(presupuestoId) ?: return
         val eraActual = entidad.esActual
 
-        presupuestoDao.eliminar(entidad) // cascada: borra categorías y gastos de ese mes
+        // Si el mes a eliminar estaba CERRADO, pudo haber traspasado su
+        // sobrante al mes calendario siguiente (ver cerrarMesConReparto).
+        if (entidad.estado == EstadoPresupuesto.CERRADO.name) {
+            eliminarTraspasosRecibidosDelMesSiguiente(entidad)
+        }
+
+        // Si el mes ANTERIOR traspasó parte de su sobrante A ESTE mes al
+        // cerrarse, ese dinero desaparecería sin más al borrar este mes.
+        // Se revierte: se elimina ese apunte de salida en el mes anterior
+        // (recupera ese importe como "restante") y se reabre para que el
+        // usuario decida qué hacer con él.
+        revertirTraspasosRecibidosDelMesAnterior(entidad)
+
+        presupuestoDao.eliminar(entidad) // cascada: borra sus propias categorías y gastos
 
         if (eraActual) {
             val restantes = presupuestoDao.obtenerTodos()
@@ -366,6 +382,58 @@ class PresupuestoRepositoryImpl(
         if (entidad.estado != EstadoPresupuesto.ABIERTO.name) return // spec: cerrado no se edita
         presupuestoDao.actualizar(entidad.copy(dineroDisponible = nuevoDinero))
     }
+
+    /** Busca, en el mes calendario inmediatamente siguiente a [mesEntity] (si
+     *  existe), las filas de ingreso por traspaso que se originaron al
+     *  cerrar [mesEntity], y las elimina. Identificadas por [GastoEntity.mesOrigenId],
+     *  no por texto, para que sea fiable ante cualquier edición posterior. */
+    private suspend fun eliminarTraspasosRecibidosDelMesSiguiente(mesEntity: PresupuestoEntity) {
+        val siguiente = obtenerEntidadMesSiguiente(mesEntity) ?: return
+        val categoriasSiguiente = categoriaDao.obtenerPorPresupuesto(siguiente.id)
+        categoriasSiguiente.forEach { categoria ->
+            gastoDao.obtenerPorCategoria(categoria.id)
+                .filter { it.esIngreso && it.mesOrigenId == mesEntity.id }
+                .forEach { gastoDao.eliminar(it) }
+        }
+    }
+
+    /** Busca el Presupuesto del mes calendario exactamente ANTERIOR a [mesEntity]
+     *  (mes-1, con ajuste de año). Análogo inverso de obtenerEntidadMesSiguiente. */
+    private suspend fun obtenerEntidadMesAnterior(mesEntity: PresupuestoEntity): PresupuestoEntity? {
+        fun indiceAbsoluto(a: Int, m: Int) = a * 12 + m
+        val indiceAnterior = indiceAbsoluto(mesEntity.anio, mesEntity.mes) - 1
+        val anioAnterior = (indiceAnterior - 1) / 12
+        val mesAnterior = indiceAnterior - anioAnterior * 12
+        return presupuestoDao.obtenerPorMesYAnio(mesAnterior, anioAnterior)
+    }
+
+    /** Si el mes calendario inmediatamente anterior a [mesEntity] está CERRADO
+     *  y traspasó parte de su sobrante a [mesEntity] al cerrarse, elimina esos
+     *  apuntes de salida (esTraspasoSalida) en las categorías del mes anterior
+     *  —devolviéndoles ese importe como "restante"— y reabre el mes anterior
+     *  para que el usuario decida qué hacer con ese dinero. Identificados por
+     *  [GastoEntity.mesOrigenId] (apuntando a [mesEntity]), no por texto. */
+    private suspend fun revertirTraspasosRecibidosDelMesAnterior(mesEntity: PresupuestoEntity) {
+        val anterior = obtenerEntidadMesAnterior(mesEntity) ?: return
+        if (anterior.estado != EstadoPresupuesto.CERRADO.name) return
+
+        val categoriasAnterior = categoriaDao.obtenerPorPresupuesto(anterior.id)
+        var seRevirtioAlgo = false
+
+        categoriasAnterior.forEach { categoria ->
+            gastoDao.obtenerPorCategoria(categoria.id)
+                .filter { it.esTraspasoSalida && it.mesOrigenId == mesEntity.id }
+                .forEach { gasto ->
+                    gastoDao.eliminar(gasto)
+                    seRevirtioAlgo = true
+                }
+        }
+
+        if (seRevirtioAlgo) {
+            presupuestoDao.actualizarEstado(anterior.id, EstadoPresupuesto.ABIERTO.name)
+        }
+    }
+
 
     override suspend fun agregarGasto(categoriaId: Long, importe: Double, descripcion: String?): Long {
         return gastoDao.insertar(
@@ -447,6 +515,7 @@ class PresupuestoRepositoryImpl(
         descripcion = descripcion,
         fecha = fecha,
         esIngreso = esIngreso,
-        esTraspasoSalida = esTraspasoSalida
+        esTraspasoSalida = esTraspasoSalida,
+        mesOrigenId = mesOrigenId
     )
 }

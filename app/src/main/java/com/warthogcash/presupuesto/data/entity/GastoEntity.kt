@@ -40,5 +40,15 @@ data class GastoEntity(
      *  con esIngreso = false), pero debe EXCLUIRSE de cualquier cálculo
      *  agregado de "gasto total" (gráficas, resúmenes), donde inflaría el
      *  gasto real exactamente por el importe que en realidad es ahorro. */
-    val esTraspasoSalida: Boolean = false
+    val esTraspasoSalida: Boolean = false,
+
+    /** Para las filas de traspaso entre meses (esIngreso=true recibido de un
+     *  traspaso al mes siguiente, o esTraspasoSalida=true que salió hacia el
+     *  mes siguiente): id del Presupuesto "al otro lado" del traspaso — el
+     *  mes de ORIGEN si esta fila es el ingreso recibido, o el mes de
+     *  DESTINO si esta fila es la salida registrada en el mes de origen.
+     *  null para traspasos dentro del mismo mes (a Ahorro) y para gastos
+     *  normales. Permite localizar y revertir traspasos entre meses de
+     *  forma fiable al eliminar un mes, sin depender de comparar texto. */
+    val mesOrigenId: Long? = null
 )

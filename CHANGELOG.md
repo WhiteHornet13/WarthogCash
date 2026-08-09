@@ -1,5 +1,33 @@
 # Changelog
 
+## [1.9.1] - 2026-08-10
+### Fixed
+- "Mis meses" → Eliminar mes: al eliminar un mes CERRADO que había
+  traspasado sobrante al mes calendario siguiente, esos ingresos por
+  traspaso no se borraban en el mes siguiente (dinero "fantasma" sin
+  origen), ni se revertía el traspaso recibido en el mes anterior si
+  este había traspasado sobrante hacia el mes que se elimina. La
+  detección original comparaba el texto de la descripción del gasto
+  para identificar cada traspaso, un método frágil que en la práctica
+  no localizaba las filas a eliminar/revertir.
+- Nuevo campo `mesOrigenId` en `GastoEntity`/`Gasto` (migración Room
+  `4 → 5`): para las filas de traspaso entre meses, guarda el id del
+  Presupuesto "al otro lado" del traspaso (mes de origen si es un
+  ingreso recibido, mes de destino si es la salida registrada en el
+  mes de origen). Sustituye la comparación de texto por una relación
+  explícita y fiable. `cerrarMesConReparto` ahora rellena este campo
+  al crear las filas de traspaso.
+- `PresupuestoRepositoryImpl.eliminarMes()`: además de la cascada de
+  categorías/gastos propios del mes, ahora también:
+  - Elimina, en el mes calendario siguiente, los ingresos por
+    traspaso originados por el mes que se elimina
+    (`eliminarTraspasosRecibidosDelMesSiguiente`).
+  - Revierte, en el mes calendario anterior (si está cerrado y
+    traspasó sobrante a este mes), sus apuntes de salida —recuperando
+    ese importe como "restante"— y lo reabre para que el usuario
+    decida qué hacer con ese dinero
+    (`revertirTraspasosRecibidosDelMesAnterior`).
+
 ## [1.9.0] - 2026-08-10
 ### Added
 - "Mis meses": mantener pulsada una tarjeta de mes abre un menú de

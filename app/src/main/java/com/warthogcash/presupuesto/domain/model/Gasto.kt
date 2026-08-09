@@ -11,5 +11,6 @@ data class Gasto(
     val descripcion: String?,
     val fecha: Long,
     val esIngreso: Boolean = false,
-    val esTraspasoSalida: Boolean = false
+    val esTraspasoSalida: Boolean = false,
+    val mesOrigenId: Long? = null
 )
