@@ -64,4 +64,18 @@ class MyMonthsViewModel(private val repository: PresupuestoRepository) : ViewMod
             _cargando.value = false
         }
     }
+
+    fun eliminarMes(mesId: Long) {
+        viewModelScope.launch {
+            repository.eliminarMes(mesId)
+            recargar()
+        }
+    }
+
+    fun actualizarDineroDisponible(mesId: Long, nuevoDinero: Double) {
+        viewModelScope.launch {
+            repository.actualizarDineroDisponible(mesId, nuevoDinero)
+            recargar()
+        }
+    }
 }

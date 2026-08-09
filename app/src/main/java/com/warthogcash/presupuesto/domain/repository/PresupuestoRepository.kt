@@ -25,6 +25,21 @@ interface PresupuestoRepository {
     /** true si ya existe un mes creado con ese mes/año (evita duplicados). */
     suspend fun existeMes(mes: Int, anio: Int): Boolean
 
+
+    /** Elimina un mes completo (sus categorías y gastos se borran en cascada
+     *  por las FK con onDelete=CASCADE ya definidas en CategoriaEntity/GastoEntity).
+     *  Si el mes eliminado era el "actual", pasa a serlo el mes calendario más
+     *  reciente que quede. Si el mes eliminado estaba CERRADO y había traspasado
+     *  sobrante al mes siguiente, esos traspasos recibidos se eliminan. Si el mes
+     *  ANTERIOR le había traspasado sobrante a este al cerrarse, ese traspaso se
+     *  revierte y el mes anterior se reabre. */
+    suspend fun eliminarMes(presupuestoId: Long)
+    /** Cambia el dinero disponible de un mes. Solo tiene efecto si el mes está
+     *  ABIERTO (spec: en un mes cerrado no se puede editar nada). Los montos
+     *  asignados por categoría se recalculan solos porque se derivan de este
+     *  valor en tiempo real (ver Categoria.montoAsignadoBase). */
+    suspend fun actualizarDineroDisponible(presupuestoId: Long, nuevoDinero: Double)
+
     suspend fun obtenerMesActual(): Presupuesto?
 
     /** Observa cambios en el mes actual (usado por la Pantalla principal). */

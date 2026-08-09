@@ -26,7 +26,8 @@ private sealed class ItemLista {
  * de la paginación incremental (sección 4.2).
  */
 class MonthListAdapter(
-    private val alPulsarMes: (Presupuesto) -> Unit
+    private val alPulsarMes: (Presupuesto) -> Unit,
+    private val alMantenerPulsadoMes: (Presupuesto) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var items: List<ItemLista> = emptyList()
@@ -132,6 +133,10 @@ class MonthListAdapter(
             binding.tvSubtituloMes.setTextColor(androidx.core.content.ContextCompat.getColor(contexto, colorTextoSecundario))
 
             binding.root.setOnClickListener { alPulsarMes(mes) }
+            binding.root.setOnLongClickListener {
+                alMantenerPulsadoMes(mes)
+                true
+            }
         }
     }
 }

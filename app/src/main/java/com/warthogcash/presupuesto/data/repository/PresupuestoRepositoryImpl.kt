@@ -254,6 +254,7 @@ class PresupuestoRepositoryImpl(
         return siguiente.estado == EstadoPresupuesto.ABIERTO.name
     }
 
+
     override suspend fun cerrarMesConReparto(presupuestoId: Long, categoriasATraspasar: Set<Long>) {
         val mesEntity = presupuestoDao.obtenerPorId(presupuestoId) ?: return
         // Se usa el Presupuesto ya mapeado para que "restante" de cada categoría
@@ -344,6 +345,27 @@ class PresupuestoRepositoryImpl(
 
     override suspend fun existeMes(mes: Int, anio: Int): Boolean =
         presupuestoDao.existeMes(mes, anio)
+
+    override suspend fun eliminarMes(presupuestoId: Long) {
+        val entidad = presupuestoDao.obtenerPorId(presupuestoId) ?: return
+        val eraActual = entidad.esActual
+
+        presupuestoDao.eliminar(entidad) // cascada: borra categorías y gastos de ese mes
+
+        if (eraActual) {
+            val restantes = presupuestoDao.obtenerTodos()
+            val masReciente = restantes.maxByOrNull { it.anio * 12 + it.mes }
+            if (masReciente != null) {
+                presupuestoDao.actualizar(masReciente.copy(esActual = true))
+            }
+        }
+    }
+
+    override suspend fun actualizarDineroDisponible(presupuestoId: Long, nuevoDinero: Double) {
+        val entidad = presupuestoDao.obtenerPorId(presupuestoId) ?: return
+        if (entidad.estado != EstadoPresupuesto.ABIERTO.name) return // spec: cerrado no se edita
+        presupuestoDao.actualizar(entidad.copy(dineroDisponible = nuevoDinero))
+    }
 
     override suspend fun agregarGasto(categoriaId: Long, importe: Double, descripcion: String?): Long {
         return gastoDao.insertar(

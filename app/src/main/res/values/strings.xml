@@ -18,6 +18,11 @@
     <string name="mis_meses_boton_nuevo">Añadir nuevo mes</string>
     <string name="mis_meses_subtitulo_formato">Gastado %1$s de %2$s</string>
     <string name="mis_meses_accion_funciones">Funciones</string>
+    <string name="mis_meses_opcion_editar_dinero">Editar dinero disponible</string>
+    <string name="mis_meses_opcion_eliminar">Eliminar mes</string>
+    <string name="mis_meses_eliminar_confirmar_titulo">Eliminar mes</string>
+    <string name="mis_meses_eliminar_confirmar_mensaje_formato">Se eliminará %1$s junto con todas sus categorías y gastos. Esta acción no se puede deshacer.</string>
+    <string name="mis_meses_editar_dinero_titulo">Editar dinero disponible</string>
 
     <!-- Funciones -->
     <string name="funciones_titulo">Funciones</string>

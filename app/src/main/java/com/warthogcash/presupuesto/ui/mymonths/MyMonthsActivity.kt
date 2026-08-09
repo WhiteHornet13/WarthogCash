@@ -19,6 +19,9 @@ import com.warthogcash.presupuesto.ui.monthdetail.MonthDetailActivity
 import com.warthogcash.presupuesto.util.FabricaViewModel
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
+import androidx.appcompat.app.AlertDialog
+import com.warthogcash.presupuesto.domain.model.EstadoPresupuesto
+import com.warthogcash.presupuesto.util.Formato
 
 /**
  * Especificación de pantalla "Mis meses". Se accede desde el icono de
@@ -41,7 +44,10 @@ class MyMonthsActivity : AppCompatActivity() {
 
         binding.btnVolver.setOnClickListener { finish() }
 
-        adapter = MonthListAdapter(alPulsarMes = ::navegarDesdeMes)
+        adapter = MonthListAdapter(
+            alPulsarMes = ::navegarDesdeMes,
+            alMantenerPulsadoMes = ::mostrarOpcionesMes
+        )
         binding.listaMeses.layoutManager = LinearLayoutManager(this)
         binding.listaMeses.adapter = adapter
 
@@ -112,5 +118,60 @@ class MyMonthsActivity : AppCompatActivity() {
         }
 
         hoja.show()
+    }
+
+    private fun mostrarOpcionesMes(mes: Presupuesto) {
+        val opciones = if (mes.estado == EstadoPresupuesto.ABIERTO) {
+            arrayOf(
+                getString(R.string.mis_meses_opcion_editar_dinero),
+                getString(R.string.mis_meses_opcion_eliminar)
+            )
+        } else {
+            arrayOf(getString(R.string.mis_meses_opcion_eliminar))
+        }
+
+        AlertDialog.Builder(this, R.style.ThemeOverlay_WarthogCash_Dialog)
+            .setTitle(mes.nombreMesAnio)
+            .setItems(opciones) { _, indice ->
+                when (opciones[indice]) {
+                    getString(R.string.mis_meses_opcion_editar_dinero) -> mostrarDialogoEditarDinero(mes)
+                    getString(R.string.mis_meses_opcion_eliminar) -> confirmarEliminarMes(mes)
+                }
+            }
+            .show()
+    }
+
+    private fun confirmarEliminarMes(mes: Presupuesto) {
+        AlertDialog.Builder(this, R.style.ThemeOverlay_WarthogCash_Dialog)
+            .setTitle(R.string.mis_meses_eliminar_confirmar_titulo)
+            .setMessage(getString(R.string.mis_meses_eliminar_confirmar_mensaje_formato, mes.nombreMesAnio))
+            .setNegativeButton(android.R.string.cancel, null)
+            .setPositiveButton(R.string.accion_eliminar) { _, _ ->
+                viewModel.eliminarMes(mes.id)
+            }
+            .show()
+    }
+
+    private fun mostrarDialogoEditarDinero(mes: Presupuesto) {
+        val margen = (16 * resources.displayMetrics.density).toInt()
+        val etDinero = android.widget.EditText(this).apply {
+            setText(Formato.importeEditable(mes.dineroDisponible))
+            inputType = android.text.InputType.TYPE_CLASS_NUMBER or android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL
+            keyListener = android.text.method.DigitsKeyListener.getInstance("0123456789,.")
+            setTextColor(androidx.core.content.ContextCompat.getColor(context, R.color.texto_principal))
+            setBackgroundResource(R.drawable.bg_card_borde_suave)
+            setPadding(margen, margen / 2, margen, margen / 2)
+        }
+
+        AlertDialog.Builder(this, R.style.ThemeOverlay_WarthogCash_Dialog)
+            .setTitle(R.string.mis_meses_editar_dinero_titulo)
+            .setView(etDinero)
+            .setNegativeButton(android.R.string.cancel, null)
+            .setPositiveButton(R.string.historial_editar_boton_guardar) { _, _ ->
+                val nuevoValor = etDinero.text.toString().replace(',', '.').toDoubleOrNull()
+                if (nuevoValor == null || nuevoValor <= 0.0) return@setPositiveButton
+                viewModel.actualizarDineroDisponible(mes.id, nuevoValor)
+            }
+            .show()
     }
 }

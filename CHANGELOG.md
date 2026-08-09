@@ -1,5 +1,34 @@
 # Changelog
 
+## [1.9.0] - 2026-08-10
+### Added
+- "Mis meses": mantener pulsada una tarjeta de mes abre un menú de
+  opciones:
+  - **Eliminar mes** (disponible tanto en meses abiertos como
+    cerrados): borra el mes junto con sus categorías y gastos
+    (cascada ya existente vía `onDelete = CASCADE`). Si el mes
+    eliminado estaba **cerrado** y había traspasado sobrante al mes
+    calendario siguiente al cerrarse, esos ingresos por traspaso se
+    eliminan también en el mes siguiente (evita dinero "fantasma" sin
+    origen). Si el mes calendario **anterior** le había traspasado a
+    su vez sobrante a este mes al cerrarse, ese traspaso se revierte
+    (recupera el importe como "restante" en sus categorías de
+    origen) y el mes anterior se **reabre**, para que el usuario
+    decida qué hacer con ese dinero ahora que su destino ha
+    desaparecido.
+  - **Editar dinero disponible** (solo en meses abiertos, spec: un
+    mes cerrado no se edita): permite cambiar el importe total del
+    mes; los montos asignados por categoría se recalculan solos al
+    derivarse de este valor en tiempo real.
+  - Si el mes eliminado era el "actual", pasa a serlo el mes
+    calendario más reciente que quede.
+- Nuevos métodos en `PresupuestoRepository`/`PresupuestoRepositoryImpl`:
+  `eliminarMes`, `actualizarDineroDisponible`; nuevos strings
+  (`mis_meses_opcion_editar_dinero`, `mis_meses_opcion_eliminar`,
+  `mis_meses_eliminar_confirmar_titulo`,
+  `mis_meses_eliminar_confirmar_mensaje_formato`,
+  `mis_meses_editar_dinero_titulo`).
+
 ## [1.8.2] - 2026-08-09
 ### Added
 - "Gráficas", tipo 1 (Categorías por mes): cada gráfica de barras ahora
