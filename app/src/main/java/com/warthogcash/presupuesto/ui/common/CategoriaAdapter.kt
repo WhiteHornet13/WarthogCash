@@ -53,6 +53,8 @@ class CategoriaAdapter(
                 EstadoBarraProgreso.NORMAL -> R.color.progreso_normal
                 EstadoBarraProgreso.CERCA_DEL_LIMITE -> R.color.acento_ambar
                 EstadoBarraProgreso.LIMITE_SUPERADO -> R.color.rojo_limite
+                EstadoBarraProgreso.RESTANTE_TRASPASADO -> R.color.azul_ocio
+                EstadoBarraProgreso.RESTANTE_AHORRADO -> R.color.verde_ahorro
             }
 
             // El punto de color junto al nombre refleja el mismo estado que
@@ -67,12 +69,23 @@ class CategoriaAdapter(
             binding.tvPorcentajeMonto.text = "${formatearPorcentaje(categoria.porcentaje)}% · ${Formato.moneda(categoria.montoAsignado)}"
             binding.tvGastado.text = "${Formato.moneda(categoria.gastado)} gastado"
 
-            if (categoria.estado == EstadoBarraProgreso.LIMITE_SUPERADO) {
-                binding.tvRestante.text = "límite superado"
-                binding.tvRestante.setTextColor(ContextCompat.getColor(contexto, R.color.rojo_limite))
-            } else {
-                binding.tvRestante.text = "quedan ${Formato.moneda(categoria.restante)}"
-                binding.tvRestante.setTextColor(ContextCompat.getColor(contexto, R.color.texto_principal))
+            when (categoria.estado) {
+                EstadoBarraProgreso.LIMITE_SUPERADO -> {
+                    binding.tvRestante.text = "límite superado"
+                    binding.tvRestante.setTextColor(ContextCompat.getColor(contexto, R.color.rojo_limite))
+                }
+                EstadoBarraProgreso.RESTANTE_TRASPASADO -> {
+                    binding.tvRestante.text = "restante traspasado"
+                    binding.tvRestante.setTextColor(ContextCompat.getColor(contexto, R.color.azul_ocio))
+                }
+                EstadoBarraProgreso.RESTANTE_AHORRADO -> {
+                    binding.tvRestante.text = "restante ahorrado"
+                    binding.tvRestante.setTextColor(ContextCompat.getColor(contexto, R.color.verde_ahorro))
+                }
+                else -> {
+                    binding.tvRestante.text = "quedan ${Formato.moneda(categoria.restante)}"
+                    binding.tvRestante.setTextColor(ContextCompat.getColor(contexto, R.color.texto_principal))
+                }
             }
 
             binding.barraProgreso.progress = (categoria.progreso * 100).toInt().coerceIn(0, 100)

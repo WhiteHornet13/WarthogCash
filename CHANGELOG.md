@@ -1,5 +1,33 @@
 # Changelog
 
+## [1.9.3] - 2026-08-13
+### Fixed
+- Al cerrar un mes con reparto de sobrante, el importe traspasado se
+  contabilizaba como "gastado" en la categoría de origen sin distinguir
+  su destino, mostrando siempre "límite superado" aunque el dinero no
+  se hubiera gastado realmente. Ahora la categoría de origen muestra:
+  - **"Restante ahorrado"** si el sobrante fue a Ahorro del mismo mes
+    (no cuenta como gasto real en la categoría ni en cálculos).
+  - **"Restante traspasado"** si el sobrante fue al mes siguiente (sí
+    cuenta como gasto real a efectos de cálculo, aunque el dinero siga
+    disponible en la categoría equivalente del mes destino).
+  - "Límite superado" queda reservado para cuando el gasto real
+    alcanza o supera lo asignado, sin traspaso de por medio.
+- El "Disponible" de la cabecera del mes (`Presupuesto.totalRestante`)
+  sumaba dos veces el dinero traspasado a Ahorro dentro del mismo mes
+  (una vez ya reflejado en el restante de la categoría Ahorro, y otra
+  vez al sumar `totalIngresosTraspasados` sobre el total del mes),
+  inflando el importe disponible mostrado. Ahora se calcula como la
+  suma de `restante` de cada categoría, evitando el doble conteo.
+- Nuevos campos derivados `traspasadoAhorro` y `traspasadoOtroMes` en
+  `Categoria`, y nuevas queries `sumarTraspasadoAAhorroPorCategoria` /
+  `sumarTraspasadoOtroMesPorCategoria` en `GastoDao`, para poder
+  distinguir ambos casos sin migración de esquema (se derivan de los
+  campos `esTraspasoSalida`/`mesOrigenId` ya existentes).
+- Nuevos valores `RESTANTE_TRASPASADO` y `RESTANTE_AHORRADO` en
+  `EstadoBarraProgreso`, reflejados en `CategoriaAdapter` con color
+  azul y verde respectivamente.
+
 ## [1.9.2] - 2026-08-13
 ### Fixed
 - Los ingresos por traspaso (`esIngreso = true`, generados al cerrar un

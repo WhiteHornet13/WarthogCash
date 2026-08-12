@@ -32,12 +32,27 @@ interface GastoDao {
     @Query("SELECT * FROM gastos WHERE categoriaId IN (:categoriaIds) ORDER BY fecha DESC")
     fun observarPorCategorias(categoriaIds: List<Long>): Flow<List<GastoEntity>>
 
-    /** Solo gastos reales (esIngreso = 0); nunca debe verse afectado por traspasos. */
-    @Query("SELECT COALESCE(SUM(importe), 0) FROM gastos WHERE categoriaId = :categoriaId AND esIngreso = 0")
+    /** Gasto "real" a efectos de cálculo: gastos normales + traspasos de sobrante
+     *  que fueron al mes SIGUIENTE (cuentan como gasto real). Excluye los
+     *  traspasos que fueron a Ahorro (mesOrigenId nulo): eso es ahorro, no gasto. */
+    @Query("SELECT COALESCE(SUM(importe), 0) FROM gastos WHERE categoriaId = :categoriaId AND esIngreso = 0 AND NOT (esTraspasoSalida = 1 AND mesOrigenId IS NULL)")
     suspend fun sumarPorCategoria(categoriaId: Long): Double
 
-    @Query("SELECT COALESCE(SUM(importe), 0) FROM gastos WHERE categoriaId IN (:categoriaIds) AND esIngreso = 0")
+    @Query("SELECT COALESCE(SUM(importe), 0) FROM gastos WHERE categoriaId IN (:categoriaIds) AND esIngreso = 0 AND NOT (esTraspasoSalida = 1 AND mesOrigenId IS NULL)")
     suspend fun sumarPorCategorias(categoriaIds: List<Long>): Double
+
+    /** Sobrante que esta categoría traspasó a Ahorro (mismo mes) al cerrarse.
+     *  No es gasto; se usa para el estado "Sobrante traspasado" y para
+     *  descontarlo del restante real. */
+    @Query("SELECT COALESCE(SUM(importe), 0) FROM gastos WHERE categoriaId = :categoriaId AND esTraspasoSalida = 1 AND mesOrigenId IS NULL")
+    suspend fun sumarTraspasadoAAhorroPorCategoria(categoriaId: Long): Double
+
+    /** Sobrante que esta categoría traspasó al mes SIGUIENTE al cerrarse.
+     *  Ya está incluido dentro de sumarPorCategoria() (cuenta como gasto real
+     *  a efectos de cálculo), pero se necesita aparte para mostrar el estado
+     *  "Restante traspasado" en vez de "Límite superado". */
+    @Query("SELECT COALESCE(SUM(importe), 0) FROM gastos WHERE categoriaId = :categoriaId AND esTraspasoSalida = 1 AND mesOrigenId IS NOT NULL")
+    suspend fun sumarTraspasadoOtroMesPorCategoria(categoriaId: Long): Double
 
     /** Ingresos por traspaso (esIngreso = 1) recibidos por una categoría; se suman
      *  al monto asignado, nunca al gastado. */

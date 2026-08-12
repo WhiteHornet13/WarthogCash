@@ -485,7 +485,9 @@ class PresupuestoRepositoryImpl(
         val categorias = categoriasEntity.map { catEntity ->
             val gastado = gastoDao.sumarPorCategoria(catEntity.id)
             val ingresos = gastoDao.sumarIngresosPorCategoria(catEntity.id)
-            catEntity.aDominio(entidad.dineroDisponible, gastado, ingresos)
+            val traspasadoAhorro = gastoDao.sumarTraspasadoAAhorroPorCategoria(catEntity.id)
+            val traspasadoOtroMes = gastoDao.sumarTraspasadoOtroMesPorCategoria(catEntity.id)
+            catEntity.aDominio(entidad.dineroDisponible, gastado, ingresos, traspasadoAhorro, traspasadoOtroMes)
         }
         return entidad.aDominio(categorias)
     }
@@ -500,14 +502,22 @@ class PresupuestoRepositoryImpl(
         categorias = categorias
     )
 
-    private fun CategoriaEntity.aDominio(dineroDisponibleMes: Double, gastado: Double, ingresosTraspasados: Double): Categoria = Categoria(
+    private fun CategoriaEntity.aDominio(
+        dineroDisponibleMes: Double,
+        gastado: Double,
+        ingresosTraspasados: Double,
+        traspasadoAhorro: Double,
+        traspasadoOtroMes: Double
+    ): Categoria = Categoria(
         id = id,
         presupuestoId = presupuestoId,
         tipo = TipoCategoria.valueOf(tipo),
         porcentaje = porcentaje,
         montoAsignadoBase = dineroDisponibleMes * (porcentaje / 100.0),
         ingresosTraspasados = ingresosTraspasados,
-        gastado = gastado
+        gastado = gastado,
+        traspasadoAhorro = traspasadoAhorro,
+        traspasadoOtroMes = traspasadoOtroMes
     )
 
     private fun GastoEntity.aDominio(): Gasto = Gasto(

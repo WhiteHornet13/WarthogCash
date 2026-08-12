@@ -23,7 +23,7 @@ data class Presupuesto(
         get() = categorias.sumOf { it.ingresosTraspasados }
 
     val totalRestante: Double
-        get() = dineroDisponible + totalIngresosTraspasados - totalGastado
+        get() = categorias.sumOf { it.restante }
 
     /** Fracción 0..1 gastada del total del mes, usada para la mini barra en "Mis meses". */
     val progresoTotal: Float
