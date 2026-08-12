@@ -465,11 +465,13 @@ class PresupuestoRepositoryImpl(
 
     override suspend fun editarGasto(gastoId: Long, importe: Double, descripcion: String?) {
         val entidad = gastoDao.obtenerPorId(gastoId) ?: return
+        if (entidad.esIngreso) return
         gastoDao.actualizar(entidad.copy(importe = importe, descripcion = descripcion))
     }
 
     override suspend fun eliminarGasto(gastoId: Long) {
         val entidad = gastoDao.obtenerPorId(gastoId) ?: return
+        if (entidad.esIngreso) return
         gastoDao.eliminar(entidad)
     }
 

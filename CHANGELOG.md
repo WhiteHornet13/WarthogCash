@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.9.2] - 2026-08-13
+### Fixed
+- Los ingresos por traspaso (`esIngreso = true`, generados al cerrar un
+  mes con reparto de sobrante) podían editarse o eliminarse manualmente
+  desde "Historial de gastos" mientras el mes de destino siguiera
+  abierto, ya que `ExpenseAdapter` solo comprobaba el estado del mes
+  (`ABIERTO`/`CERRADO`), no si la fila era un traspaso. Ahora esos
+  botones se ocultan también para filas de traspaso
+  (`ExpenseAdapter.GastoViewHolder.bind()`).
+- `PresupuestoRepositoryImpl.editarGasto()` / `eliminarGasto()` ahora
+  rechazan la operación si `entidad.esIngreso` es `true`, como defensa
+  en profundidad independiente de la UI. El único borrado válido de un
+  traspaso sigue siendo el automático al eliminar el mes que lo generó
+  (`eliminarTraspasosRecibidosDelMesSiguiente`,
+  `revertirTraspasosRecibidosDelMesAnterior`, y la cascada de Room),
+  que no pasan por estos métodos y no se ven afectados.
+
 ## [1.9.1] - 2026-08-10
 ### Fixed
 - "Mis meses" → Eliminar mes: al eliminar un mes CERRADO que había
