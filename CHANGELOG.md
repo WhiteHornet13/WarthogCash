@@ -1,5 +1,43 @@
 # Changelog
 
+## [1.9.4] - 2026-08-14
+### Added
+- Cobertura automática de límite superado: al registrar o editar un gasto
+  que hace que una categoría (General, Ahorro exceptuada) supere su monto
+  asignado, se genera automáticamente un gasto real equivalente en Ahorro
+  del mismo mes ("Cobertura de límite superado en {categoría}"), cubriendo
+  solo la porción nueva del exceso en cada operación. Ahorro nunca se
+  cubre a sí misma.
+- Al eliminar el gasto que originó una cobertura, su gasto de cobertura
+  asociado en Ahorro se elimina automáticamente en cascada. Los gastos de
+  cobertura dejan de poder editarse o eliminarse manualmente desde el
+  Historial (botones ocultos en `ExpenseAdapter`, y bloqueo adicional en
+  `PresupuestoRepositoryImpl` como defensa en profundidad).
+- Nuevo campo `gastoCoberturaOrigenId` en `GastoEntity`/`Gasto` (migración
+  Room `5 → 6`): enlaza un gasto de cobertura con el gasto que lo generó,
+  y nueva query `GastoDao.obtenerPorGastoCoberturaOrigen`.
+
+### Fixed
+- `Presupuesto.totalRestante` (usado en el header y en las tarjetas de
+  "Mis meses") restaba dos veces el mismo dinero cuando una categoría
+  superaba su límite: una vez en la propia categoría (restante negativo)
+  y otra en Ahorro (ya reflejado por el gasto de cobertura). Ahora se
+  usa `coerceAtLeast(0.0)` por categoría antes de sumar, evitando el
+  doble descuento.
+- `Presupuesto.totalAsignadoMes` (usado para el subtítulo "Gastado X de
+  Y" y el color/progreso de la barra en "Mis meses") contaba como
+  "ingreso nuevo" también los traspasos internos a Ahorro dentro del
+  mismo mes, cuando en realidad ese dinero ya formaba parte del ingreso
+  original y no debía sumarse de nuevo. Ahora solo cuenta los traspasos
+  recibidos de OTRO mes (`ingresosDeOtroMes`, filtrando por
+  `mesOrigenId IS NOT NULL`), dejando intacto el ingreso introducido por
+  el usuario en todos los cálculos.
+- El subtítulo de las tarjetas en "Mis meses" y el color/progreso de su
+  barra de estado comparaban el gasto contra `dineroDisponible` (el
+  ingreso "en bruto") en lugar de contra el total real disponible del
+  mes (ingreso + traspasos de otros meses), mostrando porcentajes y
+  colores de aviso incorrectos cuando había traspasos de por medio.
+
 ## [1.9.3] - 2026-08-13
 ### Fixed
 - Al cerrar un mes con reparto de sobrante, el importe traspasado se

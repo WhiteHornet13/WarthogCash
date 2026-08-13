@@ -12,5 +12,6 @@ data class Gasto(
     val fecha: Long,
     val esIngreso: Boolean = false,
     val esTraspasoSalida: Boolean = false,
-    val mesOrigenId: Long? = null
+    val mesOrigenId: Long? = null,
+    val gastoCoberturaOrigenId: Long? = null
 )

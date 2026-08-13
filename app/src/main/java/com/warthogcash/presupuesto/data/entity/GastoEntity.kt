@@ -50,5 +50,13 @@ data class GastoEntity(
      *  null para traspasos dentro del mismo mes (a Ahorro) y para gastos
      *  normales. Permite localizar y revertir traspasos entre meses de
      *  forma fiable al eliminar un mes, sin depender de comparar texto. */
-    val mesOrigenId: Long? = null
+    val mesOrigenId: Long? = null,
+
+    /** Si esta fila es un gasto de cobertura automática en Ahorro (generado
+     *  al superar el límite de otra categoría), aquí se guarda el id del
+     *  gasto ORIGEN que la disparó. null en cualquier otro gasto normal.
+     *  Permite borrar la cobertura en cascada al borrar el gasto origen, y
+     *  bloquear su edición/borrado manual desde el Historial. */
+    val gastoCoberturaOrigenId: Long? = null
 )
+

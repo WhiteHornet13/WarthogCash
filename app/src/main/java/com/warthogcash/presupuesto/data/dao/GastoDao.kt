@@ -23,6 +23,11 @@ interface GastoDao {
     @Query("SELECT * FROM gastos WHERE id = :id")
     suspend fun obtenerPorId(id: Long): GastoEntity?
 
+    /** Filas de cobertura automática en Ahorro generadas por [gastoId].
+     *  Se usa para borrarlas en cascada al eliminar el gasto que las originó. */
+    @Query("SELECT * FROM gastos WHERE gastoCoberturaOrigenId = :gastoId")
+    suspend fun obtenerPorGastoCoberturaOrigen(gastoId: Long): List<GastoEntity>
+
     @Query("SELECT * FROM gastos WHERE categoriaId = :categoriaId ORDER BY fecha DESC")
     suspend fun obtenerPorCategoria(categoriaId: Long): List<GastoEntity>
 
@@ -54,8 +59,17 @@ interface GastoDao {
     @Query("SELECT COALESCE(SUM(importe), 0) FROM gastos WHERE categoriaId = :categoriaId AND esTraspasoSalida = 1 AND mesOrigenId IS NOT NULL")
     suspend fun sumarTraspasadoOtroMesPorCategoria(categoriaId: Long): Double
 
+
     /** Ingresos por traspaso (esIngreso = 1) recibidos por una categoría; se suman
      *  al monto asignado, nunca al gastado. */
     @Query("SELECT COALESCE(SUM(importe), 0) FROM gastos WHERE categoriaId = :categoriaId AND esIngreso = 1")
     suspend fun sumarIngresosPorCategoria(categoriaId: Long): Double
+
+    /** Subconjunto de lo anterior: solo ingresos recibidos de OTRO mes
+     *  (mesOrigenId no nulo, traspaso real entre meses al cerrarse el mes
+     *  anterior). Excluye los traspasos internos a Ahorro dentro del mismo
+     *  mes (mesOrigenId nulo), que no son dinero nuevo, sino una
+     *  reubicación del mismo dineroDisponible del mes. */
+    @Query("SELECT COALESCE(SUM(importe), 0) FROM gastos WHERE categoriaId = :categoriaId AND esIngreso = 1 AND mesOrigenId IS NOT NULL")
+    suspend fun sumarIngresosDeOtroMesPorCategoria(categoriaId: Long): Double
 }

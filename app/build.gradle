@@ -15,8 +15,8 @@ android {
         // como valor razonable por defecto; revisar cuando se defina oficialmente.
         minSdk 26
         targetSdk 34
-        versionCode 19
-        versionName "1.9.3"
+        versionCode 20
+        versionName "1.9.4"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

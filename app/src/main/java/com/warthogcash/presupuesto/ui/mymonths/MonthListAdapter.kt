@@ -83,32 +83,28 @@ class MonthListAdapter(
     private inner class MesViewHolder(val binding: ItemMonthCardBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(mes: Presupuesto) {
             val contexto = binding.root.context
-
             binding.tvNombreMes.text = mes.nombreMesAnio
             binding.tvBadgeActual.visibility = if (mes.esActual) android.view.View.VISIBLE else android.view.View.GONE
             binding.tvSubtituloMes.text = contexto.getString(
                 com.warthogcash.presupuesto.R.string.mis_meses_subtitulo_formato,
                 Formato.moneda(mes.totalGastado),
-                Formato.moneda(mes.dineroDisponible)
+                Formato.moneda(mes.totalAsignadoMes)
             )
             binding.tvRestanteMes.text = Formato.moneda(mes.totalRestante)
-
             val colorEstado = when {
-                mes.totalGastado >= mes.dineroDisponible -> com.warthogcash.presupuesto.R.color.rojo_limite
-                mes.dineroDisponible <= 0.0 -> com.warthogcash.presupuesto.R.color.progreso_normal
-                (mes.totalGastado / mes.dineroDisponible) >= 0.85 -> com.warthogcash.presupuesto.R.color.acento_ambar
+                mes.totalGastado >= mes.totalAsignadoMes -> com.warthogcash.presupuesto.R.color.rojo_limite
+                mes.totalAsignadoMes <= 0.0 -> com.warthogcash.presupuesto.R.color.progreso_normal
+                (mes.totalGastado / mes.totalAsignadoMes) >= 0.85 -> com.warthogcash.presupuesto.R.color.acento_ambar
                 else -> com.warthogcash.presupuesto.R.color.progreso_normal
             }
-            binding.barraEstadoMes.progress = if (mes.dineroDisponible <= 0.0) 0
-                else ((mes.totalGastado / mes.dineroDisponible) * 100).toInt().coerceIn(0, 100)
+            binding.barraEstadoMes.progress = if (mes.totalAsignadoMes <= 0.0) 0
+            else ((mes.totalGastado / mes.totalAsignadoMes) * 100).toInt().coerceIn(0, 100)
             val drawable = binding.barraEstadoMes.progressDrawable
             if (drawable is android.graphics.drawable.LayerDrawable) {
                 drawable.findDrawableByLayerId(android.R.id.progress)
                     ?.mutate()?.setTint(androidx.core.content.ContextCompat.getColor(contexto, colorEstado))
             }
-
             val esCerrado = mes.estado == EstadoPresupuesto.CERRADO
-
             val (fondoRes, colorTexto, colorTextoSecundario) = when {
                 mes.esActual -> Triple(
                     com.warthogcash.presupuesto.R.drawable.bg_card_mes_actual,
@@ -126,12 +122,10 @@ class MonthListAdapter(
                     com.warthogcash.presupuesto.R.color.texto_mes_abierto_secundario
                 )
             }
-
             binding.root.setBackgroundResource(fondoRes)
             binding.tvNombreMes.setTextColor(androidx.core.content.ContextCompat.getColor(contexto, colorTexto))
             binding.tvRestanteMes.setTextColor(androidx.core.content.ContextCompat.getColor(contexto, colorTexto))
             binding.tvSubtituloMes.setTextColor(androidx.core.content.ContextCompat.getColor(contexto, colorTextoSecundario))
-
             binding.root.setOnClickListener { alPulsarMes(mes) }
             binding.root.setOnLongClickListener {
                 alMantenerPulsadoMes(mes)

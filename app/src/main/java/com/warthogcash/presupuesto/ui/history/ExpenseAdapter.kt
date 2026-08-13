@@ -53,7 +53,7 @@ class ExpenseAdapter(
                 binding.tvImporteGasto.setTextColor(androidx.core.content.ContextCompat.getColor(contexto, com.warthogcash.presupuesto.R.color.texto_principal))
             }
 
-            val puedeEditarEsteGasto = editable && !item.gasto.esIngreso
+            val puedeEditarEsteGasto = editable && !item.gasto.esIngreso && item.gasto.gastoCoberturaOrigenId == null
             binding.btnEditarGasto.visibility = if (puedeEditarEsteGasto) View.VISIBLE else View.GONE
             binding.btnEliminarGasto.visibility = if (puedeEditarEsteGasto) View.VISIBLE else View.GONE
             binding.btnEditarGasto.setOnClickListener { alPulsarEditar(item) }

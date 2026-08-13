@@ -7,6 +7,10 @@ data class Categoria(
     val porcentaje: Double,
     val montoAsignadoBase: Double,
     val ingresosTraspasados: Double = 0.0,
+    /** Subconjunto de [ingresosTraspasados] recibido específicamente de OTRO
+     *  mes al cerrarse, no de un traspaso interno a Ahorro dentro de este
+     *  mismo mes. Dinero nuevo real, a diferencia de [ingresosTraspasados]. */
+    val ingresosDeOtroMes: Double = 0.0,
     /** Gasto real + traspasado al mes siguiente (cuenta como gasto a
      *  efectos de cálculo, ver sumarPorCategoria en GastoDao). */
     val gastado: Double,

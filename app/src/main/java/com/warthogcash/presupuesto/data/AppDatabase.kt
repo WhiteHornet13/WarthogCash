@@ -21,7 +21,7 @@ import com.warthogcash.presupuesto.data.entity.PresupuestoEntity
  */
 @Database(
     entities = [PresupuestoEntity::class, CategoriaEntity::class, GastoEntity::class, GastoFijoEntity::class],
-    version = 5,
+    version = 6,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -68,13 +68,19 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
+        private val MIGRACION_5_6 = object : Migration(5, 6) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE gastos ADD COLUMN gastoCoberturaOrigenId INTEGER")
+            }
+        }
+
         fun obtenerInstancia(context: Context): AppDatabase {
             return INSTANCE ?: synchronized(this) {
                 INSTANCE ?: Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
                     "presupuesto_personal.db"
-                ).addMigrations(MIGRACION_1_2, MIGRACION_2_3, MIGRACION_3_4, MIGRACION_4_5).build().also { INSTANCE = it }
+                ).addMigrations(MIGRACION_1_2, MIGRACION_2_3, MIGRACION_3_4, MIGRACION_4_5, MIGRACION_5_6).build().also { INSTANCE = it }
             }
         }
     }

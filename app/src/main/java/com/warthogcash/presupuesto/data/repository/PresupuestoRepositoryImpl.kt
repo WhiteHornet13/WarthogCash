@@ -436,12 +436,50 @@ class PresupuestoRepositoryImpl(
 
 
     override suspend fun agregarGasto(categoriaId: Long, importe: Double, descripcion: String?): Long {
-        return gastoDao.insertar(
+        val gastadoAntes = gastoDao.sumarPorCategoria(categoriaId)
+        val nuevoId = gastoDao.insertar(
             GastoEntity(
                 categoriaId = categoriaId,
                 importe = importe,
                 descripcion = descripcion,
                 fecha = System.currentTimeMillis()
+            )
+        )
+        cubrirExcesoConAhorroSiProcede(categoriaId, gastadoAntes, gastoOrigenId = nuevoId)
+        return nuevoId
+    }
+
+    /** Si, tras registrar un gasto, la parte NUEVA de ese gasto cae fuera del
+     *  monto asignado de su categoría, ese exceso se cubre automáticamente
+     *  con un gasto real equivalente en la categoría Ahorro del mismo mes,
+     *  restando su disponible. Ahorro nunca se cubre a sí misma.
+     *  [gastadoAntes] es el gastado de la categoría justo antes de insertar
+     *  este gasto: se usa para cubrir solo la porción nueva que supera el
+     *  límite, sin volver a cubrir excesos ya cubiertos por gastos previos. */
+    private suspend fun cubrirExcesoConAhorroSiProcede(categoriaId: Long, gastadoAntes: Double, gastoOrigenId: Long) {
+        val categoriaEntity = categoriaDao.obtenerPorId(categoriaId) ?: return
+        if (categoriaEntity.tipo == TipoCategoria.AHORRO.name) return
+
+        val presupuestoEntity = presupuestoDao.obtenerPorId(categoriaEntity.presupuestoId) ?: return
+        val montoAsignadoBase = presupuestoEntity.dineroDisponible * (categoriaEntity.porcentaje / 100.0)
+        val ingresos = gastoDao.sumarIngresosPorCategoria(categoriaId)
+        val montoAsignado = montoAsignadoBase + ingresos
+
+        val gastadoDespues = gastoDao.sumarPorCategoria(categoriaId)
+        val exceso = gastadoDespues - maxOf(gastadoAntes, montoAsignado)
+        if (exceso <= 0.0) return
+
+        val categoriaAhorro = categoriaDao.obtenerPorPresupuestoYTipo(
+            categoriaEntity.presupuestoId, TipoCategoria.AHORRO.name
+        ) ?: return
+
+        gastoDao.insertar(
+            GastoEntity(
+                categoriaId = categoriaAhorro.id,
+                importe = exceso,
+                descripcion = "Cobertura de límite superado en ${TipoCategoria.valueOf(categoriaEntity.tipo).etiqueta}",
+                fecha = System.currentTimeMillis(),
+                gastoCoberturaOrigenId = gastoOrigenId
             )
         )
     }
@@ -466,13 +504,25 @@ class PresupuestoRepositoryImpl(
     override suspend fun editarGasto(gastoId: Long, importe: Double, descripcion: String?) {
         val entidad = gastoDao.obtenerPorId(gastoId) ?: return
         if (entidad.esIngreso) return
+        if (entidad.gastoCoberturaOrigenId != null) return // cobertura automática: no editable a mano
+        val gastadoAntes = gastoDao.sumarPorCategoria(entidad.categoriaId)
         gastoDao.actualizar(entidad.copy(importe = importe, descripcion = descripcion))
+        cubrirExcesoConAhorroSiProcede(entidad.categoriaId, gastadoAntes, gastoOrigenId = gastoId)
     }
 
     override suspend fun eliminarGasto(gastoId: Long) {
         val entidad = gastoDao.obtenerPorId(gastoId) ?: return
         if (entidad.esIngreso) return
+        if (entidad.gastoCoberturaOrigenId != null) return // cobertura automática: no eliminable a mano
+        eliminarCoberturasDeGasto(gastoId)
         gastoDao.eliminar(entidad)
+    }
+
+    /** Borra en Ahorro cualquier gasto de cobertura automática generado por
+     *  [gastoId], al eliminarse el gasto que lo originó (ver
+     *  cubrirExcesoConAhorroSiProcede). */
+    private suspend fun eliminarCoberturasDeGasto(gastoId: Long) {
+        gastoDao.obtenerPorGastoCoberturaOrigen(gastoId).forEach { gastoDao.eliminar(it) }
     }
 
     override suspend fun existeMesActualDistintoDe(presupuestoId: Long): Boolean =
@@ -485,9 +535,10 @@ class PresupuestoRepositoryImpl(
         val categorias = categoriasEntity.map { catEntity ->
             val gastado = gastoDao.sumarPorCategoria(catEntity.id)
             val ingresos = gastoDao.sumarIngresosPorCategoria(catEntity.id)
+            val ingresosDeOtroMes = gastoDao.sumarIngresosDeOtroMesPorCategoria(catEntity.id)
             val traspasadoAhorro = gastoDao.sumarTraspasadoAAhorroPorCategoria(catEntity.id)
             val traspasadoOtroMes = gastoDao.sumarTraspasadoOtroMesPorCategoria(catEntity.id)
-            catEntity.aDominio(entidad.dineroDisponible, gastado, ingresos, traspasadoAhorro, traspasadoOtroMes)
+            catEntity.aDominio(entidad.dineroDisponible, gastado, ingresos, ingresosDeOtroMes, traspasadoAhorro, traspasadoOtroMes)
         }
         return entidad.aDominio(categorias)
     }
@@ -506,6 +557,7 @@ class PresupuestoRepositoryImpl(
         dineroDisponibleMes: Double,
         gastado: Double,
         ingresosTraspasados: Double,
+        ingresosDeOtroMes: Double,
         traspasadoAhorro: Double,
         traspasadoOtroMes: Double
     ): Categoria = Categoria(
@@ -515,6 +567,7 @@ class PresupuestoRepositoryImpl(
         porcentaje = porcentaje,
         montoAsignadoBase = dineroDisponibleMes * (porcentaje / 100.0),
         ingresosTraspasados = ingresosTraspasados,
+        ingresosDeOtroMes = ingresosDeOtroMes,
         gastado = gastado,
         traspasadoAhorro = traspasadoAhorro,
         traspasadoOtroMes = traspasadoOtroMes
@@ -528,6 +581,7 @@ class PresupuestoRepositoryImpl(
         fecha = fecha,
         esIngreso = esIngreso,
         esTraspasoSalida = esTraspasoSalida,
-        mesOrigenId = mesOrigenId
+        mesOrigenId = mesOrigenId,
+        gastoCoberturaOrigenId = gastoCoberturaOrigenId
     )
 }
