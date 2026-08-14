@@ -71,7 +71,7 @@ class CategoriaAdapter(
 
             when (categoria.estado) {
                 EstadoBarraProgreso.LIMITE_SUPERADO -> {
-                    binding.tvRestante.text = "límite superado"
+                    binding.tvRestante.text = "límite superado: ${Formato.moneda(categoria.restante)}"
                     binding.tvRestante.setTextColor(ContextCompat.getColor(contexto, R.color.rojo_limite))
                 }
                 EstadoBarraProgreso.RESTANTE_TRASPASADO -> {

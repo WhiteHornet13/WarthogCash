@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.5] - 2026-08-15
+### Changed
+- `CategoriaAdapter`: cuando una categoría supera su límite ("Límite
+  superado"), la etiqueta ahora muestra también el saldo negativo real
+  junto al texto (p. ej. "límite superado · −60,00 €"), en vez de solo
+  el texto sin importe.
+
 ## [1.9.4] - 2026-08-14
 ### Added
 - Cobertura automática de límite superado: al registrar o editar un gasto
