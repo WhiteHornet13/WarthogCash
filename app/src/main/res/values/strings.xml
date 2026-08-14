@@ -39,6 +39,7 @@
     <string name="detalle_estado_cerrado">● Mes cerrado</string>
     <string name="detalle_banner_cerrado">Este mes está cerrado y no admite traspasos ni edición.</string>
     <string name="detalle_boton_cerrar_mes">Cerrar mes</string>
+    <string name="detalle_ahorrado">Ahorrado</string>
 
     <!-- Crear mes nuevo -->
     <string name="crear_mes_titulo">Nuevo mes</string>

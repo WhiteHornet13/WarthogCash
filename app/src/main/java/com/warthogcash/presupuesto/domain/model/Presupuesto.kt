@@ -32,6 +32,13 @@ data class Presupuesto(
      *  cobertura ya reflejado en su propio restante). */
     val totalRestante: Double
         get() = categorias.sumOf { it.restante.coerceAtLeast(0.0) }
+
+    /** Dinero que ha quedado ahorrado en la categoría Ahorro (su "restante"
+     *  real). Se muestra en el header de "Detalle de mes cerrado", entre
+     *  Ingreso y Gastado. */
+    val totalAhorrado: Double
+        get() = categorias.firstOrNull { it.tipo == TipoCategoria.AHORRO }?.restante ?: 0.0
+
     /** Suma de traspasos recibidos de OTRO mes (dinero nuevo real), excluyendo
      *  los traspasos internos a Ahorro dentro de este mismo mes. */
     val totalIngresosDeMesesAnteriores: Double

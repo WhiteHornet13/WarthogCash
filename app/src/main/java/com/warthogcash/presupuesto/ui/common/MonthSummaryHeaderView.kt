@@ -52,6 +52,11 @@ class MonthSummaryHeaderView @JvmOverloads constructor(
         binding.btnVolver.setOnClickListener { alPulsarVolver() }
 
         val esCerrado = presupuesto.estado == EstadoPresupuesto.CERRADO
+        binding.tvEtiquetaAhorrado.visibility = if (esCerrado) android.view.View.VISIBLE else android.view.View.GONE
+        binding.tvAhorrado.visibility = if (esCerrado) android.view.View.VISIBLE else android.view.View.GONE
+        if (esCerrado) {
+            binding.tvAhorrado.text = Formato.moneda(presupuesto.totalAhorrado)
+        }
         binding.contenedorHeader.setBackgroundResource(
             if (esCerrado) R.drawable.bg_header_rounded_cerrado else R.drawable.bg_header_rounded
         )

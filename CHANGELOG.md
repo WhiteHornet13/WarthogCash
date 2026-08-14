@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.9.6] - 2026-08-15
+### Added
+- "Detalle de mes cerrado": el header ahora muestra también "Ahorrado"
+  (el restante final de la categoría Ahorro), centrado entre "Ingreso"
+  y "Gastado". Solo visible cuando el mes está cerrado; en mes abierto
+  y en Pantalla principal el bloque permanece oculto.
+- Nueva propiedad calculada `Presupuesto.totalAhorrado` (restante de
+  la categoría Ahorro).
+- Nuevo string `detalle_ahorrado`.
+
 ## [1.9.5] - 2026-08-15
 ### Changed
 - `CategoriaAdapter`: cuando una categoría supera su límite ("Límite
