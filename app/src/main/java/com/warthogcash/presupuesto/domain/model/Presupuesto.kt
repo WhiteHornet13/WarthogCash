@@ -14,24 +14,28 @@ data class Presupuesto(
     val esActual: Boolean,
     val categorias: List<Categoria> = emptyList()
 ) {
+    /** Suma del gasto real de cada categoría. Se resta [Categoria.coberturaRecibida]
+     *  porque ese importe ya se contó una vez como gasto real en la categoría
+     *  que originó el exceso, y otra vez como "gastado" en Ahorro (la cobertura
+     *  automática que lo cubre); sin restarlo aquí, el "Gastado" total del mes
+     *  queda inflado exactamente por ese importe duplicado. */
     val totalGastado: Double
-        get() = categorias.sumOf { it.gastado }
+        get() = categorias.sumOf { it.gastado } - categorias.sumOf { it.coberturaRecibida }
 
     /** Suma de todos los traspasos recibidos por las categorías de este mes
      *  (de otra categoría del mismo mes hacia Ahorro, o del mes anterior). */
     val totalIngresosTraspasados: Double
         get() = categorias.sumOf { it.ingresosTraspasados }
 
-    /** Suma del restante de cada categoría, sin dejar que una categoría que
-     *  ha superado su límite (restante negativo) reste dos veces el mismo
-     *  dinero del total: ese exceso ya se descuenta una vez de Ahorro
-     *  mediante el gasto de cobertura automática (ver
-     *  PresupuestoRepositoryImpl.cubrirExcesoConAhorroSiProcede). Sin este
-     *  coerceAtLeast, el mismo dinero se restaba tanto en la categoría que
-     *  originó el exceso (restante negativo) como en Ahorro (gasto de
-     *  cobertura ya reflejado en su propio restante). */
+    /** Suma del restante real de cada categoría, sin ocultar negativos: un
+     *  sobregasto real (p. ej. Ahorro gastado por encima de lo asignado,
+     *  ya que Ahorro nunca se cubre a sí misma) debe reflejarse tal cual.
+     *  Se suma aparte [Categoria.coberturaRecibida] porque ese importe ya
+     *  está contado una vez como gasto real en la categoría que originó el
+     *  exceso (restante negativo) y otra vez como "gastado" en Ahorro (la
+     *  cobertura automática); sin compensarlo se restaría dos veces. */
     val totalRestante: Double
-        get() = categorias.sumOf { it.restante.coerceAtLeast(0.0) }
+        get() = categorias.sumOf { it.restante } + categorias.sumOf { it.coberturaRecibida }
 
     /** Dinero que ha quedado ahorrado en la categoría Ahorro (su "restante"
      *  real). Se muestra en el header de "Detalle de mes cerrado", entre

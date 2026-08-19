@@ -27,7 +27,8 @@ class CloseMonthViewModel(
     init {
         viewModelScope.launch {
             val mes = repository.obtenerMesPorId(mesId) ?: return@launch
-            val permiteTraspaso = repository.existeMesSiguienteInmediatoAbierto(mesId)
+            val ahorroEnNegativo = (mes.categorias.firstOrNull { it.tipo == com.warthogcash.presupuesto.domain.model.TipoCategoria.AHORRO }?.restante ?: 0.0) < 0.0
+            val permiteTraspaso = repository.existeMesSiguienteInmediatoAbierto(mesId) && !ahorroEnNegativo
             _estado.value = EstadoCierre(mes, permiteTraspaso)
         }
     }

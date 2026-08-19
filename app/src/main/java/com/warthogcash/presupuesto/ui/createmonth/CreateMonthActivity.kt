@@ -170,7 +170,7 @@ class CreateMonthActivity : AppCompatActivity() {
         }
 
         val porcentajes = filas.mapValues { (_, fila) ->
-            fila.etPorcentaje.text.toString().toDoubleOrNull() ?: 0.0
+            fila.etPorcentaje.text.toString().replace(',', '.').toDoubleOrNull() ?: 0.0
         }
         val suma = porcentajes.values.sum()
 
@@ -245,7 +245,8 @@ class CreateMonthActivity : AppCompatActivity() {
 
 
     private fun formatearSuma(valor: Double): String =
-        if (valor == valor.toLong().toDouble()) valor.toLong().toString() else valor.toString()
+        if (valor == valor.toLong().toDouble()) valor.toLong().toString()
+        else valor.toString().replace('.', ',')
 }
 
 

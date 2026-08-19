@@ -59,7 +59,8 @@ class PresupuestoRepositoryImpl(
     override suspend fun aplicarGastosFijosAMes(mesId: Long, seleccionados: List<GastoFijoAplicado>) {
         seleccionados.forEach { aplicado ->
             val categoria = categoriaDao.obtenerPorPresupuestoYTipo(mesId, aplicado.tipo.name) ?: return@forEach
-            gastoDao.insertar(
+            val gastadoAntes = gastoDao.sumarPorCategoria(categoria.id)
+            val nuevoId = gastoDao.insertar(
                 GastoEntity(
                     categoriaId = categoria.id,
                     importe = aplicado.coste,
@@ -67,6 +68,7 @@ class PresupuestoRepositoryImpl(
                     fecha = System.currentTimeMillis()
                 )
             )
+            cubrirExcesoConAhorroSiProcede(categoria.id, gastadoAntes, gastoOrigenId = nuevoId)
         }
     }
 
@@ -264,9 +266,14 @@ class PresupuestoRepositoryImpl(
         val mes = mapearPresupuestoCompleto(mesEntity)
         val categoriaAhorroEntity = categoriaDao.obtenerPorPresupuestoYTipo(presupuestoId, TipoCategoria.AHORRO.name)
 
+        // Si Ahorro cierra en negativo, ese descubierto debe compensarse con el
+        // sobrante de este mismo mes: ninguna categoría puede traspasar su
+        // sobrante a otro mes, todo debe quedarse en Ahorro para cubrirlo.
+        val ahorroEnNegativo = (mes.categorias.firstOrNull { it.tipo == TipoCategoria.AHORRO }?.restante ?: 0.0) < 0.0
+
         val siguienteMesEntity = obtenerEntidadMesSiguiente(mesEntity)
             ?.takeIf { it.estado == EstadoPresupuesto.ABIERTO.name }
-        val permiteTraspaso = siguienteMesEntity != null
+        val permiteTraspaso = siguienteMesEntity != null && !ahorroEnNegativo
         val categoriasSiguienteMes = siguienteMesEntity?.let { categoriaDao.obtenerPorPresupuesto(it.id) } ?: emptyList()
 
         mes.categorias.forEach { categoria ->
@@ -420,9 +427,27 @@ class PresupuestoRepositoryImpl(
         val categoriasAnterior = categoriaDao.obtenerPorPresupuesto(anterior.id)
         var seRevirtioAlgo = false
 
+        // Un mes solo puede cerrarse una vez, así que CUALQUIER fila
+        // esTraspasoSalida presente en sus categorías pertenece a ese único
+        // cierre: tanto si fue traspaso externo (mesOrigenId apunta al mes
+        // siguiente) como interno (mesOrigenId null, fue a Ahorro). Se
+        // revierten todas, devolviendo el sobrante a su categoría de origen.
         categoriasAnterior.forEach { categoria ->
             gastoDao.obtenerPorCategoria(categoria.id)
-                .filter { it.esTraspasoSalida && it.mesOrigenId == mesEntity.id }
+                .filter { it.esTraspasoSalida }
+                .forEach { gasto ->
+                    gastoDao.eliminar(gasto)
+                    seRevirtioAlgo = true
+                }
+        }
+
+        // Por el mismo motivo, los ingresos internos recibidos en Ahorro
+        // (esIngreso con mesOrigenId null) de este mes pertenecen también a
+        // ese único cierre: se eliminan para quitar los "chips" históricos.
+        val categoriaAhorroAnterior = categoriasAnterior.firstOrNull { it.tipo == TipoCategoria.AHORRO.name }
+        if (categoriaAhorroAnterior != null) {
+            gastoDao.obtenerPorCategoria(categoriaAhorroAnterior.id)
+                .filter { it.esIngreso && it.mesOrigenId == null }
                 .forEach { gasto ->
                     gastoDao.eliminar(gasto)
                     seRevirtioAlgo = true
@@ -538,7 +563,8 @@ class PresupuestoRepositoryImpl(
             val ingresosDeOtroMes = gastoDao.sumarIngresosDeOtroMesPorCategoria(catEntity.id)
             val traspasadoAhorro = gastoDao.sumarTraspasadoAAhorroPorCategoria(catEntity.id)
             val traspasadoOtroMes = gastoDao.sumarTraspasadoOtroMesPorCategoria(catEntity.id)
-            catEntity.aDominio(entidad.dineroDisponible, gastado, ingresos, ingresosDeOtroMes, traspasadoAhorro, traspasadoOtroMes)
+            val coberturaRecibida = gastoDao.sumarCoberturaRecibidaPorCategoria(catEntity.id)
+            catEntity.aDominio(entidad.dineroDisponible, gastado, ingresos, ingresosDeOtroMes, traspasadoAhorro, traspasadoOtroMes, coberturaRecibida)
         }
         return entidad.aDominio(categorias)
     }
@@ -559,7 +585,8 @@ class PresupuestoRepositoryImpl(
         ingresosTraspasados: Double,
         ingresosDeOtroMes: Double,
         traspasadoAhorro: Double,
-        traspasadoOtroMes: Double
+        traspasadoOtroMes: Double,
+        coberturaRecibida: Double
     ): Categoria = Categoria(
         id = id,
         presupuestoId = presupuestoId,
@@ -570,7 +597,8 @@ class PresupuestoRepositoryImpl(
         ingresosDeOtroMes = ingresosDeOtroMes,
         gastado = gastado,
         traspasadoAhorro = traspasadoAhorro,
-        traspasadoOtroMes = traspasadoOtroMes
+        traspasadoOtroMes = traspasadoOtroMes,
+        coberturaRecibida = coberturaRecibida
     )
 
     private fun GastoEntity.aDominio(): Gasto = Gasto(

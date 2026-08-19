@@ -1,5 +1,48 @@
 # Changelog
 
+## [1.10.1] - 2026-08-20
+### Fixed
+- Los porcentajes de categoría (`Crear mes nuevo`, `Ajustes`) solo
+  aceptaban valores enteros. El campo pasa a admitir decimales con
+  coma (`,`) como separador, coherente con el resto de la app: nuevo
+  `inputType="numberDecimal"` + `digits` en `item_category_percent_input.xml`,
+  parseo con `replace(',', '.')` y formateo con `replace('.', ',')` en
+  `CreateMonthActivity` y `SettingsActivity` (porcentajes y umbrales de
+  color, que reutilizan el mismo layout).
+- Al aplicar un gasto fijo (`Seleccionar gastos fijos`) que dejaba su
+  categoría en negativo, no se generaba la cobertura automática
+  correspondiente en Ahorro, a diferencia de un gasto añadido a mano.
+  `aplicarGastosFijosAMes()` ahora llama a
+  `cubrirExcesoConAhorroSiProcede()` igual que `agregarGasto()`.
+- Al eliminar el mes actual, si el mes anterior pasaba a ser el nuevo
+  actual, se quedaba en estado `CERRADO` en vez de reabrirse cuando
+  solo había traspasado su sobrante de forma **interna** (a Ahorro del
+  propio mes). `revertirTraspasosRecibidosDelMesAnterior()` ahora
+  revierte también esos traspasos internos (borra las filas
+  `esTraspasoSalida` de las categorías de origen y las `esIngreso`
+  correspondientes en Ahorro), no solo los traspasos a otro mes.
+- El importe "Disponible" del header y de las tarjetas de "Mis meses"
+  (`Presupuesto.totalRestante`) usaba `restante.coerceAtLeast(0.0)`
+  por categoría, ocultando cualquier sobregasto real que no viniera
+  acompañado de cobertura automática (p. ej. Ahorro gastado por
+  encima de lo asignado, que nunca se cubre a sí mismo), mostrando un
+  disponible mayor del real. Ahora se suma el `restante` real de cada
+  categoría (negativo incluido) más su `coberturaRecibida`, para no
+  descontar dos veces el mismo importe cuando sí hay cobertura.
+- Mismo problema en "Gastado" (`Presupuesto.totalGastado`): al no
+  descontar `coberturaRecibida`, el gasto cubierto automáticamente en
+  Ahorro se sumaba dos veces (una en la categoría de origen, otra en
+  Ahorro), mostrando un gastado mayor del real.
+- Nuevo campo `Categoria.coberturaRecibida` y query
+  `GastoDao.sumarCoberturaRecibidaPorCategoria`, usados por ambos
+  cálculos anteriores.
+- "Cerrar mes": si Ahorro cerraba en negativo, seguía permitiendo
+  traspasar el sobrante de otras categorías al mes siguiente en lugar
+  de dejarlo en Ahorro del mismo mes para compensar ese descubierto.
+  `cerrarMesConReparto()` fuerza ahora `permiteTraspaso = false`
+  cuando Ahorro está en negativo, y `CloseMonthViewModel` oculta la
+  opción de elegir traspaso en ese mismo caso.
+
 ## [1.10.0] - 2026-08-15
 ### Added
 - Colores de las barras de progreso (categoría y mes) ahora configurables

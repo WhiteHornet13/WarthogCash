@@ -19,7 +19,13 @@ data class Categoria(
     /** Sobrante que esta categoría traspasó al mes siguiente. Ya está
      *  incluido dentro de [gastado]; se guarda aparte solo para decidir
      *  el estado visual a mostrar. */
-    val traspasadoOtroMes: Double = 0.0
+    val traspasadoOtroMes: Double = 0.0,
+    /** Cobertura automática de límite superado RECIBIDA en esta categoría
+     *  (solo ocurre en Ahorro). Ya está incluida en [gastado], pero es el
+     *  mismo dinero ya contado como gasto real en la categoría de origen
+     *  del exceso. Se usa en Presupuesto.totalRestante para no restarlo
+     *  dos veces. */
+    val coberturaRecibida: Double = 0.0
 ) {
     val montoAsignado: Double
         get() = montoAsignadoBase + ingresosTraspasados
@@ -38,6 +44,8 @@ data class Categoria(
         progreso >= (umbralMedio / 100.0).toFloat() -> EstadoBarraProgreso.MEDIO
         else -> EstadoBarraProgreso.NORMAL
     }
+
+
 }
 
 enum class EstadoBarraProgreso {

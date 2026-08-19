@@ -92,7 +92,7 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun guardarAjustes() {
         val valores = filas.mapValues { (_, fila) ->
-            fila.etPorcentaje.text.toString().toDoubleOrNull() ?: 0.0
+            fila.etPorcentaje.text.toString().replace(',', '.').toDoubleOrNull() ?: 0.0
         }
         val suma = valores.values.sum()
 
@@ -115,10 +115,10 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun guardarUmbrales() {
-        val medio = binding.filaUmbralCategoriaMedio.etPorcentaje.text.toString().toDoubleOrNull()
-        val alto = binding.filaUmbralCategoriaAlto.etPorcentaje.text.toString().toDoubleOrNull()
-        val mesMedio = binding.filaUmbralMesMedio.etPorcentaje.text.toString().toDoubleOrNull()
-        val mesAlto = binding.filaUmbralMesAlto.etPorcentaje.text.toString().toDoubleOrNull()
+        val medio = binding.filaUmbralCategoriaMedio.etPorcentaje.text.toString().replace(',', '.').toDoubleOrNull()
+        val alto = binding.filaUmbralCategoriaAlto.etPorcentaje.text.toString().replace(',', '.').toDoubleOrNull()
+        val mesMedio = binding.filaUmbralMesMedio.etPorcentaje.text.toString().replace(',', '.').toDoubleOrNull()
+        val mesAlto = binding.filaUmbralMesAlto.etPorcentaje.text.toString().replace(',', '.').toDoubleOrNull()
 
         if (medio == null || alto == null || mesMedio == null || mesAlto == null) {
             Toast.makeText(this, R.string.ajustes_umbrales_error, Toast.LENGTH_SHORT).show()
@@ -146,5 +146,6 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun formatearSuma(valor: Double): String =
-        if (valor == valor.toLong().toDouble()) valor.toLong().toString() else valor.toString()
+        if (valor == valor.toLong().toDouble()) valor.toLong().toString()
+        else valor.toString().replace('.', ',')
 }

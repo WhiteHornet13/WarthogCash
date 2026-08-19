@@ -72,4 +72,12 @@ interface GastoDao {
      *  reubicación del mismo dineroDisponible del mes. */
     @Query("SELECT COALESCE(SUM(importe), 0) FROM gastos WHERE categoriaId = :categoriaId AND esIngreso = 1 AND mesOrigenId IS NOT NULL")
     suspend fun sumarIngresosDeOtroMesPorCategoria(categoriaId: Long): Double
+
+    /** Cobertura automática de límite superado RECIBIDA en esta categoría
+     *  (en la práctica solo se da en Ahorro). Ya está incluida dentro de
+     *  "gastado", pero es el mismo dinero que ya se contó como gasto real
+     *  en la categoría que originó el exceso. Se resta/compensa aparte
+     *  para no descontarlo dos veces al calcular el disponible total. */
+    @Query("SELECT COALESCE(SUM(importe), 0) FROM gastos WHERE categoriaId = :categoriaId AND gastoCoberturaOrigenId IS NOT NULL")
+    suspend fun sumarCoberturaRecibidaPorCategoria(categoriaId: Long): Double
 }
