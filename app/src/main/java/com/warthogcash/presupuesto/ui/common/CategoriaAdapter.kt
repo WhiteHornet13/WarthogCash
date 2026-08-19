@@ -12,6 +12,7 @@ import com.warthogcash.presupuesto.databinding.ItemCategoriaCardBinding
 import com.warthogcash.presupuesto.domain.model.Categoria
 import com.warthogcash.presupuesto.domain.model.EstadoBarraProgreso
 import com.warthogcash.presupuesto.util.Formato
+import com.warthogcash.presupuesto.util.UmbralesColores
 
 /**
  * Adapter reutilizable para la "Lista de categorías" (bloque de interfaz
@@ -48,13 +49,16 @@ class CategoriaAdapter(
 
         fun bind(categoria: Categoria) {
             val contexto = binding.root.context
+            val umbrales = UmbralesColores(contexto)
+            val estado = categoria.estado(umbrales.umbralCategoriaMedio, umbrales.umbralCategoriaAlto)
 
-            val colorEstado = when (categoria.estado) {
+            val colorEstado = when (estado) {
                 EstadoBarraProgreso.NORMAL -> R.color.progreso_normal
-                EstadoBarraProgreso.CERCA_DEL_LIMITE -> R.color.acento_ambar
+                EstadoBarraProgreso.MEDIO -> R.color.acento_ambar
+                EstadoBarraProgreso.CERCA_DEL_LIMITE -> R.color.rojo_limite
                 EstadoBarraProgreso.LIMITE_SUPERADO -> R.color.rojo_limite
                 EstadoBarraProgreso.RESTANTE_TRASPASADO -> R.color.azul_ocio
-                EstadoBarraProgreso.RESTANTE_AHORRADO -> R.color.verde_ahorro
+                EstadoBarraProgreso.RESTANTE_AHORRADO -> R.color.azul_ocio
             }
 
             // El punto de color junto al nombre refleja el mismo estado que
@@ -69,7 +73,7 @@ class CategoriaAdapter(
             binding.tvPorcentajeMonto.text = "${formatearPorcentaje(categoria.porcentaje)}% · ${Formato.moneda(categoria.montoAsignado)}"
             binding.tvGastado.text = "${Formato.moneda(categoria.gastado)} gastado"
 
-            when (categoria.estado) {
+            when (categoria.estado()) {
                 EstadoBarraProgreso.LIMITE_SUPERADO -> {
                     binding.tvRestante.text = "límite superado: ${Formato.moneda(categoria.restante)}"
                     binding.tvRestante.setTextColor(ContextCompat.getColor(contexto, R.color.rojo_limite))

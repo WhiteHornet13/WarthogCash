@@ -100,6 +100,15 @@
     <string name="ajustes_porcentajes_descripcion">Se usarán como valores de partida al crear un mes nuevo. Podrás cambiarlos en cada mes si lo necesitas.</string>
     <string name="ajustes_boton_guardar">Guardar</string>
     <string name="ajustes_guardado_confirmacion">Ajustes guardados</string>
+    <string name="ajustes_umbrales_titulo">Colores de las barras de progreso</string>
+    <string name="ajustes_umbrales_descripcion">Ajusta a partir de qué porcentaje cambia el color de las barras de categoría y de mes.</string>
+    <string name="ajustes_umbrales_boton_restaurar">Restaurar valores originales</string>
+    <string name="ajustes_umbrales_error">Rellena los 4 valores</string>
+    <string name="ajustes_umbrales_error_orden">El umbral medio debe ser menor que el alto</string>
+    <string name="ajustes_umbral_categoria_medio">Categoría · inicio amarillo</string>
+    <string name="ajustes_umbral_categoria_alto">Categoría · inicio rojo</string>
+    <string name="ajustes_umbral_mes_medio">Mes · inicio amarillo</string>
+    <string name="ajustes_umbral_mes_alto">Mes · inicio rojo</string>
 
     <!-- Ajustes: acceso a gastos fijos -->
     <string name="ajustes_gastos_titulo">GASTOS</string>

@@ -30,18 +30,19 @@ data class Categoria(
     val progreso: Float
         get() = if (montoAsignado <= 0.0) 0f else ((gastado + traspasadoAhorro) / montoAsignado).toFloat()
 
-    val estado: EstadoBarraProgreso
-        get() = when {
-            traspasadoOtroMes > 0.0 -> EstadoBarraProgreso.RESTANTE_TRASPASADO
-            traspasadoAhorro > 0.0 -> EstadoBarraProgreso.RESTANTE_AHORRADO
-            gastado >= montoAsignado -> EstadoBarraProgreso.LIMITE_SUPERADO
-            progreso >= 0.85f -> EstadoBarraProgreso.CERCA_DEL_LIMITE
-            else -> EstadoBarraProgreso.NORMAL
-        }
+    fun estado(umbralMedio: Double = 50.0, umbralAlto: Double = 85.0): EstadoBarraProgreso = when {
+        traspasadoOtroMes > 0.0 -> EstadoBarraProgreso.RESTANTE_TRASPASADO
+        traspasadoAhorro > 0.0 -> EstadoBarraProgreso.RESTANTE_AHORRADO
+        gastado >= montoAsignado -> EstadoBarraProgreso.LIMITE_SUPERADO
+        progreso >= (umbralAlto / 100.0).toFloat() -> EstadoBarraProgreso.CERCA_DEL_LIMITE
+        progreso >= (umbralMedio / 100.0).toFloat() -> EstadoBarraProgreso.MEDIO
+        else -> EstadoBarraProgreso.NORMAL
+    }
 }
 
 enum class EstadoBarraProgreso {
     NORMAL,
+    MEDIO,
     CERCA_DEL_LIMITE,
     LIMITE_SUPERADO,
     RESTANTE_TRASPASADO,

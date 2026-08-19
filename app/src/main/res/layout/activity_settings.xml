@@ -164,6 +164,88 @@
                     android:layout_marginTop="@dimen/espaciado_l"
                     android:text="@string/ajustes_boton_guardar" />
 
+                <LinearLayout
+                    android:id="@+id/filaUmbralesColores"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/espaciado_l"
+                    android:layout_marginBottom="@dimen/espaciado_s"
+                    android:background="@drawable/bg_card_rounded"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/espaciado_m">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/ajustes_umbrales_titulo"
+                        android:textColor="@color/texto_principal"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/ivChevronUmbrales"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="›"
+                        android:textColor="@color/texto_secundario"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/contenedorUmbrales"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/espaciado_m"
+                        android:text="@string/ajustes_umbrales_descripcion"
+                        android:textColor="@color/texto_secundario"
+                        android:textSize="@dimen/texto_pequeno" />
+
+                    <include
+                        android:id="@+id/filaUmbralCategoriaMedio"
+                        layout="@layout/item_category_percent_input" />
+
+                    <include
+                        android:id="@+id/filaUmbralCategoriaAlto"
+                        layout="@layout/item_category_percent_input" />
+
+                    <include
+                        android:id="@+id/filaUmbralMesMedio"
+                        layout="@layout/item_category_percent_input" />
+
+                    <include
+                        android:id="@+id/filaUmbralMesAlto"
+                        layout="@layout/item_category_percent_input" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnGuardarUmbrales"
+                        style="@style/BotonPrimario"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/espaciado_l"
+                        android:text="@string/ajustes_boton_guardar" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnRestaurarUmbrales"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/espaciado_s"
+                        android:text="@string/ajustes_umbrales_boton_restaurar"
+                        android:textAllCaps="false"
+                        android:textColor="@color/texto_secundario" />
+
+                </LinearLayout>
             </LinearLayout>
 
             <View
@@ -171,6 +253,8 @@
                 android:layout_height="24dp" />
 
         </LinearLayout>
+
+
     </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

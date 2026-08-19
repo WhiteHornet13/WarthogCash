@@ -9,6 +9,8 @@ import com.warthogcash.presupuesto.databinding.ItemYearHeaderBinding
 import com.warthogcash.presupuesto.domain.model.Presupuesto
 import com.warthogcash.presupuesto.util.Formato
 import com.warthogcash.presupuesto.domain.model.EstadoPresupuesto
+import com.warthogcash.presupuesto.domain.model.TipoCategoria
+import com.warthogcash.presupuesto.util.UmbralesColores
 
 private const val TIPO_CABECERA_ANIO = 0
 private const val TIPO_TARJETA_MES = 1
@@ -91,10 +93,20 @@ class MonthListAdapter(
                 Formato.moneda(mes.totalAsignadoMes)
             )
             binding.tvRestanteMes.text = Formato.moneda(mes.totalRestante)
+
+            val umbrales = UmbralesColores(contexto)
+            val montoAsignadoAhorro = mes.categorias
+                .firstOrNull { it.tipo == TipoCategoria.AHORRO }
+                ?.montoAsignado ?: 0.0
+            val baseGastable = mes.totalAsignadoMes - montoAsignadoAhorro
+            val limiteAlto = baseGastable * (umbrales.umbralMesAlto / 100.0)
+            val limiteMedio = baseGastable * (umbrales.umbralMesMedio / 100.0)
+
             val colorEstado = when {
-                mes.totalGastado >= mes.totalAsignadoMes -> com.warthogcash.presupuesto.R.color.rojo_limite
                 mes.totalAsignadoMes <= 0.0 -> com.warthogcash.presupuesto.R.color.progreso_normal
-                (mes.totalGastado / mes.totalAsignadoMes) >= 0.85 -> com.warthogcash.presupuesto.R.color.acento_ambar
+                mes.totalGastado > mes.totalAsignadoMes -> com.warthogcash.presupuesto.R.color.negro
+                baseGastable <= 0.0 || mes.totalGastado >= limiteAlto -> com.warthogcash.presupuesto.R.color.rojo_limite
+                mes.totalGastado >= limiteMedio -> com.warthogcash.presupuesto.R.color.acento_ambar
                 else -> com.warthogcash.presupuesto.R.color.progreso_normal
             }
             binding.barraEstadoMes.progress = if (mes.totalAsignadoMes <= 0.0) 0

@@ -9,6 +9,8 @@ import com.warthogcash.presupuesto.databinding.ItemCategoryPercentInputBinding
 import com.warthogcash.presupuesto.domain.model.TipoCategoria
 import com.warthogcash.presupuesto.util.PorcentajesPredefinidos
 import android.content.Intent
+import com.warthogcash.presupuesto.util.UmbralesColores
+
 
 /**
  * Pantalla de opciones de la app. De momento solo contiene los
@@ -21,12 +23,16 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var filas: Map<TipoCategoria, ItemCategoryPercentInputBinding>
     private lateinit var predefinidos: PorcentajesPredefinidos
 
+    private lateinit var umbrales: UmbralesColores
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         predefinidos = PorcentajesPredefinidos(this)
+
+        umbrales = UmbralesColores(this)
 
         binding.btnVolver.setOnClickListener { finish() }
 
@@ -44,6 +50,12 @@ class SettingsActivity : AppCompatActivity() {
             binding.ivChevronPorcentajes.text = if (mostrar) "⌄" else "›"
         }
 
+        binding.filaUmbralesColores.setOnClickListener {
+            val mostrar = binding.contenedorUmbrales.visibility != android.view.View.VISIBLE
+            binding.contenedorUmbrales.visibility = if (mostrar) android.view.View.VISIBLE else android.view.View.GONE
+            binding.ivChevronUmbrales.text = if (mostrar) "⌄" else "›"
+        }
+
         filas = mapOf(
             TipoCategoria.GENERAL to binding.filaGeneral,
             TipoCategoria.AHORRO to binding.filaAhorro,
@@ -59,6 +71,21 @@ class SettingsActivity : AppCompatActivity() {
                 filaBinding.etPorcentaje.setText(formatearSuma(valor))
             }
         }
+
+        binding.filaUmbralCategoriaMedio.tvNombreCategoria.text = getString(R.string.ajustes_umbral_categoria_medio)
+        binding.filaUmbralCategoriaMedio.etPorcentaje.setText(formatearSuma(umbrales.umbralCategoriaMedio))
+
+        binding.filaUmbralCategoriaAlto.tvNombreCategoria.text = getString(R.string.ajustes_umbral_categoria_alto)
+        binding.filaUmbralCategoriaAlto.etPorcentaje.setText(formatearSuma(umbrales.umbralCategoriaAlto))
+
+        binding.filaUmbralMesMedio.tvNombreCategoria.text = getString(R.string.ajustes_umbral_mes_medio)
+        binding.filaUmbralMesMedio.etPorcentaje.setText(formatearSuma(umbrales.umbralMesMedio))
+
+        binding.filaUmbralMesAlto.tvNombreCategoria.text = getString(R.string.ajustes_umbral_mes_alto)
+        binding.filaUmbralMesAlto.etPorcentaje.setText(formatearSuma(umbrales.umbralMesAlto))
+
+        binding.btnGuardarUmbrales.setOnClickListener { guardarUmbrales() }
+        binding.btnRestaurarUmbrales.setOnClickListener { restaurarUmbrales() }
 
         binding.btnGuardarAjustes.setOnClickListener { guardarAjustes() }
     }
@@ -85,6 +112,37 @@ class SettingsActivity : AppCompatActivity() {
         predefinidos.guardar(valores)
         Toast.makeText(this, R.string.ajustes_guardado_confirmacion, Toast.LENGTH_SHORT).show()
         finish()
+    }
+
+    private fun guardarUmbrales() {
+        val medio = binding.filaUmbralCategoriaMedio.etPorcentaje.text.toString().toDoubleOrNull()
+        val alto = binding.filaUmbralCategoriaAlto.etPorcentaje.text.toString().toDoubleOrNull()
+        val mesMedio = binding.filaUmbralMesMedio.etPorcentaje.text.toString().toDoubleOrNull()
+        val mesAlto = binding.filaUmbralMesAlto.etPorcentaje.text.toString().toDoubleOrNull()
+
+        if (medio == null || alto == null || mesMedio == null || mesAlto == null) {
+            Toast.makeText(this, R.string.ajustes_umbrales_error, Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (medio >= alto || mesMedio >= mesAlto) {
+            Toast.makeText(this, R.string.ajustes_umbrales_error_orden, Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        umbrales.umbralCategoriaMedio = medio
+        umbrales.umbralCategoriaAlto = alto
+        umbrales.umbralMesMedio = mesMedio
+        umbrales.umbralMesAlto = mesAlto
+        Toast.makeText(this, R.string.ajustes_guardado_confirmacion, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun restaurarUmbrales() {
+        umbrales.restaurarPorDefecto()
+        binding.filaUmbralCategoriaMedio.etPorcentaje.setText(formatearSuma(umbrales.umbralCategoriaMedio))
+        binding.filaUmbralCategoriaAlto.etPorcentaje.setText(formatearSuma(umbrales.umbralCategoriaAlto))
+        binding.filaUmbralMesMedio.etPorcentaje.setText(formatearSuma(umbrales.umbralMesMedio))
+        binding.filaUmbralMesAlto.etPorcentaje.setText(formatearSuma(umbrales.umbralMesAlto))
+        Toast.makeText(this, R.string.ajustes_guardado_confirmacion, Toast.LENGTH_SHORT).show()
     }
 
     private fun formatearSuma(valor: Double): String =

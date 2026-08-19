@@ -1,5 +1,33 @@
 # Changelog
 
+## [1.10.0] - 2026-08-15
+### Added
+- Colores de las barras de progreso (categoría y mes) ahora configurables
+  desde "Ajustes", en una nueva fila plegable "Colores de las barras de
+  progreso": permite ajustar los umbrales (%) a partir de los cuales cada
+  barra cambia de verde a amarillo y de amarillo a rojo, tanto para las
+  tarjetas de categoría como para las tarjetas de mes. Incluye botón
+  "Restaurar valores originales" que recupera los umbrales por defecto
+  (50%/85% para categoría, 60%/100% para mes).
+- Nueva clase `UmbralesColores` (SharedPreferences), análoga a
+  `PorcentajesPredefinidos`, para persistir estos 4 umbrales.
+- Nuevo estado `MEDIO` en `EstadoBarraProgreso`. `Categoria.estado` pasa
+  de propiedad a función `estado(umbralMedio, umbralAlto)` para poder
+  recibir los umbrales configurables.
+- Nuevos strings `ajustes_umbrales_*` y 4 filas de entrada reutilizando
+  `item_category_percent_input` en `activity_settings.xml`.
+
+### Changed
+- Barra de progreso de categoría: los umbrales pasan a ser configurables
+  (por defecto 50% amarillo, 85% rojo), con azul reservado para dinero
+  traspasado o ahorrado.
+- Barra de progreso de mes: el cálculo pasa de comparar el gasto contra
+  el dinero total del mes a compararlo contra el dinero total **menos**
+  lo asignado a la categoría Ahorro, con umbrales configurables (por
+  defecto 60% amarillo, 100% rojo). Si el gasto supera el 100% del
+  dinero total (incluyendo lo reservado a Ahorro), la barra se muestra
+  en negro.
+
 ## [1.9.6] - 2026-08-15
 ### Added
 - "Detalle de mes cerrado": el header ahora muestra también "Ahorrado"
