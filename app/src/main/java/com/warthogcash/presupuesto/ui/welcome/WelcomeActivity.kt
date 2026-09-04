@@ -20,12 +20,18 @@ class WelcomeActivity : AppCompatActivity() {
         binding = ActivityWelcomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
+
         binding.btnEmpezar.setOnClickListener {
             startActivity(
                 Intent(this, CreateMonthActivity::class.java)
                     .putExtra(CreateMonthActivity.EXTRA_ES_PRIMERA_VEZ, true)
             )
             finish()
+        }
+
+        binding.btnRestaurarBienvenida.setOnClickListener {
+            startActivity(Intent(this, com.warthogcash.presupuesto.ui.export.ExportActivity::class.java))
         }
     }
 }

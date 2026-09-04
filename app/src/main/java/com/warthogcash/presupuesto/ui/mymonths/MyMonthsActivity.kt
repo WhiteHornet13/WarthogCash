@@ -90,7 +90,11 @@ class MyMonthsActivity : AppCompatActivity() {
     // 4.4: navegación según el mes pulsado.
     private fun navegarDesdeMes(mes: Presupuesto) {
         if (mes.esActual) {
-            startActivity(Intent(this, MainActivity::class.java))
+            startActivity(
+                Intent(this, MainActivity::class.java)
+                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            )
+            finish()
         } else {
             startActivity(
                 Intent(this, MonthDetailActivity::class.java)
@@ -114,7 +118,13 @@ class MyMonthsActivity : AppCompatActivity() {
         }
         vista.findViewById<android.view.View>(R.id.opcionResumenAnual).setOnClickListener {
             hoja.dismiss()
-            // TODO Parte siguiente: abrir pantalla de Resumen anual
+            startActivity(
+                Intent(this, com.warthogcash.presupuesto.ui.graficas.GraficasActivity::class.java)
+                    .putExtra(
+                        com.warthogcash.presupuesto.ui.graficas.GraficasActivity.EXTRA_ABRIR_RESUMEN_ANUAL,
+                        true
+                    )
+            )
         }
 
         hoja.show()
@@ -130,9 +140,28 @@ class MyMonthsActivity : AppCompatActivity() {
             arrayOf(getString(R.string.mis_meses_opcion_eliminar))
         }
 
+        // Se usa un ArrayAdapter propio en vez de setItems(...) porque el
+        // color de texto de la lista de un AlertDialog depende del atributo
+        // de tema android:textColorAlertDialogListItem, cuya resolución en
+        // ThemeOverlay + AppCompat + MaterialComponents no está garantizada
+        // en todos los dispositivos. Fijando el color a mano en getView()
+        // se evita depender de esa resolución.
+        val adapter = object : android.widget.ArrayAdapter<String>(
+            this, android.R.layout.simple_list_item_1, opciones
+        ) {
+            override fun getView(position: Int, convertView: android.view.View?, parent: android.view.ViewGroup): android.view.View {
+                val vista = super.getView(position, convertView, parent) as android.widget.TextView
+                vista.setTextColor(androidx.core.content.ContextCompat.getColor(context, R.color.texto_principal))
+                val padding = (16 * resources.displayMetrics.density).toInt()
+                vista.setPadding(padding, padding / 2, padding, padding / 2)
+                vista.textSize = 16f
+                return vista
+            }
+        }
+
         AlertDialog.Builder(this, R.style.ThemeOverlay_WarthogCash_Dialog)
             .setTitle(mes.nombreMesAnio)
-            .setItems(opciones) { _, indice ->
+            .setAdapter(adapter) { _, indice ->
                 when (opciones[indice]) {
                     getString(R.string.mis_meses_opcion_editar_dinero) -> mostrarDialogoEditarDinero(mes)
                     getString(R.string.mis_meses_opcion_eliminar) -> confirmarEliminarMes(mes)

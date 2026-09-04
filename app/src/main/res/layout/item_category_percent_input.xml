@@ -28,6 +28,8 @@
         android:inputType="numberDecimal"
         android:digits="0123456789,"
         android:maxLength="6"
+        android:maxLines="1"
+        android:imeOptions="actionDone"
         android:textColor="@color/texto_principal"
         android:textStyle="bold" />
 

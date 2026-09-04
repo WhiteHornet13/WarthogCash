@@ -269,7 +269,7 @@ class PresupuestoRepositoryImpl(
         // Si Ahorro cierra en negativo, ese descubierto debe compensarse con el
         // sobrante de este mismo mes: ninguna categoría puede traspasar su
         // sobrante a otro mes, todo debe quedarse en Ahorro para cubrirlo.
-        val ahorroEnNegativo = (mes.categorias.firstOrNull { it.tipo == TipoCategoria.AHORRO }?.restante ?: 0.0) < 0.0
+        val ahorroEnNegativo = (mes.categorias.firstOrNull { it.tipo == TipoCategoria.AHORRO }?.restante ?: 0.0) < -0.005
 
         val siguienteMesEntity = obtenerEntidadMesSiguiente(mesEntity)
             ?.takeIf { it.estado == EstadoPresupuesto.ABIERTO.name }
@@ -395,12 +395,20 @@ class PresupuestoRepositoryImpl(
      *  cerrar [mesEntity], y las elimina. Identificadas por [GastoEntity.mesOrigenId],
      *  no por texto, para que sea fiable ante cualquier edición posterior. */
     private suspend fun eliminarTraspasosRecibidosDelMesSiguiente(mesEntity: PresupuestoEntity) {
-        val siguiente = obtenerEntidadMesSiguiente(mesEntity) ?: return
-        val categoriasSiguiente = categoriaDao.obtenerPorPresupuesto(siguiente.id)
-        categoriasSiguiente.forEach { categoria ->
-            gastoDao.obtenerPorCategoria(categoria.id)
-                .filter { it.esIngreso && it.mesOrigenId == mesEntity.id }
-                .forEach { gastoDao.eliminar(it) }
+        // Antes: solo miraba el mes calendario inmediatamente siguiente.
+        // Ahora: recorre TODOS los meses y elimina cualquier ingreso cuyo
+        // mesOrigenId apunte a este mes, sin asumir que el destino es
+        // necesariamente el mes+1 calendario (cubre datos inconsistentes
+        // o cadenas de traspaso ya reabiertas/recreadas).
+        val todosLosMeses = presupuestoDao.obtenerTodos()
+        todosLosMeses.forEach { otroMes ->
+            if (otroMes.id == mesEntity.id) return@forEach
+            val categorias = categoriaDao.obtenerPorPresupuesto(otroMes.id)
+            categorias.forEach { categoria ->
+                gastoDao.obtenerPorCategoria(categoria.id)
+                    .filter { it.esIngreso && it.mesOrigenId == mesEntity.id }
+                    .forEach { gastoDao.eliminar(it) }
+            }
         }
     }
 
@@ -427,23 +435,15 @@ class PresupuestoRepositoryImpl(
         val categoriasAnterior = categoriaDao.obtenerPorPresupuesto(anterior.id)
         var seRevirtioAlgo = false
 
-        // Un mes solo puede cerrarse una vez, así que CUALQUIER fila
-        // esTraspasoSalida presente en sus categorías pertenece a ese único
-        // cierre: tanto si fue traspaso externo (mesOrigenId apunta al mes
-        // siguiente) como interno (mesOrigenId null, fue a Ahorro). Se
-        // revierten todas, devolviendo el sobrante a su categoría de origen.
         categoriasAnterior.forEach { categoria ->
             gastoDao.obtenerPorCategoria(categoria.id)
-                .filter { it.esTraspasoSalida }
+                .filter { it.esTraspasoSalida && (it.mesOrigenId == null || it.mesOrigenId == mesEntity.id) }
                 .forEach { gasto ->
                     gastoDao.eliminar(gasto)
                     seRevirtioAlgo = true
                 }
         }
 
-        // Por el mismo motivo, los ingresos internos recibidos en Ahorro
-        // (esIngreso con mesOrigenId null) de este mes pertenecen también a
-        // ese único cierre: se eliminan para quitar los "chips" históricos.
         val categoriaAhorroAnterior = categoriasAnterior.firstOrNull { it.tipo == TipoCategoria.AHORRO.name }
         if (categoriaAhorroAnterior != null) {
             gastoDao.obtenerPorCategoria(categoriaAhorroAnterior.id)
@@ -455,7 +455,7 @@ class PresupuestoRepositoryImpl(
         }
 
         if (seRevirtioAlgo) {
-            presupuestoDao.actualizarEstado(anterior.id, EstadoPresupuesto.ABIERTO.name)
+            presupuestoDao.actualizarEstado(anterior.id, EstadoPresupuesto.CERRADO.name.let { EstadoPresupuesto.ABIERTO.name })
         }
     }
 

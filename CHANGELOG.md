@@ -1,5 +1,52 @@
 # Changelog
 
+## [1.11.0] - 2026-09-05
+### Added
+- "Bienvenida (primer uso)": nuevo botón "Ya tengo una copia de seguridad"
+  que lleva directamente a la pantalla de Restaurar, para poder importar
+  un backup JSON sin tener que crear antes un mes provisional.
+- "Resumen anual" (menú Funciones de "Mis meses") queda operativo: abre
+  Gráficas con el tipo 5 (Resumen anual) preseleccionado y lo genera
+  automáticamente con los años disponibles.
+
+### Fixed
+- El campo de porcentaje en "Crear mes nuevo"/"Ajustes" volvía a mostrar
+  "Intro" en el teclado numérico en vez de "Hecho". Añadido
+  `imeOptions="actionDone"` y `maxLines="1"` en
+  `item_category_percent_input.xml`.
+- "Cerrar mes": se usaba una comparación estricta (`< 0.0`) para detectar
+  si Ahorro estaba en negativo, lo que podía dejar pasar el traspaso a
+  otro mes por errores de precisión de `Double`. Ahora se usa una
+  tolerancia (`< -0.005`) tanto en `CloseMonthViewModel` como en
+  `cerrarMesConReparto()`.
+- Al eliminar un mes intermedio con traspasos encadenados (mes A → mes B
+  → mes C), el mes C podía quedarse con traspasos "fantasma" heredados
+  del mes B eliminado. `eliminarTraspasosRecibidosDelMesSiguiente()` ya
+  no asume que el destino es únicamente el mes calendario inmediato:
+  recorre todos los meses buscando por `mesOrigenId`.
+  `revertirTraspasosRecibidosDelMesAnterior()` refuerza el mismo filtro.
+- Las gráficas de gasto (tipos 1, 2, 3, 4 y 5) contaban dos veces el
+  exceso cubierto automáticamente en Ahorro: una vez en la categoría de
+  origen y otra en Ahorro. `EstadisticasCalculator.sumaGastosReales()`
+  excluye ahora las filas con `gastoCoberturaOrigenId != null`.
+- El mensaje "No hay meses cerrados suficientes" en Gráficas no se
+  ocultaba al generar una nueva selección con datos válidos tras una
+  selección previa sin datos. `generarGraficas()` limpia ahora
+  `tvSinDatos` al inicio de cada generación.
+- Girar la pantalla reiniciaba: los porcentajes de "Crear mes nuevo", la
+  categoría seleccionada en "Añadir gasto" y la gráfica generada en
+  "Gráficas". Añadido `android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"`
+  a `CreateMonthActivity`, `AddExpenseActivity` y `GraficasActivity` en
+  el manifest, evitando que la Activity se destruya y recree al rotar.
+- Navegar repetidamente entre "Mis meses" y la Pantalla principal (mes
+  actual) apilaba una nueva instancia de cada Activity en cada ciclo,
+  obligando a pulsar "atrás" muchas veces para salir. `MainActivity` y
+  `MyMonthsActivity` usan ahora `FLAG_ACTIVITY_CLEAR_TOP` +
+  `FLAG_ACTIVITY_SINGLE_TOP` al navegar entre ambas.
+- "Colores de las barras de progreso" ahora es una fila propia en el
+  nivel principal de Ajustes, al mismo nivel que "Porcentajes
+  predefinidos", en vez de estar anidada dentro de esta última.
+
 ## [1.10.1] - 2026-08-20
 ### Fixed
 - Los porcentajes de categoría (`Crear mes nuevo`, `Ajustes`) solo

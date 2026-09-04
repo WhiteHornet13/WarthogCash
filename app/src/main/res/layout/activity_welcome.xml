@@ -62,4 +62,17 @@
         app:layout_constraintTop_toBottomOf="@id/tvDescripcionBienvenida"
         app:layout_constraintVertical_bias="1" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnRestaurarBienvenida"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/espaciado_s"
+        android:text="@string/bienvenida_boton_restaurar"
+        android:textAllCaps="false"
+        android:textColor="@color/texto_secundario"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnEmpezar" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

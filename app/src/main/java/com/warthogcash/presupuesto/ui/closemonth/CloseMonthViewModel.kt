@@ -27,7 +27,10 @@ class CloseMonthViewModel(
     init {
         viewModelScope.launch {
             val mes = repository.obtenerMesPorId(mesId) ?: return@launch
-            val ahorroEnNegativo = (mes.categorias.firstOrNull { it.tipo == com.warthogcash.presupuesto.domain.model.TipoCategoria.AHORRO }?.restante ?: 0.0) < 0.0
+            val restanteAhorro = mes.categorias
+                .firstOrNull { it.tipo == com.warthogcash.presupuesto.domain.model.TipoCategoria.AHORRO }
+                ?.restante ?: 0.0
+            val ahorroEnNegativo = restanteAhorro < -0.005 // tolerancia de medio céntimo
             val permiteTraspaso = repository.existeMesSiguienteInmediatoAbierto(mesId) && !ahorroEnNegativo
             _estado.value = EstadoCierre(mes, permiteTraspaso)
         }

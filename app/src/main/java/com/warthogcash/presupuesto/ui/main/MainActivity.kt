@@ -53,7 +53,10 @@ class MainActivity : AppCompatActivity() {
                 viewModel.mesActual.collect { mes ->
                     if (mes == null) return@collect
                     binding.headerResumen.mostrarComoPantallaPrincipal(mes) {
-                        startActivity(Intent(this@MainActivity, MyMonthsActivity::class.java))
+                        startActivity(
+                            Intent(this@MainActivity, MyMonthsActivity::class.java)
+                                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                        )
                     }
                     adapter.actualizar(mes.categorias)
                 }

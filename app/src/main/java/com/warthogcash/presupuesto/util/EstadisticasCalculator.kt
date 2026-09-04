@@ -21,7 +21,8 @@ object EstadisticasCalculator {
             .sorted()
 
     private fun sumaGastosReales(gastos: List<com.warthogcash.presupuesto.domain.model.Gasto>): Double =
-        gastos.filter { !it.esIngreso && !it.esTraspasoSalida }.sumOf { it.importe }
+        gastos.filter { !it.esIngreso && !it.esTraspasoSalida && it.gastoCoberturaOrigenId == null }
+            .sumOf { it.importe }
 
     /** Ahorro del mes = lo que queda en la categoría Ahorro al cerrar el mes:
      *  asignado por % + ingresos por traspaso recibidos − gastos reales
@@ -30,7 +31,7 @@ object EstadisticasCalculator {
         val categoriaAhorro = mes.categorias.firstOrNull { it.tipo == TipoCategoria.AHORRO } ?: return 0.0
         val asignadoBase = mes.dineroDisponible * (categoriaAhorro.porcentaje / 100.0)
         val ingresosRecibidos = categoriaAhorro.gastos.filter { it.esIngreso }.sumOf { it.importe }
-        val gastosReales = categoriaAhorro.gastos.filter { !it.esIngreso && !it.esTraspasoSalida }.sumOf { it.importe }
+        val gastosReales = sumaGastosReales(categoriaAhorro.gastos)
         return asignadoBase + ingresosRecibidos - gastosReales
     }
 

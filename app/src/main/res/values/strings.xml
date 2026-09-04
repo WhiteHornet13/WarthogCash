@@ -6,6 +6,7 @@
     <string name="bienvenida_titulo">Controla tu presupuesto mes a mes</string>
     <string name="bienvenida_descripcion">Reparte tu dinero disponible entre categorías, registra tus gastos y cierra cada mes sin sorpresas.</string>
     <string name="bienvenida_boton">Empezar</string>
+    <string name="bienvenida_boton_restaurar">Ya tengo una copia de seguridad</string>
 
     <!-- Pantalla principal -->
     <string name="principal_disponible">Disponible</string>

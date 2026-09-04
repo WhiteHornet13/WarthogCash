@@ -164,11 +164,12 @@
                     android:layout_marginTop="@dimen/espaciado_l"
                     android:text="@string/ajustes_boton_guardar" />
 
+                <!-- Colores de las barras: ahora al mismo nivel que Porcentajes predefinidos -->
                 <LinearLayout
                     android:id="@+id/filaUmbralesColores"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/espaciado_l"
+                    android:layout_marginTop="@dimen/espaciado_s"
                     android:layout_marginBottom="@dimen/espaciado_s"
                     android:background="@drawable/bg_card_rounded"
                     android:clickable="true"
@@ -246,6 +247,10 @@
                         android:textColor="@color/texto_secundario" />
 
                 </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="24dp" />
             </LinearLayout>
 
             <View
