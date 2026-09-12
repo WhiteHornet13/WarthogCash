@@ -152,11 +152,15 @@ class PresupuestoRepositoryImpl(
                 .forEach { insertarMesCompleto(it, esActual = false) }
         }
 
-        // Siempre se importan todos los gastos fijos del backup, sin comprobar si
-// ya existe uno igual: pueden quedar duplicados si coinciden con alguno
-// que el usuario ya tenía creado (comportamiento acordado explícitamente).
-        gastosFijos.forEach { gf ->
-            gastoFijoDao.insertar(GastoFijoEntity(coste = gf.coste, tipo = gf.tipo.name, comentario = gf.comentario))
+        // Regla: si el backup trae gastos fijos, esos sustituyen por completo
+        // a los existentes en la app (se borran los actuales antes de
+        // insertar los del backup). Si el backup no trae ninguno, se
+        // conservan los que ya hubiera; nunca se combinan ni se duplican.
+        if (gastosFijos.isNotEmpty()) {
+            gastoFijoDao.obtenerTodos().forEach { gastoFijoDao.eliminar(it) }
+            gastosFijos.forEach { gf ->
+                gastoFijoDao.insertar(GastoFijoEntity(coste = gf.coste, tipo = gf.tipo.name, comentario = gf.comentario))
+            }
         }
     }
 
@@ -388,6 +392,54 @@ class PresupuestoRepositoryImpl(
         val entidad = presupuestoDao.obtenerPorId(presupuestoId) ?: return
         if (entidad.estado != EstadoPresupuesto.ABIERTO.name) return // spec: cerrado no se edita
         presupuestoDao.actualizar(entidad.copy(dineroDisponible = nuevoDinero))
+        recalcularCoberturasDelMes(presupuestoId)
+    }
+
+    /** Al cambiar el dinero disponible del mes cambia el monto asignado de
+     *  cada categoría (montoAsignadoBase = dineroDisponible × %), así que
+     *  cualquier cobertura automática en Ahorro generada antes puede haber
+     *  quedado desajustada (de más o de menos, o ya no hacer falta). Se
+     *  recalcula desde cero para cada categoría no-Ahorro: se eliminan sus
+     *  coberturas actuales y, si el gasto real total sigue superando el
+     *  nuevo monto asignado, se crea una única cobertura consolidada,
+     *  ligada al gasto real más reciente de la categoría (para que pueda
+     *  seguir eliminándose en cascada si ese gasto se borra). */
+    private suspend fun recalcularCoberturasDelMes(presupuestoId: Long) {
+        val presupuestoEntity = presupuestoDao.obtenerPorId(presupuestoId) ?: return
+        val categorias = categoriaDao.obtenerPorPresupuesto(presupuestoId)
+
+        categorias.filter { it.tipo != TipoCategoria.AHORRO.name }.forEach { categoria ->
+            val gastosReales = gastoDao.obtenerPorCategoria(categoria.id)
+                .filter { !it.esIngreso && it.gastoCoberturaOrigenId == null }
+            gastosReales.forEach { eliminarCoberturasDeGasto(it.id) }
+            if (gastosReales.isEmpty()) return@forEach
+
+            val gastadoReal = gastosReales
+                .filter { !(it.esTraspasoSalida && it.mesOrigenId == null) }
+                .sumOf { it.importe }
+            val montoAsignadoBase = presupuestoEntity.dineroDisponible * (categoria.porcentaje / 100.0)
+            val ingresos = gastoDao.sumarIngresosPorCategoria(categoria.id)
+            val montoAsignado = montoAsignadoBase + ingresos
+
+            val exceso = gastadoReal - montoAsignado
+            if (exceso <= 0.0) return@forEach
+
+            val categoriaAhorro = categoriaDao.obtenerPorPresupuestoYTipo(
+                presupuestoId, TipoCategoria.AHORRO.name
+            ) ?: return@forEach
+
+            val gastoMasReciente = gastosReales.maxByOrNull { it.fecha } ?: return@forEach
+
+            gastoDao.insertar(
+                GastoEntity(
+                    categoriaId = categoriaAhorro.id,
+                    importe = exceso,
+                    descripcion = "Cobertura de límite superado en ${TipoCategoria.valueOf(categoria.tipo).etiqueta}",
+                    fecha = System.currentTimeMillis(),
+                    gastoCoberturaOrigenId = gastoMasReciente.id
+                )
+            )
+        }
     }
 
     /** Busca, en el mes calendario inmediatamente siguiente a [mesEntity] (si
@@ -530,9 +582,21 @@ class PresupuestoRepositoryImpl(
         val entidad = gastoDao.obtenerPorId(gastoId) ?: return
         if (entidad.esIngreso) return
         if (entidad.gastoCoberturaOrigenId != null) return // cobertura automática: no editable a mano
-        val gastadoAntes = gastoDao.sumarPorCategoria(entidad.categoriaId)
+
+        // Se elimina primero cualquier cobertura que este gasto hubiera
+        // generado antes de la edición: al recalcular desde cero se evita
+        // que una bajada de importe deje una cobertura obsoleta en Ahorro,
+        // y que una subida duplique coberturas en vez de sustituir la
+        // anterior por el importe correcto y actualizado.
+        eliminarCoberturasDeGasto(gastoId)
+
+        // gastadoSinEste = lo ya consolidado en la categoría SIN contar el
+        // importe antiguo de este gasto (que todavía está en BD con su
+        // valor viejo en este punto).
+        val gastadoSinEste = gastoDao.sumarPorCategoria(entidad.categoriaId) - entidad.importe
+
         gastoDao.actualizar(entidad.copy(importe = importe, descripcion = descripcion))
-        cubrirExcesoConAhorroSiProcede(entidad.categoriaId, gastadoAntes, gastoOrigenId = gastoId)
+        cubrirExcesoConAhorroSiProcede(entidad.categoriaId, gastadoSinEste, gastoOrigenId = gastoId)
     }
 
     override suspend fun eliminarGasto(gastoId: Long) {

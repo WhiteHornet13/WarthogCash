@@ -1,5 +1,60 @@
 # Changelog
 
+## [1.12.0] - 2026-09-13
+### Added
+- "Pantalla principal": nuevo acceso al "Historial de gastos" en modo
+  genérico (sin filtrar por categoría) pulsando el importe "Gastado" del
+  header, tanto en Pantalla principal como en Detalle de mes. Hasta ahora
+  no existía ningún punto de entrada a ese modo, ya implementado pero
+  inalcanzable. Nuevo método `MonthSummaryHeaderView.setAlPulsarGastado()`.
+- "Pantalla principal": pulsar "atrás" ya no cierra la app directamente.
+  Requiere una segunda pulsación en menos de 2 segundos, mostrando un
+  aviso tras la primera (`principal_confirmar_salir`).
+
+### Fixed
+- "Bienvenida (primer uso)": el botón "Ya tengo una copia de seguridad"
+  quedaba fuera de la pantalla visible al anclarse debajo de "Empezar".
+  Corregido el `ConstraintLayout` de `activity_welcome.xml` para que
+  "Empezar" quede anclado encima del botón de restaurar, y este último
+  al fondo de la pantalla.
+- "Añadir gasto": al deseleccionar el chip de categoría ya elegido (pulsar
+  de nuevo sobre él), la categoría seguía quedando asignada internamente
+  pese a no mostrarse marcada, permitiendo guardar el gasto sin categoría
+  visible. Ahora `categoriaSeleccionada` pasa a `null` si el chip queda
+  sin marcar, bloqueando el guardado hasta elegir una categoría de nuevo.
+- Cobertura automática de límite superado en Ahorro: al editar un gasto
+  **bajando** su importe, la cobertura generada previamente no se
+  recalculaba ni se eliminaba, quedando en Ahorro un importe de cobertura
+  superior al que correspondía. `editarGasto()` elimina ahora la
+  cobertura existente antes de aplicar el nuevo importe y la recalcula
+  desde cero.
+- Cobertura automática de límite superado en Ahorro: al editar el dinero
+  disponible del mes (`Mis meses` → Editar dinero disponible), el monto
+  asignado de cada categoría cambia, pero las coberturas ya generadas en
+  Ahorro no se recalculaban, quedando desajustadas. Nuevo método
+  `recalcularCoberturasDelMes()`, invocado desde
+  `actualizarDineroDisponible()`.
+- "Mis meses": al eliminar el último mes existente, la app no navegaba a
+  la pantalla de "Bienvenida" (había que salir de la app y volver a
+  entrar). `MyMonthsViewModel.eliminarMes()` admite ahora un callback
+  invocado cuando `contarMeses()` llega a 0, usado en `MyMonthsActivity`
+  para relanzar `LauncherActivity` con la pila limpia.
+- "Restaurar copia de seguridad": los gastos fijos del backup se
+  importaban siempre además de los ya existentes, duplicándolos si
+  coincidían. Ahora, si el backup trae gastos fijos, sustituyen por
+  completo a los existentes; si no trae ninguno, se conservan los que
+  ya hubiera.
+- "Gráficas", tipo 2 (Categoría entre años): la serie de Ahorro se
+  calculaba como gasto real registrado en esa categoría (retiros, casi
+  siempre 0) en vez de como lo efectivamente ahorrado ese mes, a
+  diferencia de los tipos 3/4/5. `EstadisticasCalculator.gastoCategoriaPorAnios()`
+  usa ahora `ahorroDelMes()` para la categoría Ahorro.
+- "Gráficas", tipos 1, 2 y 3: un año/mes cerrado sin ningún gasto real
+  registrado se descartaba como "sin datos", ocultando gráficas válidas
+  (barra en 0). Los años ya vienen filtrados por `aniosDisponibles`
+  (algún mes cerrado ese año), así que se elimina la comprobación
+  adicional de "todos los valores son 0" en `GraficasActivity.generarGraficas()`.
+
 ## [1.11.0] - 2026-09-05
 ### Added
 - "Bienvenida (primer uso)": nuevo botón "Ya tengo una copia de seguridad"

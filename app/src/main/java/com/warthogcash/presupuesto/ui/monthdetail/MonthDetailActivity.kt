@@ -60,6 +60,13 @@ class MonthDetailActivity : AppCompatActivity() {
             )
         }
 
+        binding.headerResumen.setAlPulsarGastado {
+            startActivity(
+                Intent(this, ExpenseHistoryActivity::class.java)
+                    .putExtra(ExpenseHistoryActivity.EXTRA_MES_ID, mesId)
+            )
+        }
+
         binding.btnCerrarMes.setOnClickListener {
             startActivity(
                 Intent(this, CloseMonthActivity::class.java)

@@ -86,7 +86,7 @@ class AddExpenseActivity : AppCompatActivity() {
                 )
                 chipStrokeWidth = resources.getDisplayMetrics().density
                 setOnClickListener {
-                    categoriaSeleccionada = categoria
+                    categoriaSeleccionada = if (isChecked) categoria else null
                     actualizarVistaPreviaYBoton()
                 }
             }

@@ -16,6 +16,9 @@ import com.warthogcash.presupuesto.ui.history.ExpenseHistoryActivity
 import com.warthogcash.presupuesto.ui.mymonths.MyMonthsActivity
 import com.warthogcash.presupuesto.util.FabricaViewModel
 import kotlinx.coroutines.launch
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import com.warthogcash.presupuesto.R
 
 /**
  * Pantalla principal: muestra el estado del mes actual (especificación
@@ -26,6 +29,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: CategoriaAdapter
+
+    private var ultimaPulsacionAtras: Long = 0L
 
     private val viewModel: MainViewModel by lazy {
         val repo = (application as App).repository
@@ -48,6 +53,14 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
+        binding.headerResumen.setAlPulsarGastado {
+            val mesId = viewModel.mesActual.value?.id ?: return@setAlPulsarGastado
+            startActivity(
+                Intent(this, ExpenseHistoryActivity::class.java)
+                    .putExtra(ExpenseHistoryActivity.EXTRA_MES_ID, mesId)
+            )
+        }
+
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.mesActual.collect { mes ->
@@ -62,6 +75,28 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
+        // MainActivity es la pantalla de entrada habitual una vez existe algún
+        // mes creado, y puede quedar como única Activity en el back stack tras
+        // navegar con FLAG_ACTIVITY_CLEAR_TOP/SINGLE_TOP desde "Mis meses". Sin
+        // este control, pulsar "atrás" aquí cierra la app directamente sin
+        // ninguna confirmación. Se exige una segunda pulsación en menos de
+        // 2 segundos para salir, mostrando un aviso tras la primera.
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                val ahora = System.currentTimeMillis()
+                if (ahora - ultimaPulsacionAtras < 2000L) {
+                    finish()
+                } else {
+                    ultimaPulsacionAtras = ahora
+                    Toast.makeText(
+                        this@MainActivity,
+                        getString(R.string.principal_confirmar_salir),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        })
     }
 
     override fun onResume() {

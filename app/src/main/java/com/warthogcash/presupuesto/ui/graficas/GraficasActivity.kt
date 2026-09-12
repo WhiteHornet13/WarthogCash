@@ -168,7 +168,11 @@ class GraficasActivity : AppCompatActivity() {
                         ?: return sinDatos()
                     val datos = EstadisticasCalculator.gastoPorCategoriaMensual(meses, anio)
                     val asignados = EstadisticasCalculator.asignadoPorCategoriaMensual(meses, anio)
-                    if (datos.values.all { it.all { v -> v == 0f } }) return sinDatos()
+                    // No se comprueba si los valores son 0: el año ya viene de
+                    // aniosDisponibles (solo años con algún mes cerrado), así
+                    // que un mes cerrado sin gasto real sigue siendo un dato
+                    // válido que mostrar (barra en 0 junto a la línea de
+                    // asignado), no un "sin datos".
                     TipoCategoria.ORDEN_VISUAL.forEach { tipo ->
                         agregarGraficaBarrasMeses(
                             tipo.etiqueta,
@@ -185,7 +189,8 @@ class GraficasActivity : AppCompatActivity() {
                     if (aniosElegidos.isEmpty()) return sinDatos()
                     val datos =
                         EstadisticasCalculator.gastoCategoriaPorAnios(meses, mes, aniosElegidos)
-                    if (datos.values.all { mapa -> mapa.values.all { it == 0f } }) return sinDatos()
+                    // Igual que en el tipo 1: no se descarta por valores en 0,
+                    // solo por no haber ningún año seleccionado.
                     TipoCategoria.ORDEN_VISUAL.forEach { tipo ->
                         agregarGraficaBarrasAnios(
                             tipo.etiqueta,
@@ -199,7 +204,9 @@ class GraficasActivity : AppCompatActivity() {
                     val anio = anios.getOrNull(binding.spinnerAnioUnico.selectedItemPosition)
                         ?: return sinDatos()
                     val resumen = EstadisticasCalculator.resumenMensual(meses, anio)
-                    if (resumen.gasto.all { it == 0f } && resumen.ahorro.all { it == 0f } && resumen.ingreso.all { it == 0f }) return sinDatos()
+                    // El año ya viene de aniosDisponibles (algún mes cerrado
+                    // ese año), así que siempre hay algo que graficar aunque
+                    // el gasto/ahorro de algún mes sea 0.
                     agregarGraficaLineaMeses(
                         getString(R.string.graficas_gasto),
                         resumen.gasto,

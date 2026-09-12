@@ -72,6 +72,13 @@ class MonthSummaryHeaderView @JvmOverloads constructor(
         rellenarImportes(presupuesto)
     }
 
+    /** Acceso al "Historial de gastos" en modo genérico (sin filtrar por
+     *  categoría): pulsar el importe "Gastado" abre el listado completo
+     *  de gastos del mes, en Pantalla principal y en detalle de mes. */
+    fun setAlPulsarGastado(accion: () -> Unit) {
+        binding.tvGastado.setOnClickListener { accion() }
+    }
+
     private fun rellenarImportes(presupuesto: Presupuesto) {
         binding.tvDisponible.text = Formato.moneda(presupuesto.totalRestante)
         binding.tvIngreso.text = Formato.moneda(presupuesto.dineroDisponible)

@@ -65,10 +65,13 @@ class MyMonthsViewModel(private val repository: PresupuestoRepository) : ViewMod
         }
     }
 
-    fun eliminarMes(mesId: Long) {
+    fun eliminarMes(mesId: Long, alQuedarSinMeses: () -> Unit) {
         viewModelScope.launch {
             repository.eliminarMes(mesId)
             recargar()
+            if (repository.contarMeses() == 0) {
+                alQuedarSinMeses()
+            }
         }
     }
 

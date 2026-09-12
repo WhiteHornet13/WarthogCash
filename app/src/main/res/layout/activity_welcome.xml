@@ -56,7 +56,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/espaciado_xl"
         android:text="@string/bienvenida_boton"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btnRestaurarBienvenida"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvDescripcionBienvenida"
@@ -68,11 +68,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/espaciado_s"
+        android:layout_marginBottom="@dimen/espaciado_l"
         android:text="@string/bienvenida_boton_restaurar"
         android:textAllCaps="false"
         android:textColor="@color/texto_secundario"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnEmpezar" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,6 +12,7 @@
     <string name="principal_disponible">Disponible</string>
     <string name="principal_ingreso">Ingreso</string>
     <string name="principal_gastado">Gastado</string>
+    <string name="principal_confirmar_salir">Pulsa otra vez atrás para salir</string>
 
     <!-- Mis meses -->
     <string name="mis_meses_titulo">Mis meses</string>

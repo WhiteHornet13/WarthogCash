@@ -176,9 +176,22 @@ class MyMonthsActivity : AppCompatActivity() {
             .setMessage(getString(R.string.mis_meses_eliminar_confirmar_mensaje_formato, mes.nombreMesAnio))
             .setNegativeButton(android.R.string.cancel, null)
             .setPositiveButton(R.string.accion_eliminar) { _, _ ->
-                viewModel.eliminarMes(mes.id)
+                viewModel.eliminarMes(mes.id) { irALauncherSinMeses() }
             }
             .show()
+    }
+
+    /** Al quedarse la app sin ningún mes creado tras eliminar el último,
+     *  se relanza LauncherActivity con la pila limpia (evita que quede
+     *  cualquier Activity anterior en el back stack, como MainActivity,
+     *  mostrando datos obsoletos de un mes ya borrado). LauncherActivity
+     *  vuelve a comprobar existeAlgunMes() y dirige correctamente a
+     *  WelcomeActivity. */
+    private fun irALauncherSinMeses() {
+        val intent = Intent(this, com.warthogcash.presupuesto.ui.welcome.LauncherActivity::class.java)
+            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        startActivity(intent)
+        finish()
     }
 
     private fun mostrarDialogoEditarDinero(mes: Presupuesto) {

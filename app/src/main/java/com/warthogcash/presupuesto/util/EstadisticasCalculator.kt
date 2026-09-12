@@ -59,7 +59,15 @@ object EstadisticasCalculator {
         meses.filter { it.estado == EstadoPresupuesto.CERRADO && it.mes == mes && it.anio in anios }
             .forEach { m ->
                 m.categorias.forEach { categoria ->
-                    resultado[categoria.tipo]?.put(m.anio, sumaGastosReales(categoria.gastos).toFloat())
+                    // Ahorro no se mide por "gasto real" (retiros), sino por lo
+                    // efectivamente ahorrado ese mes (igual criterio que en las
+                    // gráficas de resumen mensual/anual).
+                    val valor = if (categoria.tipo == TipoCategoria.AHORRO) {
+                        ahorroDelMes(m)
+                    } else {
+                        sumaGastosReales(categoria.gastos)
+                    }
+                    resultado[categoria.tipo]?.put(m.anio, valor.toFloat())
                 }
             }
         return resultado
