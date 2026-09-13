@@ -94,13 +94,14 @@ class SelectFixedExpensesActivity : AppCompatActivity() {
         filaBinding.checkSeleccionado.setOnCheckedChangeListener { _, _ ->
             viewModel.alternarSeleccion(id)
         }
-        filaBinding.etCosteEsteMes.setOnFocusChangeListener { _, tieneFoco ->
-            if (!tieneFoco) {
-                val nuevoCoste = filaBinding.etCosteEsteMes.text.toString()
-                    .replace(',', '.').toDoubleOrNull()
+        filaBinding.etCosteEsteMes.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
+            override fun afterTextChanged(s: android.text.Editable?) {
+                val nuevoCoste = s.toString().replace(',', '.').toDoubleOrNull()
                 if (nuevoCoste != null) viewModel.actualizarCoste(id, nuevoCoste)
             }
-        }
+        })
 
         binding.contenedorItems.addView(filaBinding.root)
     }

@@ -442,26 +442,70 @@ class PresupuestoRepositoryImpl(
         }
     }
 
-    /** Busca, en el mes calendario inmediatamente siguiente a [mesEntity] (si
-     *  existe), las filas de ingreso por traspaso que se originaron al
-     *  cerrar [mesEntity], y las elimina. Identificadas por [GastoEntity.mesOrigenId],
-     *  no por texto, para que sea fiable ante cualquier edición posterior. */
     private suspend fun eliminarTraspasosRecibidosDelMesSiguiente(mesEntity: PresupuestoEntity) {
-        // Antes: solo miraba el mes calendario inmediatamente siguiente.
-        // Ahora: recorre TODOS los meses y elimina cualquier ingreso cuyo
-        // mesOrigenId apunte a este mes, sin asumir que el destino es
-        // necesariamente el mes+1 calendario (cubre datos inconsistentes
-        // o cadenas de traspaso ya reabiertas/recreadas).
         val todosLosMeses = presupuestoDao.obtenerTodos()
         todosLosMeses.forEach { otroMes ->
             if (otroMes.id == mesEntity.id) return@forEach
             val categorias = categoriaDao.obtenerPorPresupuesto(otroMes.id)
+            var recibioTraspasoDeMesEliminado = false
             categorias.forEach { categoria ->
                 gastoDao.obtenerPorCategoria(categoria.id)
                     .filter { it.esIngreso && it.mesOrigenId == mesEntity.id }
-                    .forEach { gastoDao.eliminar(it) }
+                    .forEach {
+                        gastoDao.eliminar(it)
+                        recibioTraspasoDeMesEliminado = true
+                    }
+            }
+            // Si el mes que recibió el traspaso ya estaba CERRADO, su propio
+            // reparto de sobrante al cerrarse se calculó incluyendo ese dinero
+            // que ahora desaparece. Hay que revertir en cascada cualquier
+            // traspaso que ESE mes hubiera hecho a su vez a meses posteriores,
+            // y reabrirlo para que el usuario pueda volver a cerrarlo con los
+            // importes correctos.
+            if (recibioTraspasoDeMesEliminado && otroMes.estado == EstadoPresupuesto.CERRADO.name) {
+                revertirTraspasosSalientesEnCascada(otroMes)
             }
         }
+    }
+
+    /** Revierte, para [mesEntity] (que estaba CERRADO), todos los traspasos de
+     *  sobrante que hizo al cerrarse: elimina sus propios apuntes de salida
+     *  (esTraspasoSalida) en cada categoría, y elimina los ingresos
+     *  correspondientes recibidos en el mes destino. Si ese mes destino a su
+     *  vez ya estaba CERRADO y había reenviado ese dinero, se repite el
+     *  proceso recursivamente sobre él. Finalmente reabre [mesEntity]. */
+    private suspend fun revertirTraspasosSalientesEnCascada(mesEntity: PresupuestoEntity) {
+        val categorias = categoriaDao.obtenerPorPresupuesto(mesEntity.id)
+        val todosLosMeses = presupuestoDao.obtenerTodos()
+
+        categorias.forEach { categoria ->
+            val gastosCategoria = gastoDao.obtenerPorCategoria(categoria.id)
+
+            gastosCategoria.filter { it.esTraspasoSalida }.forEach { salida ->
+                val destinoId = salida.mesOrigenId
+                if (destinoId != null) {
+                    val mesDestino = todosLosMeses.firstOrNull { it.id == destinoId }
+                    if (mesDestino != null) {
+                        val categoriasDestino = categoriaDao.obtenerPorPresupuesto(mesDestino.id)
+                        var eliminoAlgunIngreso = false
+                        categoriasDestino.forEach { categoriaDestino ->
+                            gastoDao.obtenerPorCategoria(categoriaDestino.id)
+                                .filter { it.esIngreso && it.mesOrigenId == mesEntity.id }
+                                .forEach {
+                                    gastoDao.eliminar(it)
+                                    eliminoAlgunIngreso = true
+                                }
+                        }
+                        if (eliminoAlgunIngreso && mesDestino.estado == EstadoPresupuesto.CERRADO.name) {
+                            revertirTraspasosSalientesEnCascada(mesDestino)
+                        }
+                    }
+                }
+                gastoDao.eliminar(salida)
+            }
+        }
+
+        presupuestoDao.actualizarEstado(mesEntity.id, EstadoPresupuesto.ABIERTO.name)
     }
 
     /** Busca el Presupuesto del mes calendario exactamente ANTERIOR a [mesEntity]

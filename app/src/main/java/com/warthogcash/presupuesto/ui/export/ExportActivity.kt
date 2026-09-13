@@ -1,6 +1,7 @@
 package com.warthogcash.presupuesto.ui.export
 
 import android.net.Uri
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -157,9 +158,16 @@ class ExportActivity : AppCompatActivity() {
                 PorcentajesPredefinidos(this).guardar(backup.porcentajesPredefinidos)
             }
             Toast.makeText(this, R.string.restaurar_exito, Toast.LENGTH_SHORT).show()
-            actualizarEstadoRestaurar()
+            irAPrincipalTrasRestaurar()
         } catch (e: Exception) {
             Toast.makeText(this, R.string.restaurar_error_generico, Toast.LENGTH_LONG).show()
         }
+    }
+
+    private fun irAPrincipalTrasRestaurar() {
+        val intent = Intent(this, com.warthogcash.presupuesto.ui.welcome.LauncherActivity::class.java)
+            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        startActivity(intent)
+        finish()
     }
 }

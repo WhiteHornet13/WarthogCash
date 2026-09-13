@@ -1,5 +1,33 @@
 # Changelog
 
+## [1.12.1] - 2026-09-14
+### Fixed
+- "Seleccionar gastos fijos": el importe ajustado para el mes en el
+  campo "Coste este mes" no se aplicaba hasta desmarcar y volver a
+  marcar el gasto fijo, porque `SelectFixedExpensesViewModel.actualizarCoste()`
+  solo se invocaba al perder el foco el campo (`setOnFocusChangeListener`).
+  Si el usuario pulsaba "Añadir al mes" sin haber quitado el foco del
+  campo, se guardaba el importe original de la plantilla en vez del
+  introducido. `SelectFixedExpensesActivity.crearFila()` actualiza ahora
+  el ViewModel en cada pulsación (`addTextChangedListener`), no solo al
+  perder el foco.
+- "Restaurar copia de seguridad": tras una restauración correcta, la
+  pantalla se quedaba en "Exportar datos" sin navegar a ningún sitio,
+  dejando a la app en un estado inconsistente con los meses recién
+  importados. `ExportActivity.ejecutarRestauracion()` navega ahora a
+  `LauncherActivity` (con la pila limpia) al terminar con éxito, que
+  redirige correctamente según los meses ya existentes.
+- Cadenas de traspaso entre 3 o más meses cerrados consecutivos (mes A
+  → mes B → mes C): al eliminar el mes A, se revertía el ingreso
+  recibido en el mes B, pero no se revertía el traspaso que el mes B
+  —ya cerrado— había reenviado a su vez al mes C, dejando en este
+  último un traspaso "fantasma" con dinero que ya no existía.
+  `eliminarTraspasosRecibidosDelMesSiguiente()` detecta ahora si el mes
+  que recibió el traspaso eliminado estaba CERRADO y, en ese caso,
+  invoca el nuevo método recursivo
+  `revertirTraspasosSalientesEnCascada()`, que deshace en cadena
+  cualquier traspaso saliente posterior y reabre cada mes afectado.
+
 ## [1.12.0] - 2026-09-13
 ### Added
 - "Pantalla principal": nuevo acceso al "Historial de gastos" en modo
