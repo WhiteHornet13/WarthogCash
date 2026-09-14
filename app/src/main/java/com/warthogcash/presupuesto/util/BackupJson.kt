@@ -24,6 +24,21 @@ object BackupJson {
         raiz.put("version", VERSION_ACTUAL)
         raiz.put("generado", System.currentTimeMillis())
 
+        // Mapa id real de BD -> id local de exportación. Necesario para poder
+        // reconectar, tras restaurar, cada cobertura automática (fila en
+        // Ahorro) con el gasto que la originó: los ids reales se regeneran
+        // al reinsertar (autoincrement de Room), así que no se pueden guardar
+        // directamente en el JSON.
+        val idExportPorIdReal = mutableMapOf<Long, Int>()
+        var contadorIdExport = 0
+        meses.forEach { mes ->
+            mes.categorias.forEach { categoria ->
+                categoria.gastos.forEach { gasto ->
+                    idExportPorIdReal[gasto.id] = contadorIdExport++
+                }
+            }
+        }
+
         val arrayMeses = JSONArray()
         meses.forEach { mes ->
             val jMes = JSONObject()
@@ -42,11 +57,19 @@ object BackupJson {
                 val arrayGastos = JSONArray()
                 categoria.gastos.forEach { gasto ->
                     val jGasto = JSONObject()
+                    jGasto.put("idExport", idExportPorIdReal.getValue(gasto.id))
                     jGasto.put("importe", gasto.importe)
                     jGasto.put("descripcion", gasto.descripcion)
                     jGasto.put("fecha", gasto.fecha)
                     jGasto.put("esIngreso", gasto.esIngreso)
                     jGasto.put("esTraspasoSalida", gasto.esTraspasoSalida)
+                    // Si esta fila es una cobertura automática, se guarda el
+                    // idExport del gasto ORIGEN (no su id real de BD, que no
+                    // sobrevive a la restauración).
+                    if (gasto.gastoCoberturaOrigenId != null) {
+                        val idExportOrigen = idExportPorIdReal[gasto.gastoCoberturaOrigenId]
+                        if (idExportOrigen != null) jGasto.put("coberturaOrigenIdExport", idExportOrigen)
+                    }
                     arrayGastos.put(jGasto)
                 }
                 jCategoria.put("gastos", arrayGastos)
@@ -71,7 +94,7 @@ object BackupJson {
         porcentajesPredefinidos.forEach { (tipo, valor) -> jPorcentajes.put(tipo.name, valor) }
         raiz.put("porcentajesPredefinidos", jPorcentajes)
 
-        return raiz.toString(2) // indentado: legible si se abre a mano
+        return raiz.toString(2)
     }
 
     /** Resultado de parsear un archivo de copia de seguridad válido. */
@@ -111,13 +134,21 @@ object BackupJson {
                 val gastos = (0 until arrayGastos.length()).map { k ->
                     val jGasto = arrayGastos.getJSONObject(k)
                     com.warthogcash.presupuesto.domain.model.Gasto(
-                        id = 0, // se regenera al insertar; el backup no depende de IDs concretos
+                        // De momento contiene el idExport del backup (no un id real de
+                        // BD): PresupuestoRepositoryImpl.insertarMesCompleto() lo usa
+                        // solo para construir el mapeo idExport -> id real tras insertar.
+                        id = jGasto.optInt("idExport", -1).toLong(),
                         categoriaId = 0, // idem: se resuelve al insertar la categoría real
                         importe = jGasto.getDouble("importe"),
                         descripcion = if (jGasto.isNull("descripcion")) null else jGasto.getString("descripcion"),
                         fecha = jGasto.getLong("fecha"),
                         esIngreso = jGasto.optBoolean("esIngreso", false),
-                        esTraspasoSalida = jGasto.optBoolean("esTraspasoSalida", false)
+                        esTraspasoSalida = jGasto.optBoolean("esTraspasoSalida", false),
+                        // Igual que "id": contiene el idExport del gasto ORIGEN de la
+                        // cobertura (no su id real todavía). Se resuelve en la segunda
+                        // pasada de insertarMesCompleto()/restaurarBackup().
+                        gastoCoberturaOrigenId = jGasto.optInt("coberturaOrigenIdExport", -1)
+                            .let { if (it == -1) null else it.toLong() }
                     )
                 }
 

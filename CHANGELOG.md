@@ -1,5 +1,34 @@
 # Changelog
 
+## [1.12.3] - 2026-09-14
+### Fixed
+- Cobertura automática de límite superado: al editar o eliminar un gasto
+  de una categoría que ya estaba en descubierto (cobertura ya generada
+  por OTRO gasto), el cálculo incremental (`gastadoAntes` de esa
+  operación concreta) tomaba como base un "gastado antes" que ya
+  incluía el gasto causante del descubierto, así que cualquier cambio
+  en ese otro gasto —incluso una bajada de importe— se traducía en una
+  cobertura NUEVA en Ahorro por esa diferencia, en vez de recalcular el
+  descubierto real de la categoría. `agregarGasto()`, `editarGasto()` y
+  `eliminarGasto()` usan ahora `recalcularCoberturaDeCategoria()`, que
+  borra todas las coberturas existentes de la categoría y recalcula una
+  única cobertura consolidada desde cero contra el gasto real total,
+  en vez de sumar una cobertura marginal por operación.
+- Copia de seguridad (JSON): el vínculo `gastoCoberturaOrigenId` entre
+  una cobertura automática y el gasto que la originó no se conservaba
+  al exportar/restaurar (los ids reales se regeneran al reinsertar),
+  dejando esas filas de cobertura como si fueran gastos normales tras
+  importar un backup. Esto causaba dos problemas tras restaurar:
+  1. Editar el gasto que había generado el descubierto no actualizaba
+     la cobertura en Ahorro (seguía mostrando el importe importado).
+  2. La propia cobertura en Ahorro quedaba editable/eliminable desde el
+     Historial, cuando nunca debe poder modificarse a mano.
+     `BackupJson` incorpora ahora un id de exportación local (`idExport`)
+     y `coberturaOrigenIdExport` para cada gasto, y
+     `PresupuestoRepositoryImpl.restaurarBackup()`/`insertarMesCompleto()`
+     reconstruyen el vínculo real (`gastoCoberturaOrigenId`) en una
+     segunda pasada, tras insertar todos los gastos con sus nuevos ids.
+
 ## [1.12.2] - 2026-09-14
 ### Fixed
 - Cadenas de traspaso de 3 o más meses cerrados consecutivos donde algún

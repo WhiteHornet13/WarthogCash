@@ -136,26 +136,33 @@ class PresupuestoRepositoryImpl(
         gastosFijos: List<GastoFijo>,
         mesIdAConservar: Long?
     ) {
+        // Reconstruye, tras reinsertar todos los gastos con ids nuevos, el
+        // enlace entre cada cobertura automática (en Ahorro) y el gasto que
+        // la originó. Ver BackupJson: el vínculo viaja como "idExport" /
+        // "coberturaOrigenIdExport", no como ids reales de BD.
+        val idExportARealId = mutableMapOf<Long, Long>()
+        val pendientesCobertura = mutableListOf<Pair<Long, Long>>() // (idRealCobertura, idExportOrigen)
+
         if (mesIdAConservar == null) {
-            // Pisar: borra cualquier mes existente (0 o 1, según la regla acordada)
-            // e inserta todo el backup tal cual, respetando su propio "esActual".
             presupuestoDao.obtenerTodos().forEach { presupuestoDao.eliminar(it) }
-            meses.forEach { insertarMesCompleto(it, esActual = it.esActual) }
+            meses.forEach { insertarMesCompleto(it, it.esActual, idExportARealId, pendientesCobertura) }
             asegurarUnSoloMesActual()
         } else {
-            // Conservar: el mes existente no se toca; se insertan los del backup
-            // salvo el que coincide en mes/año (gana el ya existente), y ninguno
-            // se marca como actual (ese estado se lo queda el mes conservado).
             val existente = presupuestoDao.obtenerPorId(mesIdAConservar)
             meses
                 .filter { !(existente != null && it.mes == existente.mes && it.anio == existente.anio) }
-                .forEach { insertarMesCompleto(it, esActual = false) }
+                .forEach { insertarMesCompleto(it, false, idExportARealId, pendientesCobertura) }
         }
 
-        // Regla: si el backup trae gastos fijos, esos sustituyen por completo
-        // a los existentes en la app (se borran los actuales antes de
-        // insertar los del backup). Si el backup no trae ninguno, se
-        // conservan los que ya hubiera; nunca se combinan ni se duplican.
+        // Segunda pasada: ya con todos los gastos insertados y con id real,
+        // se resuelve cada cobertura pendiente y se enlaza con el gasto que
+        // realmente la originó en esta restauración.
+        pendientesCobertura.forEach { (idRealCobertura, idExportOrigen) ->
+            val idRealOrigen = idExportARealId[idExportOrigen] ?: return@forEach
+            val coberturaEntity = gastoDao.obtenerPorId(idRealCobertura) ?: return@forEach
+            gastoDao.actualizar(coberturaEntity.copy(gastoCoberturaOrigenId = idRealOrigen))
+        }
+
         if (gastosFijos.isNotEmpty()) {
             gastoFijoDao.obtenerTodos().forEach { gastoFijoDao.eliminar(it) }
             gastosFijos.forEach { gf ->
@@ -164,7 +171,12 @@ class PresupuestoRepositoryImpl(
         }
     }
 
-    private suspend fun insertarMesCompleto(mes: PresupuestoConGastos, esActual: Boolean) {
+    private suspend fun insertarMesCompleto(
+        mes: PresupuestoConGastos,
+        esActual: Boolean,
+        idExportARealId: MutableMap<Long, Long>,
+        pendientesCobertura: MutableList<Pair<Long, Long>>
+    ) {
         val nuevoId = presupuestoDao.insertar(
             PresupuestoEntity(
                 mes = mes.mes,
@@ -180,7 +192,7 @@ class PresupuestoRepositoryImpl(
             )
             val categoriaId = idsInsertados.first()
             categoria.gastos.forEach { gasto ->
-                gastoDao.insertar(
+                val idRealNuevo = gastoDao.insertar(
                     GastoEntity(
                         categoriaId = categoriaId,
                         importe = gasto.importe,
@@ -188,8 +200,18 @@ class PresupuestoRepositoryImpl(
                         fecha = gasto.fecha,
                         esIngreso = gasto.esIngreso,
                         esTraspasoSalida = gasto.esTraspasoSalida
+                        // gastoCoberturaOrigenId NO se fija aquí: gasto.gastoCoberturaOrigenId
+                        // todavía contiene el idExport del origen, no un id real.
                     )
                 )
+                // gasto.id contiene el idExport asignado por BackupJson.generar()
+                // (o -1 si el backup viene de una versión sin este campo).
+                if (gasto.id != -1L) {
+                    idExportARealId[gasto.id] = idRealNuevo
+                }
+                if (gasto.gastoCoberturaOrigenId != null) {
+                    pendientesCobertura.add(idRealNuevo to gasto.gastoCoberturaOrigenId)
+                }
             }
         }
     }
@@ -405,41 +427,60 @@ class PresupuestoRepositoryImpl(
      *  ligada al gasto real más reciente de la categoría (para que pueda
      *  seguir eliminándose en cascada si ese gasto se borra). */
     private suspend fun recalcularCoberturasDelMes(presupuestoId: Long) {
-        val presupuestoEntity = presupuestoDao.obtenerPorId(presupuestoId) ?: return
         val categorias = categoriaDao.obtenerPorPresupuesto(presupuestoId)
-
         categorias.filter { it.tipo != TipoCategoria.AHORRO.name }.forEach { categoria ->
-            val gastosReales = gastoDao.obtenerPorCategoria(categoria.id)
-                .filter { !it.esIngreso && it.gastoCoberturaOrigenId == null }
-            gastosReales.forEach { eliminarCoberturasDeGasto(it.id) }
-            if (gastosReales.isEmpty()) return@forEach
-
-            val gastadoReal = gastosReales
-                .filter { !(it.esTraspasoSalida && it.mesOrigenId == null) }
-                .sumOf { it.importe }
-            val montoAsignadoBase = presupuestoEntity.dineroDisponible * (categoria.porcentaje / 100.0)
-            val ingresos = gastoDao.sumarIngresosPorCategoria(categoria.id)
-            val montoAsignado = montoAsignadoBase + ingresos
-
-            val exceso = gastadoReal - montoAsignado
-            if (exceso <= 0.0) return@forEach
-
-            val categoriaAhorro = categoriaDao.obtenerPorPresupuestoYTipo(
-                presupuestoId, TipoCategoria.AHORRO.name
-            ) ?: return@forEach
-
-            val gastoMasReciente = gastosReales.maxByOrNull { it.fecha } ?: return@forEach
-
-            gastoDao.insertar(
-                GastoEntity(
-                    categoriaId = categoriaAhorro.id,
-                    importe = exceso,
-                    descripcion = "Cobertura de límite superado en ${TipoCategoria.valueOf(categoria.tipo).etiqueta}",
-                    fecha = System.currentTimeMillis(),
-                    gastoCoberturaOrigenId = gastoMasReciente.id
-                )
-            )
+            recalcularCoberturaDeCategoria(categoria.id)
         }
+    }
+
+    /** Recalcula desde cero la cobertura automática de límite superado (en
+     *  Ahorro) para UNA categoría, tras editar o eliminar cualquiera de sus
+     *  gastos reales. Sustituye el cálculo incremental anterior (basado en
+     *  "gastado antes de este gasto"), que fallaba al editar/eliminar un
+     *  gasto que no era el que había generado la cobertura existente: la
+     *  categoría podía quedar ya por encima del límite solo con el resto de
+     *  gastos, y ese cálculo sumaba una cobertura NUEVA en vez de ajustar la
+     *  existente. Borra TODAS las coberturas actuales de la categoría y, si
+     *  el gasto real total sigue superando el monto asignado, crea una única
+     *  cobertura consolidada ligada al gasto real más reciente. */
+    private suspend fun recalcularCoberturaDeCategoria(categoriaId: Long) {
+        val categoriaEntity = categoriaDao.obtenerPorId(categoriaId) ?: return
+        if (categoriaEntity.tipo == TipoCategoria.AHORRO.name) return
+
+        val presupuestoEntity = presupuestoDao.obtenerPorId(categoriaEntity.presupuestoId) ?: return
+
+        val gastosReales = gastoDao.obtenerPorCategoria(categoriaId)
+            .filter { !it.esIngreso && it.gastoCoberturaOrigenId == null }
+
+        gastosReales.forEach { eliminarCoberturasDeGasto(it.id) }
+        if (gastosReales.isEmpty()) return
+
+        val gastadoReal = gastosReales
+            .filter { !(it.esTraspasoSalida && it.mesOrigenId == null) }
+            .sumOf { it.importe }
+
+        val montoAsignadoBase = presupuestoEntity.dineroDisponible * (categoriaEntity.porcentaje / 100.0)
+        val ingresos = gastoDao.sumarIngresosPorCategoria(categoriaId)
+        val montoAsignado = montoAsignadoBase + ingresos
+
+        val exceso = gastadoReal - montoAsignado
+        if (exceso <= 0.0) return
+
+        val categoriaAhorro = categoriaDao.obtenerPorPresupuestoYTipo(
+            categoriaEntity.presupuestoId, TipoCategoria.AHORRO.name
+        ) ?: return
+
+        val gastoMasReciente = gastosReales.maxByOrNull { it.fecha } ?: return
+
+        gastoDao.insertar(
+            GastoEntity(
+                categoriaId = categoriaAhorro.id,
+                importe = exceso,
+                descripcion = "Cobertura de límite superado en ${TipoCategoria.valueOf(categoriaEntity.tipo).etiqueta}",
+                fecha = System.currentTimeMillis(),
+                gastoCoberturaOrigenId = gastoMasReciente.id
+            )
+        )
     }
 
     private suspend fun eliminarTraspasosRecibidosDelMesSiguiente(mesEntity: PresupuestoEntity) {
@@ -640,20 +681,11 @@ class PresupuestoRepositoryImpl(
         if (entidad.esIngreso) return
         if (entidad.gastoCoberturaOrigenId != null) return // cobertura automática: no editable a mano
 
-        // Se elimina primero cualquier cobertura que este gasto hubiera
-        // generado antes de la edición: al recalcular desde cero se evita
-        // que una bajada de importe deje una cobertura obsoleta en Ahorro,
-        // y que una subida duplique coberturas en vez de sustituir la
-        // anterior por el importe correcto y actualizado.
-        eliminarCoberturasDeGasto(gastoId)
-
-        // gastadoSinEste = lo ya consolidado en la categoría SIN contar el
-        // importe antiguo de este gasto (que todavía está en BD con su
-        // valor viejo en este punto).
-        val gastadoSinEste = gastoDao.sumarPorCategoria(entidad.categoriaId) - entidad.importe
-
         gastoDao.actualizar(entidad.copy(importe = importe, descripcion = descripcion))
-        cubrirExcesoConAhorroSiProcede(entidad.categoriaId, gastadoSinEste, gastoOrigenId = gastoId)
+
+        // Recalcula la cobertura de TODA la categoría desde cero, no solo la
+        // porción marginal de este gasto.
+        recalcularCoberturaDeCategoria(entidad.categoriaId)
     }
 
     override suspend fun eliminarGasto(gastoId: Long) {
@@ -662,6 +694,7 @@ class PresupuestoRepositoryImpl(
         if (entidad.gastoCoberturaOrigenId != null) return // cobertura automática: no eliminable a mano
         eliminarCoberturasDeGasto(gastoId)
         gastoDao.eliminar(entidad)
+        recalcularCoberturaDeCategoria(entidad.categoriaId)
     }
 
     /** Borra en Ahorro cualquier gasto de cobertura automática generado por
