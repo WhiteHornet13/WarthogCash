@@ -505,6 +505,19 @@ class PresupuestoRepositoryImpl(
             }
         }
 
+        // Revierte también los traspasos internos a Ahorro DEL PROPIO mesEntity
+        // (categoria -> Ahorro, mesOrigenId = null). Sin esto, el ingreso recibido
+        // en Ahorro seguía existiendo aunque la fila de salida de su categoría de
+        // origen ya se hubiera eliminado arriba, dejando "dinero fantasma" marcado
+        // como ahorrado en cualquier mes de la cadena que hubiera reenviado un
+        // traspaso ahora revertido.
+        val categoriaAhorroDeEsteMes = categorias.firstOrNull { it.tipo == TipoCategoria.AHORRO.name }
+        if (categoriaAhorroDeEsteMes != null) {
+            gastoDao.obtenerPorCategoria(categoriaAhorroDeEsteMes.id)
+                .filter { it.esIngreso && it.mesOrigenId == null }
+                .forEach { gastoDao.eliminar(it) }
+        }
+
         presupuestoDao.actualizarEstado(mesEntity.id, EstadoPresupuesto.ABIERTO.name)
     }
 

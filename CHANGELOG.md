@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.12.2] - 2026-09-14
+### Fixed
+- Cadenas de traspaso de 3 o más meses cerrados consecutivos donde algún
+  eslabón traspasó a Ahorro en vez de al mes siguiente (por no existir
+  ese mes o estar ya cerrado): al eliminar el primer mes de la cadena,
+  `revertirTraspasosSalientesEnCascada()` borraba la fila de salida de
+  la categoría de origen pero no el ingreso recibido en Ahorro del mes
+  reabierto, dejando "dinero fantasma" marcado como ahorrado. Se elimina
+  ahora también el ingreso interno a Ahorro (`esIngreso = true`,
+  `mesOrigenId == null`) de cada mes revertido en la cascada, igual que
+  ya hacía `revertirTraspasosRecibidosDelMesAnterior()` para el mes
+  inmediatamente anterior.
+
 ## [1.12.1] - 2026-09-14
 ### Fixed
 - "Seleccionar gastos fijos": el importe ajustado para el mes en el
