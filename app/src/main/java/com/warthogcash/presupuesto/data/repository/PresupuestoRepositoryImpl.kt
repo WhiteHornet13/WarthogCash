@@ -59,8 +59,7 @@ class PresupuestoRepositoryImpl(
     override suspend fun aplicarGastosFijosAMes(mesId: Long, seleccionados: List<GastoFijoAplicado>) {
         seleccionados.forEach { aplicado ->
             val categoria = categoriaDao.obtenerPorPresupuestoYTipo(mesId, aplicado.tipo.name) ?: return@forEach
-            val gastadoAntes = gastoDao.sumarPorCategoria(categoria.id)
-            val nuevoId = gastoDao.insertar(
+            gastoDao.insertar(
                 GastoEntity(
                     categoriaId = categoria.id,
                     importe = aplicado.coste,
@@ -68,7 +67,7 @@ class PresupuestoRepositoryImpl(
                     fecha = System.currentTimeMillis()
                 )
             )
-            cubrirExcesoConAhorroSiProcede(categoria.id, gastadoAntes, gastoOrigenId = nuevoId)
+            recalcularCoberturaDeCategoria(categoria.id)
         }
     }
 
@@ -148,11 +147,12 @@ class PresupuestoRepositoryImpl(
             meses.forEach { insertarMesCompleto(it, it.esActual, idExportARealId, pendientesCobertura) }
             asegurarUnSoloMesActual()
         } else {
-            val existente = presupuestoDao.obtenerPorId(mesIdAConservar)
-            meses
-                .filter { !(existente != null && it.mes == existente.mes && it.anio == existente.anio) }
-                .forEach { insertarMesCompleto(it, false, idExportARealId, pendientesCobertura) }
-        }
+        val existente = presupuestoDao.obtenerPorId(mesIdAConservar)
+        meses
+            .filter { !(existente != null && it.mes == existente.mes && it.anio == existente.anio) }
+            .forEach { insertarMesCompleto(it, false, idExportARealId, pendientesCobertura) }
+        actualizarMesActualAlMasReciente()
+    }
 
         // Segunda pasada: ya con todos los gastos insertados y con id real,
         // se resuelve cada cobertura pendiente y se enlaza con el gasto que
@@ -227,6 +227,19 @@ class PresupuestoRepositoryImpl(
 
         presupuestoDao.limpiarActual()
         val masReciente = todos.maxByOrNull { it.anio * 12 + it.mes } ?: return
+        presupuestoDao.actualizar(masReciente.copy(esActual = true))
+    }
+
+    /** Tras restaurar conservando el mes existente, el mes "actual" pasa a ser
+     *  el mes calendario más reciente entre el conservado y los importados,
+     *  aunque eso implique que deje de serlo el mes conservado. Los datos del
+     *  mes conservado no se modifican, solo su flag esActual. */
+    private suspend fun actualizarMesActualAlMasReciente() {
+        val todos = presupuestoDao.obtenerTodos()
+        if (todos.isEmpty()) return
+        val masReciente = todos.maxByOrNull { it.anio * 12 + it.mes } ?: return
+        if (masReciente.esActual) return
+        presupuestoDao.limpiarActual()
         presupuestoDao.actualizar(masReciente.copy(esActual = true))
     }
 
@@ -611,7 +624,6 @@ class PresupuestoRepositoryImpl(
 
 
     override suspend fun agregarGasto(categoriaId: Long, importe: Double, descripcion: String?): Long {
-        val gastadoAntes = gastoDao.sumarPorCategoria(categoriaId)
         val nuevoId = gastoDao.insertar(
             GastoEntity(
                 categoriaId = categoriaId,
@@ -620,44 +632,11 @@ class PresupuestoRepositoryImpl(
                 fecha = System.currentTimeMillis()
             )
         )
-        cubrirExcesoConAhorroSiProcede(categoriaId, gastadoAntes, gastoOrigenId = nuevoId)
+        recalcularCoberturaDeCategoria(categoriaId)
         return nuevoId
     }
 
-    /** Si, tras registrar un gasto, la parte NUEVA de ese gasto cae fuera del
-     *  monto asignado de su categoría, ese exceso se cubre automáticamente
-     *  con un gasto real equivalente en la categoría Ahorro del mismo mes,
-     *  restando su disponible. Ahorro nunca se cubre a sí misma.
-     *  [gastadoAntes] es el gastado de la categoría justo antes de insertar
-     *  este gasto: se usa para cubrir solo la porción nueva que supera el
-     *  límite, sin volver a cubrir excesos ya cubiertos por gastos previos. */
-    private suspend fun cubrirExcesoConAhorroSiProcede(categoriaId: Long, gastadoAntes: Double, gastoOrigenId: Long) {
-        val categoriaEntity = categoriaDao.obtenerPorId(categoriaId) ?: return
-        if (categoriaEntity.tipo == TipoCategoria.AHORRO.name) return
 
-        val presupuestoEntity = presupuestoDao.obtenerPorId(categoriaEntity.presupuestoId) ?: return
-        val montoAsignadoBase = presupuestoEntity.dineroDisponible * (categoriaEntity.porcentaje / 100.0)
-        val ingresos = gastoDao.sumarIngresosPorCategoria(categoriaId)
-        val montoAsignado = montoAsignadoBase + ingresos
-
-        val gastadoDespues = gastoDao.sumarPorCategoria(categoriaId)
-        val exceso = gastadoDespues - maxOf(gastadoAntes, montoAsignado)
-        if (exceso <= 0.0) return
-
-        val categoriaAhorro = categoriaDao.obtenerPorPresupuestoYTipo(
-            categoriaEntity.presupuestoId, TipoCategoria.AHORRO.name
-        ) ?: return
-
-        gastoDao.insertar(
-            GastoEntity(
-                categoriaId = categoriaAhorro.id,
-                importe = exceso,
-                descripcion = "Cobertura de límite superado en ${TipoCategoria.valueOf(categoriaEntity.tipo).etiqueta}",
-                fecha = System.currentTimeMillis(),
-                gastoCoberturaOrigenId = gastoOrigenId
-            )
-        )
-    }
 
     override suspend fun obtenerGastosDeMes(presupuestoId: Long): List<GastoDetallado> {
         val categorias = categoriaDao.obtenerPorPresupuesto(presupuestoId)

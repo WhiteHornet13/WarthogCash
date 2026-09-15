@@ -168,11 +168,9 @@ class GraficasActivity : AppCompatActivity() {
                         ?: return sinDatos()
                     val datos = EstadisticasCalculator.gastoPorCategoriaMensual(meses, anio)
                     val asignados = EstadisticasCalculator.asignadoPorCategoriaMensual(meses, anio)
-                    // No se comprueba si los valores son 0: el año ya viene de
-                    // aniosDisponibles (solo años con algún mes cerrado), así
-                    // que un mes cerrado sin gasto real sigue siendo un dato
-                    // válido que mostrar (barra en 0 junto a la línea de
-                    // asignado), no un "sin datos".
+                    if (datos.values.all { it.all { v -> v == 0f } } && asignados.values.all { it.all { v -> v == 0f } }) {
+                        return sinDatos()
+                    }
                     TipoCategoria.ORDEN_VISUAL.forEach { tipo ->
                         agregarGraficaBarrasMeses(
                             tipo.etiqueta,
@@ -187,16 +185,10 @@ class GraficasActivity : AppCompatActivity() {
                     val mes = binding.spinnerMes.selectedItemPosition + 1
                     val aniosElegidos = aniosMarcadosEnChips()
                     if (aniosElegidos.isEmpty()) return sinDatos()
-                    val datos =
-                        EstadisticasCalculator.gastoCategoriaPorAnios(meses, mes, aniosElegidos)
-                    // Igual que en el tipo 1: no se descarta por valores en 0,
-                    // solo por no haber ningún año seleccionado.
+                    val datos = EstadisticasCalculator.gastoCategoriaPorAnios(meses, mes, aniosElegidos)
+                    if (datos.values.all { it.values.all { v -> v == 0f } }) return sinDatos()
                     TipoCategoria.ORDEN_VISUAL.forEach { tipo ->
-                        agregarGraficaBarrasAnios(
-                            tipo.etiqueta,
-                            datos.getValue(tipo),
-                            tipo.colorResId
-                        )
+                        agregarGraficaBarrasAnios(tipo.etiqueta, datos.getValue(tipo), tipo.colorResId)
                     }
                 }
 
@@ -204,64 +196,37 @@ class GraficasActivity : AppCompatActivity() {
                     val anio = anios.getOrNull(binding.spinnerAnioUnico.selectedItemPosition)
                         ?: return sinDatos()
                     val resumen = EstadisticasCalculator.resumenMensual(meses, anio)
-                    // El año ya viene de aniosDisponibles (algún mes cerrado
-                    // ese año), así que siempre hay algo que graficar aunque
-                    // el gasto/ahorro de algún mes sea 0.
-                    agregarGraficaLineaMeses(
-                        getString(R.string.graficas_gasto),
-                        resumen.gasto,
-                        R.color.rojo_limite
-                    )
-                    agregarGraficaLineaMeses(
-                        getString(R.string.graficas_ahorro),
-                        resumen.ahorro,
-                        R.color.verde_ahorro
-                    )
-                    agregarGraficaLineaMeses(
-                        getString(R.string.graficas_ingreso),
-                        resumen.ingreso,
-                        R.color.verde_principal
-                    )
+                    if (resumen.gasto.all { it == 0f } && resumen.ahorro.all { it == 0f } && resumen.ingreso.all { it == 0f }) {
+                        return sinDatos()
+                    }
+                    agregarGraficaLineaMeses(getString(R.string.graficas_gasto), resumen.gasto, R.color.rojo_limite)
+                    agregarGraficaLineaMeses(getString(R.string.graficas_ahorro), resumen.ahorro, R.color.verde_ahorro)
+                    agregarGraficaLineaMeses(getString(R.string.graficas_ingreso), resumen.ingreso, R.color.verde_principal)
                 }
 
                 4 -> {
                     val aniosElegidos = aniosMarcadosEnChips()
                     if (aniosElegidos.isEmpty()) return sinDatos()
-                    val resumenes =
-                        EstadisticasCalculator.resumenMensualPorAnios(meses, aniosElegidos)
-                    agregarGraficaLineaMesesMultiAnio(
-                        getString(R.string.graficas_gasto),
-                        aniosElegidos
-                    ) { resumenes.getValue(it).gasto }
-                    agregarGraficaLineaMesesMultiAnio(
-                        getString(R.string.graficas_ahorro),
-                        aniosElegidos
-                    ) { resumenes.getValue(it).ahorro }
-                    agregarGraficaLineaMesesMultiAnio(
-                        getString(R.string.graficas_ingreso),
-                        aniosElegidos
-                    ) { resumenes.getValue(it).ingreso }
+                    val resumenes = EstadisticasCalculator.resumenMensualPorAnios(meses, aniosElegidos)
+                    val todoCero = resumenes.values.all { r ->
+                        r.gasto.all { it == 0f } && r.ahorro.all { it == 0f } && r.ingreso.all { it == 0f }
+                    }
+                    if (todoCero) return sinDatos()
+                    agregarGraficaLineaMesesMultiAnio(getString(R.string.graficas_gasto), aniosElegidos) { resumenes.getValue(it).gasto }
+                    agregarGraficaLineaMesesMultiAnio(getString(R.string.graficas_ahorro), aniosElegidos) { resumenes.getValue(it).ahorro }
+                    agregarGraficaLineaMesesMultiAnio(getString(R.string.graficas_ingreso), aniosElegidos) { resumenes.getValue(it).ingreso }
                 }
 
                 5 -> {
                     val aniosElegidos = aniosMarcadosEnChips()
                     if (aniosElegidos.isEmpty()) return sinDatos()
                     val resumen = EstadisticasCalculator.resumenAnual(meses, aniosElegidos)
-                    agregarGraficaBarrasAnios(
-                        getString(R.string.graficas_gasto),
-                        resumen.gasto,
-                        R.color.rojo_limite
-                    )
-                    agregarGraficaBarrasAnios(
-                        getString(R.string.graficas_ahorro),
-                        resumen.ahorro,
-                        R.color.verde_ahorro
-                    )
-                    agregarGraficaBarrasAnios(
-                        getString(R.string.graficas_ingreso),
-                        resumen.ingreso,
-                        R.color.verde_principal
-                    )
+                    if (resumen.gasto.values.all { it == 0f } && resumen.ahorro.values.all { it == 0f } && resumen.ingreso.values.all { it == 0f }) {
+                        return sinDatos()
+                    }
+                    agregarGraficaBarrasAnios(getString(R.string.graficas_gasto), resumen.gasto, R.color.rojo_limite)
+                    agregarGraficaBarrasAnios(getString(R.string.graficas_ahorro), resumen.ahorro, R.color.verde_ahorro)
+                    agregarGraficaBarrasAnios(getString(R.string.graficas_ingreso), resumen.ingreso, R.color.verde_principal)
                 }
             }
         }

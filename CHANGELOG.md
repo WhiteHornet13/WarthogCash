@@ -1,5 +1,34 @@
 # Changelog
 
+## [1.12.4] - 2026-09-15
+### Fixed
+- Cobertura automática de límite superado en Ahorro: `agregarGasto()` y
+  `aplicarGastosFijosAMes()` generaban una fila de cobertura nueva cada
+  vez que un gasto o gasto fijo disparaba exceso, dejando en el
+  Historial de Ahorro (filtrado y sin filtrar) un desglose de una fila
+  por cada gasto causante en vez de un único importe consolidado por
+  categoría. Ambos métodos usan ahora `recalcularCoberturaDeCategoria()`
+  (la misma función que ya usaban `editarGasto()`/`eliminarGasto()`),
+  que borra las coberturas existentes de la categoría y crea una única
+  fila con el descubierto total. Eliminado el método ya no usado
+  `cubrirExcesoConAhorroSiProcede()`.
+- "Restaurar copia de seguridad", opción "Conservar" con un mes ya
+  existente: si el backup importado traía meses calendario posteriores
+  al mes conservado, ese mes conservado se quedaba marcado como
+  "actual" en vez del mes más reciente de todos los importados, dejando
+  la Pantalla principal anclada a un mes antiguo. Nuevo método
+  `actualizarMesActualAlMasReciente()` en `PresupuestoRepositoryImpl`,
+  invocado al final de la rama "conservar" de `restaurarBackup()`: deja
+  como actual el mes calendario más reciente entre el conservado y los
+  importados, sin modificar los datos del mes conservado.
+- "Gráficas": cuando la selección de año(es)/mes no tenía ningún dato
+  real (todos los valores en 0 en las 5 magnitudes calculadas), la
+  gráfica se generaba igualmente vacía en vez de mostrar el aviso
+  "No hay meses cerrados suficientes para generar esta gráfica".
+  `GraficasActivity.generarGraficas()` comprueba ahora, para cada uno
+  de los 5 tipos, si todas las series resultantes son cero y en ese
+  caso llama a `sinDatos()` antes de pintar nada.
+
 ## [1.12.3] - 2026-09-14
 ### Fixed
 - Cobertura automática de límite superado: al editar o eliminar un gasto
